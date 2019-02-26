@@ -2,6 +2,7 @@
    • Reverted Changes for iOS 7-9
    • Last Version for iOS 10.x and lower (unless
    bugs are found and need to be fixed)
+   • Changed Changelog code for version number coloring
 
     Version 4.0.2:
    • Bug Fixes
