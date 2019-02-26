@@ -1,0 +1,108 @@
+# PowerApp
+**Supports iOS 3.0-iOS 12.1.2**    
+
+Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
+# Changelog
+**Version 4.1.0:**  
+* Reverted Changes for iOS 7-9
+* Last Version for iOS 10.x and lower
+* Changed Changelog code for version number coloring
+
+**Version 4.0.2:**  
+* Bug Fixes
+
+**Version 4.0.1:**  
+* Fixed Reboot and Shutdown not working first try
+* Detects Substrate/Substitute
+for correct button labeling
+* Fixed no icon showing
+* Fixed crashing on iOS 9
+* Fixed Changelog not showing changelog
+
+**Version 4.0:**  
+* Proper iOS 9-11.3.1 support
+* Proper Electra/KPPless support
+* New Icons
+* Fixed Startup Code to Better Support
+Different/Future iOS Versions
+* Fixed Changelog scrolling to Bottom First
+* PowerApp Now Cleans Up After Itself (Finally!)
+
+**Version 3.0.3:**  
+** Last Version for Devices Below iOS 10 **
+* Bug Fixes
+
+**Version 3.0.2:**  
+* Xcode also used for iOS 7 (New Binary)
+* Fixed iOS 7 Crashes
+* Added "Lock Device" Button
+* Added "Exit PowerApp" Button
+* Added New Setting
+* Developer Information is in Settings and Changelog
+
+**Version 3.0.1:**  
+* New Binary for iOS 8.0+
+* iOS 9 support (with Multitasking on iPad)
+* Optimized for speed
+* Xcode used for iOS 8.0+
+* Replaced a deprecated function
+* iPad gets landscape mode
+
+**Version 3.0:**  
+** Last Version for Devices Below iOS 7 **
+* New Binary for iOS 7.0+
+* Changed Icon
+* 64-bit support
+* Lighter package by removing
+Background and OTA Updates
+* Updated Button Titles
+* Changed "ChangeLog" to "Changelog"
+* Moved Settings to its Own Page
+* Dark and Light Theme, Color will
+be Available in PowerApp+
+
+**Version 2.1:**  
+* Enhanced Update Feature
+* Removed Settings in Settings App
+* 4" and iPad Screen Support
+* More iOS 7 Style
+* Next Update Version Will Show
+* Naming Update Feature
+"OTA Updates"
+* Fixed UI to Support Large Screens
+
+**Version 2.0:**  
+* New, Original Background
+* New, Original Startup Screen
+* Settings Page
+* New Nav Bar
+* Optional Warnings
+* New Update Feature
+* Changed Reboot Function
+
+**Version 1.3:**  
+* Switched ChangeLog Info
+* New Icon
+* New Startup Screen/Background
+* New uicache Function
+* Changed 3 Title Colors
+* Added Warnings
+* Changed Email in Info
+
+**Version 1.2:**  
+* Released on BigBoss
+* Changed Navigation Bar
+* Changed Background
+* Deleted Useless Files
+* Removed Extras
+
+**Version 1.1:**  
+* Wasn't Released on BigBoss
+* Changed Background
+* Changed Startup Screen
+* Changed Transitions
+* Added ChangeLog
+* Removed Useless Buttons/Files
+
+**Version 1.0:**  
+* Initial Release
