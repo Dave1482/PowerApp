@@ -38,7 +38,6 @@
 /* Begin PBXFileReference section */
 		551E98871B3673AC00DA175A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		551E98891B3673CF00DA175A /* SettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		5535216B1B3351A600E0D725 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PowerApp9/Info.plist; sourceTree = "<group>"; };
 		553DD19E1B3A119B00520D71 /* cLog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cLog.txt; sourceTree = "<group>"; };
 		555E8D081B379E0F00F58B3A /* ChangelogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangelogViewController.h; sourceTree = "<group>"; };
 		555E8D091B379E5100F58B3A /* ChangelogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangelogViewController.m; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		558CB3A71B3210010023C7DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		558CB3AA1B3210010023C7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/LaunchScreen-iOS10.storyboard"; sourceTree = "<group>"; };
 		55F484401B334F5F009B22F9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7F032EFC2225C59200E6D512 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PowerApp/Info.plist; sourceTree = "<group>"; };
 		7F23A50520D103A400396BB3 /* PowerAppLock */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = PowerAppLock; sourceTree = SOURCE_ROOT; };
 		7F9A61BD21310D7800D7E510 /* DTCustomTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCustomTextView.h; sourceTree = "<group>"; };
 		7F9A61BE21310D7800D7E510 /* DTCustomTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCustomTextView.m; sourceTree = "<group>"; };
@@ -73,8 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				55F484401B334F5F009B22F9 /* Default-568h@2x.png */,
-				5535216B1B3351A600E0D725 /* Info.plist */,
-				558CB39A1B3210010023C7DD /* PowerApp9 */,
+				7F032EFC2225C59200E6D512 /* Info.plist */,
+				558CB39A1B3210010023C7DD /* PowerApp */,
 				558CB3991B3210010023C7DD /* Products */,
 				7F5D3FEB210B2C1A005DCB5A /* Frameworks */,
 			);
@@ -88,7 +88,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		558CB39A1B3210010023C7DD /* PowerApp9 */ = {
+		558CB39A1B3210010023C7DD /* PowerApp */ = {
 			isa = PBXGroup;
 			children = (
 				558CB3A91B3210010023C7DD /* LaunchScreen-iOS10.storyboard */,
@@ -107,7 +107,7 @@
 				558CB3A71B3210010023C7DD /* Assets.xcassets */,
 				558CB39B1B3210010023C7DD /* Supporting Files */,
 			);
-			path = PowerApp9;
+			path = PowerApp;
 			sourceTree = "<group>";
 		};
 		558CB39B1B3210010023C7DD /* Supporting Files */ = {
@@ -155,7 +155,7 @@
 		558CB3901B3210010023C7DD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Dave;
 				TargetAttributes = {
 					558CB3971B3210010023C7DD = {
@@ -366,7 +366,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				ENABLE_TESTABILITY = NO;
-				INFOPLIST_FILE = PowerApp9/Info.plist;
+				INFOPLIST_FILE = PowerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -389,7 +389,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: dave1482@ymail.com (GF5F4ZXAA3)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
-				INFOPLIST_FILE = PowerApp9/Info.plist;
+				INFOPLIST_FILE = PowerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
