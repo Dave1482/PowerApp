@@ -3,7 +3,7 @@
 //  PowerApp
 //
 //  Modified by David Teddy, II on 8/12/2018.
-//  Copyright © 2014-2018 David Teddy, II. All rights reserved.
+//  Copyright © 2014-2019 David Teddy, II. All rights reserved.
 //
 
 #import "SettingsViewController.h"
@@ -102,7 +102,7 @@ if(lightSwitch.on){
 }
 
 - (IBAction)showDevInfo{
-    [[[UIAlertView alloc] initWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2018" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done", nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done", nil] show];
 }
 
 - (IBAction)dismissSettingsViewController {

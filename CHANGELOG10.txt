@@ -1,3 +1,7 @@
+    Version 4.1.1:
+   • Added device info to Settings Page
+   • Checks for latest version
+
     Version 4.1.0:
    • Reverted Changes for iOS 7-9
    • Last Version for iOS 10.x and lower (unless

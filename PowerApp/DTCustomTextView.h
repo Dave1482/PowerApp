@@ -3,7 +3,7 @@
 //  libcustomtextview
 //
 //  Created by Dave on 7/26/18.
-//  Copyright © 2018 Dave1482. All rights reserved.
+//  Copyright © 2014-2019 Dave1482. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
