@@ -152,6 +152,10 @@
 	<string>iPad Pro 10.5 inch</string>
 	<key>iPad7,4</key>
 	<string>iPad Pro 10.5 inch</string>
+    <key>iPad7,5</key>
+    <string>iPad 6th Gen</string>
+    <key>iPad7,6</key>
+    <string>iPad 6th Gen</string>
 	<key>iPad8,1</key>
 	<string>iPad Pro 11 inch</string>
 	<key>iPad8,2</key>
