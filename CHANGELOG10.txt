@@ -1,6 +1,7 @@
     Version 4.1.1:
-   • Added device info to Settings Page
-   • Checks for latest version
+   • Added New Property List for Future Updates
+   • Added Device & App Info to Settings Page
+   • Added Setting to Show or Hide Device & App Info
 
     Version 4.1.0:
    • Reverted Changes for iOS 7-9

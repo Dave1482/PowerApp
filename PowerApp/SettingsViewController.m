@@ -17,19 +17,45 @@
 @synthesize alertSwitch;
 @synthesize lightSwitch;
 @synthesize lockSwitch;
+@synthesize infoSwitch;
 @synthesize alertLabel;
 @synthesize lightLabel;
 @synthesize lockLabel;
+@synthesize showInfoLabel;
+@synthesize infoLabel;
 
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
+}
+
+NSString *deviceAndAppInfo()
+{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    NSString *devicesPlistPath = [[NSBundle mainBundle] pathForResource:@"devices" ofType:@"plist"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSDictionary *iOSDevices = [NSDictionary dictionaryWithContentsOfFile:devicesPlistPath];
+    NSString* deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+    NSString* iOSVersion = [[UIDevice currentDevice] systemVersion];
+    NSString *info = [NSString stringWithFormat:@"%@, iOS %@\n PowerApp %@", [iOSDevices valueForKey:deviceModel], iOSVersion, appVersion];
+    
+    return info;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [alertSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"]];
     [lockSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"]];
+    [infoSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"infoSwitch.enabled"]];
     [lightSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"]];
+    if(infoSwitch.on){
+        infoLabel.hidden = NO;
+        
+    } else {
+        infoLabel.hidden = YES;
+    }
+    infoLabel.text = deviceAndAppInfo();
     if(lightSwitch.on){
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         navBar.barTintColor = [UIColor whiteColor];
@@ -37,6 +63,8 @@
         lightLabel.textColor = [UIColor blackColor];
         alertLabel.textColor = [UIColor blackColor];
         lockLabel.textColor = [UIColor blackColor];
+        showInfoLabel.textColor = [UIColor blackColor];
+        infoLabel.textColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
@@ -45,8 +73,11 @@
         lightLabel.textColor = [UIColor whiteColor];
         alertLabel.textColor = [UIColor whiteColor];
         lockLabel.textColor = [UIColor whiteColor];
+        showInfoLabel.textColor = [UIColor whiteColor];
+        infoLabel.textColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
+    
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -70,6 +101,8 @@ if(lightSwitch.on){
     lightLabel.textColor = [UIColor blackColor];
     alertLabel.textColor = [UIColor blackColor];
     lockLabel.textColor = [UIColor blackColor];
+    showInfoLabel.textColor = [UIColor blackColor];
+    infoLabel.textColor = [UIColor blackColor];
     //[navBar setBarStyle:UIBarStyleDefault];
     [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
@@ -82,6 +115,8 @@ if(lightSwitch.on){
     lightLabel.textColor = [UIColor whiteColor];
     alertLabel.textColor = [UIColor whiteColor];
     lockLabel.textColor = [UIColor whiteColor];
+    showInfoLabel.textColor = [UIColor whiteColor];
+    infoLabel.textColor = [UIColor whiteColor];
     [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     [preferences setBool:NO forKey:@"lightSwitch"];
@@ -98,6 +133,20 @@ if(lightSwitch.on){
         NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
         [preferences setBool:NO forKey:@"lockSwitch.enabled"];
         [preferences synchronize];
+    }
+}
+
+- (IBAction)infoSwitchSwitched{
+    if(infoSwitch.on){
+        NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+        [preferences setBool:YES forKey:@"infoSwitch.enabled"];
+        [preferences synchronize];
+        infoLabel.hidden = NO;
+    } else {
+        NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+        [preferences setBool:NO forKey:@"infoSwitch.enabled"];
+        [preferences synchronize];
+        infoLabel.hidden = YES;
     }
 }
 
