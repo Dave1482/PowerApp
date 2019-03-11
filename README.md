@@ -4,6 +4,9 @@
 Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
 # Changelog
 **Version 4.1.1:**  
+* Bug Fixes
+
+**Version 4.1.1:**  
 * Added New Property List for Future Updates
 * Added Device & App Info to Settings Page
 * Added Setting to Show or Hide Device & App Info
