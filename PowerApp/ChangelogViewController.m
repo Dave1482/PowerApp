@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         [changes setBackgroundColor:[UIColor whiteColor]];
         [changes setTextColor:[UIColor blackColor]];
         navBar.barTintColor = [UIColor whiteColor];
@@ -32,7 +32,7 @@
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
 
     } else {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         [changes setBackgroundColor:[UIColor blackColor]];
         [changes setTextColor:[UIColor whiteColor]];
         navBar.barTintColor = [UIColor blackColor];
@@ -67,7 +67,19 @@
 }
 
 - (IBAction)showDevInfo{
-    [[[UIAlertView alloc] initWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done", nil] show];
+    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    [devAlert addAction:doneDevBtn];
+    [self presentViewController:devAlert animated:YES completion:nil];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
+        return UIStatusBarStyleDefault;
+    } else {
+        return UIStatusBarStyleLightContent;
+    }
 }
 
 - (IBAction)dismissChangelogViewController {

@@ -10,7 +10,6 @@
 		551E98881B3673AC00DA175A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 551E98871B3673AC00DA175A /* SettingsViewController.m */; };
 		553DD19F1B3A119B00520D71 /* cLog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 553DD19E1B3A119B00520D71 /* cLog.txt */; };
 		555E8D0A1B379E5100F58B3A /* ChangelogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 555E8D091B379E5100F58B3A /* ChangelogViewController.m */; };
-		555E8D151B37C92700F58B3A /* CHANGELOG10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 555E8D141B37C92700F58B3A /* CHANGELOG10.txt */; };
 		558CB39D1B3210010023C7DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB39C1B3210010023C7DD /* main.m */; };
 		558CB3A01B3210010023C7DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB39F1B3210010023C7DD /* AppDelegate.m */; };
 		558CB3A31B3210010023C7DD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB3A21B3210010023C7DD /* ViewController.m */; };
@@ -21,6 +20,7 @@
 		7F23A50620D103A400396BB3 /* PowerAppLock in Resources */ = {isa = PBXBuildFile; fileRef = 7F23A50520D103A400396BB3 /* PowerAppLock */; };
 		7F8346EC222A5923009FF126 /* devices.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F8346EB222A5923009FF126 /* devices.plist */; };
 		7F9A61BF21310D7800D7E510 /* DTCustomTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9A61BE21310D7800D7E510 /* DTCustomTextView.m */; };
+		7FEE5F6C2233964E0087B367 /* CHANGELOG.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7FEE5F6B2233964E0087B367 /* CHANGELOG.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,7 +42,6 @@
 		553DD19E1B3A119B00520D71 /* cLog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cLog.txt; sourceTree = "<group>"; };
 		555E8D081B379E0F00F58B3A /* ChangelogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangelogViewController.h; sourceTree = "<group>"; };
 		555E8D091B379E5100F58B3A /* ChangelogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangelogViewController.m; sourceTree = "<group>"; };
-		555E8D141B37C92700F58B3A /* CHANGELOG10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG10.txt; path = ../CHANGELOG10.txt; sourceTree = "<group>"; };
 		558CB3981B3210010023C7DD /* PowerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PowerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		558CB39C1B3210010023C7DD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		558CB39E1B3210010023C7DD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		7F8346EB222A5923009FF126 /* devices.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = devices.plist; sourceTree = "<group>"; };
 		7F9A61BD21310D7800D7E510 /* DTCustomTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCustomTextView.h; sourceTree = "<group>"; };
 		7F9A61BE21310D7800D7E510 /* DTCustomTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCustomTextView.m; sourceTree = "<group>"; };
+		7FEE5F6B2233964E0087B367 /* CHANGELOG.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.txt; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				7F23A50520D103A400396BB3 /* PowerAppLock */,
-				555E8D141B37C92700F58B3A /* CHANGELOG10.txt */,
+				7FEE5F6B2233964E0087B367 /* CHANGELOG.txt */,
 				7F8346EB222A5923009FF126 /* devices.plist */,
 				553DD19E1B3A119B00520D71 /* cLog.txt */,
 			);
@@ -192,9 +192,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				558CB3AB1B3210010023C7DD /* LaunchScreen-iOS10.storyboard in Resources */,
-				555E8D151B37C92700F58B3A /* CHANGELOG10.txt in Resources */,
 				7F8346EC222A5923009FF126 /* devices.plist in Resources */,
 				55F484411B334F5F009B22F9 /* Default-568h@2x.png in Resources */,
+				7FEE5F6C2233964E0087B367 /* CHANGELOG.txt in Resources */,
 				7F23A50620D103A400396BB3 /* PowerAppLock in Resources */,
 				558CB3A81B3210010023C7DD /* Assets.xcassets in Resources */,
 				553DD19F1B3A119B00520D71 /* cLog.txt in Resources */,
@@ -304,7 +304,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -353,7 +353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -1,3 +1,6 @@
+    Version 4.1.2:
+   • Bug Fixes
+
     Version 4.1.1:
    • Added New Property List for Future Updates
    • Added Device & App Info to Settings Page

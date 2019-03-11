@@ -61,7 +61,7 @@ NSString *deviceAndAppInfo()
     }
     infoLabel.text = deviceAndAppInfo();
     if(lightSwitch.on){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
         lightLabel.textColor = [UIColor blackColor];
@@ -71,7 +71,7 @@ NSString *deviceAndAppInfo()
         infoLabel.textColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
         lightLabel.textColor = [UIColor whiteColor];
@@ -99,7 +99,7 @@ NSString *deviceAndAppInfo()
 
 - (IBAction)lightSwitchSwitched{
 if(lightSwitch.on){
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
     navBar.barTintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     lightLabel.textColor = [UIColor blackColor];
@@ -113,7 +113,7 @@ if(lightSwitch.on){
     [preferences setBool:YES forKey:@"lightSwitch"];
     [preferences synchronize];
 } else {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
     navBar.barTintColor = [UIColor blackColor];
     self.view.backgroundColor = [UIColor blackColor];
     lightLabel.textColor = [UIColor whiteColor];
@@ -155,7 +155,19 @@ if(lightSwitch.on){
 }
 
 - (IBAction)showDevInfo{
-    [[[UIAlertView alloc] initWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done", nil] show];
+    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: http://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    [devAlert addAction:doneDevBtn];
+    [self presentViewController:devAlert animated:YES completion:nil];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if(lightSwitch.on){
+        return UIStatusBarStyleDefault;
+    } else {
+        return UIStatusBarStyleLightContent;
+    }
 }
 
 - (IBAction)dismissSettingsViewController {

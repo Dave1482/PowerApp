@@ -37,12 +37,12 @@ extern char **environ;
         [nonButton setTitle:@"Substitute Safe Mode" forState:UIControlStateNormal];
     }
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
@@ -73,9 +73,16 @@ void run_cmd(char *cmd)
 
 - (IBAction)rebootButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertRebootButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This will REBOOT your system.\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertRebootButton1 setTag:1];
-        [alertRebootButton1 show];
+        UIAlertController *alertRebootBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will REBOOT your device.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noRebootBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesRebootBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            setuid(0);
+            setgid(0);
+            run_cmd("kill 1");
+        }];
+        [alertRebootBtn1 addAction:noRebootBtn1];
+        [alertRebootBtn1 addAction:yesRebootBtn1];
+        [self presentViewController:alertRebootBtn1 animated:YES completion:nil];
     } else {
         setuid(0);
         setgid(0);
@@ -87,9 +94,16 @@ void run_cmd(char *cmd)
 
 - (IBAction)shutdownButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertShutdownButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This will SHUTDOWN your system.\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertShutdownButton1 setTag:2];
-        [alertShutdownButton1 show];
+        UIAlertController *alertShutdownBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will SHUTDOWN your device.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noShutdownBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesShutdownBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            setuid(0);
+            setgid(0);
+            run_cmd("halt");
+        }];
+        [alertShutdownBtn1 addAction:noShutdownBtn1];
+        [alertShutdownBtn1 addAction:yesShutdownBtn1];
+        [self presentViewController:alertShutdownBtn1 animated:YES completion:nil];
     } else {
         setuid(0);
         setgid(0);
@@ -100,9 +114,14 @@ void run_cmd(char *cmd)
 
 - (IBAction)respringButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertRespringButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This will Respring your system. This will stop all apps!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertRespringButton1 setTag:3];
-        [alertRespringButton1 show];
+        UIAlertController *alertRespringBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will Respring your device. This will stop all apps!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noRespringBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesRespringBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            run_cmd("killall -9 SpringBoard");
+        }];
+        [alertRespringBtn1 addAction:noRespringBtn1];
+        [alertRespringBtn1 addAction:yesRespringBtn1];
+        [self presentViewController:alertRespringBtn1 animated:YES completion:nil];
     } else {
         run_cmd("killall -9 SpringBoard");
     }
@@ -110,14 +129,19 @@ void run_cmd(char *cmd)
 
 - (IBAction)safeModeButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertSafemodeButton1;
+        UIAlertController *alertSafemodeBtn1;
         if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-            alertSafemodeButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This will only respring your device since you have substrate. This will stop all apps!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            alertSafemodeBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will only respring your device since you have substrate. This will stop all apps!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         } else {
-            alertSafemodeButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This will put your system into Safemode. This will stop all apps!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            alertSafemodeBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will put your system into Safemode. This will stop all apps!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         }
-        [alertSafemodeButton1 setTag:4];
-        [alertSafemodeButton1 show];
+        UIAlertAction *noSafeBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesSafeBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            run_cmd("touch /var/mobile/Library/Preferences/com.saurik.mobilesubstrate.dat; killall SpringBoard");
+        }];
+        [alertSafemodeBtn1 addAction:noSafeBtn1];
+        [alertSafemodeBtn1 addAction:yesSafeBtn1];
+        [self presentViewController:alertSafemodeBtn1 animated:YES completion:nil];
     } else {
         run_cmd("touch /var/mobile/Library/Preferences/com.saurik.mobilesubstrate.dat; killall SpringBoard");
     }
@@ -125,14 +149,19 @@ void run_cmd(char *cmd)
 
 - (IBAction)nonMobileSubstrateModeButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertNoSubstrateButton1;
+        UIAlertController *alertNonTweakBtn1;
         if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-            alertNoSubstrateButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"Using this will put it into Non-Substitute Mode (aka Safe Mode)!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            alertNonTweakBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"Using this will put it into Non-Substitute Mode (aka Safe Mode)!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         } else {
-            alertNoSubstrateButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"Using this in Safemode will put it into Non-MobileSubstrate Mode. Any other mode will put it into Safemode This will kill all processes!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            alertNonTweakBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"Using this in Safemode will put it into Non-MobileSubstrate Mode. Any other mode will put it into Safemode This will kill all processes!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         }
-        [alertNoSubstrateButton1 setTag:5];
-        [alertNoSubstrateButton1 show];
+        UIAlertAction *noTweakBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesTweakBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            run_cmd("killall -SEGV SpringBoard");
+        }];
+        [alertNonTweakBtn1 addAction:noTweakBtn1];
+        [alertNonTweakBtn1 addAction:yesTweakBtn1];
+        [self presentViewController:alertNonTweakBtn1 animated:YES completion:nil];
     } else {
         run_cmd("killall -SEGV SpringBoard");
     }
@@ -140,9 +169,14 @@ void run_cmd(char *cmd)
 
 - (IBAction)refreshCacheButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertMinispringButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This refreshes the SpringBoard so you can see your new apps without respringing. This will temporarily freeze your Home Screen (Exit this app after this is complete)!\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertMinispringButton1 setTag:6];
-        [alertMinispringButton1 show];
+        UIAlertController *alertRefreshButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This refreshes the SpringBoard so you can see your new apps without respringing. This will temporarily freeze your Home Screen (Exit this app after this is complete)!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noRefreshBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesRefreshBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            run_cmd("uicache");
+        }];
+        [alertRefreshButton1 addAction:noRefreshBtn1];
+        [alertRefreshButton1 addAction:yesRefreshBtn1];
+        [self presentViewController:alertRefreshButton1 animated:YES completion:nil];
     } else {
 
         run_cmd("uicache");
@@ -152,9 +186,29 @@ void run_cmd(char *cmd)
 
 - (IBAction)lockButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertLockButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This only locks your device. Great if you want to save your power button.\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertLockButton1 setTag:7];
-        [alertLockButton1 show];
+        UIAlertController *alertLockButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This only locks your device. Great if you want to save your power button.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noLockBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesLockBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            char *gsDylib = "/System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices";
+            void *handle = dlopen(gsDylib, RTLD_NOW);
+            if (handle) {
+                
+                void (*_GSEventLockDevice)(void) = dlsym(handle, "GSEventLockDevice");
+                if (_GSEventLockDevice)  {
+                    _GSEventLockDevice();
+                    
+                }
+                dlclose(handle);
+                
+            }
+            run_cmd("/Applications/PowerApp.app/PowerAppLock");
+            if([[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"] == YES){
+                abort();
+            }
+        }];
+        [alertLockButton1 addAction:noLockBtn1];
+        [alertLockButton1 addAction:yesLockBtn1];
+        [self presentViewController:alertLockButton1 animated:YES completion:nil];
     } else {
         char *gsDylib = "/System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices";
         void *handle = dlopen(gsDylib, RTLD_NOW);
@@ -178,9 +232,15 @@ void run_cmd(char *cmd)
 
 - (IBAction)exitButtonPressed {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertView *alertExitButton1 = [[UIAlertView alloc] initWithTitle:@"Are you sure?" message:@"This only kills PowerApp. Great if you want to save your home button.\n\nContinue?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-        [alertExitButton1 setTag:8];
-        [alertExitButton1 show];
+        UIAlertController *alertExitButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This only kills PowerApp. Great if you want to save your home button.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noExitBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesExitBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            abort();
+        }];
+        [alertExitButton1 addAction:noExitBtn1];
+        [alertExitButton1 addAction:yesExitBtn1];
+        [self presentViewController:alertExitButton1 animated:YES completion:nil];
+
     } else {
         abort();
     }
@@ -198,66 +258,12 @@ void run_cmd(char *cmd)
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if(alertView.tag == 1){
-        if(buttonIndex == 1){
-            setuid(0);
-            setgid(0);
-            run_cmd("kill 1");
-        }
-    }
-    if(alertView.tag == 2){
-        if(buttonIndex == 1){
-            setuid(0);
-            setgid(0);
-            run_cmd("halt");
-        }
-    }
-    if(alertView.tag == 3){
-        if(buttonIndex == 1){
-            run_cmd("killall -9 SpringBoard");
-        }
-    }
-    if(alertView.tag == 4){
-        if(buttonIndex == 1){
-            run_cmd("touch /var/mobile/Library/Preferences/com.saurik.mobilesubstrate.dat; killall SpringBoard");
-        }
-    }
-    if(alertView.tag == 5){
-        if(buttonIndex == 1){
-            run_cmd("killall -SEGV SpringBoard");
-        }
-    }
-    if(alertView.tag == 6){
-        if(buttonIndex == 1){
-            run_cmd("uicache");
-        }
-    }
-    if(alertView.tag == 7){
-        if(buttonIndex == 1){
-            char *gsDylib = "/System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices";
-            void *handle = dlopen(gsDylib, RTLD_NOW);
-            if (handle) {
-                
-                void (*_GSEventLockDevice)(void) = dlsym(handle, "GSEventLockDevice");
-                if (_GSEventLockDevice)  {
-                    _GSEventLockDevice();
-                    
-                }
-                dlclose(handle);
-                
-            }
-            run_cmd("/Applications/PowerApp.app/PowerAppLock64");
-            if([[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"] == YES){
-                abort();
-            }
-        }
-    }
-    if(alertView.tag == 8){
-        if(buttonIndex == 1){
-            abort();
-        }
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
+        return UIStatusBarStyleDefault;
+    } else {
+        return UIStatusBarStyleLightContent;
     }
 }
 
