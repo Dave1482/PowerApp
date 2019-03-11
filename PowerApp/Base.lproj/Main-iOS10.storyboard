@@ -221,7 +221,7 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" id="UIe-w8-RJ8">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="rSe-et-M8a">
-                                                <rect key="frame" x="290" y="11" width="22" height="22"/>
+                                                <rect key="frame" x="290" y="14" width="22" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="showDevInfo" destination="Khs-Nw-13E" eventType="touchUpInside" id="Ipz-H5-4lg"/>
@@ -374,7 +374,6 @@
                             <constraint firstItem="RsF-RC-VhT" firstAttribute="top" secondItem="Bzs-OP-IJo" secondAttribute="bottom" id="O0I-Ad-nh8"/>
                             <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="bottom" secondItem="hvn-Fk-qOa" secondAttribute="bottom" constant="44" id="TLJ-7g-fPI"/>
                             <constraint firstItem="Bzs-OP-IJo" firstAttribute="top" secondItem="hvn-Fk-qOa" secondAttribute="bottom" constant="54" id="ZTd-se-43H"/>
-                            <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="top" secondItem="hvn-Fk-qOa" secondAttribute="bottom" symbolic="YES" id="c2i-Af-aD4"/>
                             <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="leading" secondItem="SdO-G6-XMn" secondAttribute="leadingMargin" constant="-20" id="kcC-Vq-uVa"/>
                         </constraints>
                     </view>
