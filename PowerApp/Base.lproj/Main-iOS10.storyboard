@@ -221,7 +221,7 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" id="UIe-w8-RJ8">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="rSe-et-M8a">
-                                                <rect key="frame" x="290" y="14" width="22" height="22"/>
+                                                <rect key="frame" x="290" y="11" width="22" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="showDevInfo" destination="Khs-Nw-13E" eventType="touchUpInside" id="Ipz-H5-4lg"/>
@@ -243,10 +243,11 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ur-Zk-nhy">
-                                <rect key="frame" x="20" y="420" width="280" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="4Ur-Zk-nhy">
+                                <rect key="frame" x="60" y="420" width="200" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Jfs-hQ-kIb"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="Wg1-Nj-wUm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -279,7 +280,6 @@
                             <constraint firstItem="fJq-3X-obF" firstAttribute="leading" secondItem="vxr-jR-GQG" secondAttribute="leading" id="JxS-qd-M5M"/>
                             <constraint firstItem="ITx-IB-y17" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leadingMargin" constant="10" id="K2g-81-vNL"/>
                             <constraint firstItem="vxr-jR-GQG" firstAttribute="top" secondItem="7Fi-if-vLk" secondAttribute="bottom" constant="94" id="KaK-hp-rmX"/>
-                            <constraint firstAttribute="trailing" secondItem="4Ur-Zk-nhy" secondAttribute="trailing" constant="20" id="Oc2-6e-ak1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vxr-jR-GQG" secondAttribute="trailing" constant="10" id="PLA-xJ-nNJ"/>
                             <constraint firstItem="4Ur-Zk-nhy" firstAttribute="centerX" secondItem="7Fi-if-vLk" secondAttribute="centerX" id="Rel-hk-Xnf"/>
                             <constraint firstItem="NGr-nl-ldV" firstAttribute="leading" secondItem="0V3-Wd-lCx" secondAttribute="trailing" constant="51" id="a8P-Up-eYF"/>
@@ -293,7 +293,6 @@
                             <constraint firstItem="NGr-nl-ldV" firstAttribute="top" secondItem="fJq-3X-obF" secondAttribute="bottom" constant="47" id="nge-TZ-5Ly"/>
                             <constraint firstItem="jLG-JH-YUj" firstAttribute="leading" secondItem="0V3-Wd-lCx" secondAttribute="leading" id="ry9-zh-tku"/>
                             <constraint firstItem="ITx-IB-y17" firstAttribute="leading" secondItem="V7o-IA-bKN" secondAttribute="leading" id="vM8-Qq-f1t"/>
-                            <constraint firstItem="4Ur-Zk-nhy" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leading" constant="20" id="wcL-JJ-fgz"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -338,7 +337,7 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" id="QUF-y6-MkK">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="6rl-YP-qNi">
-                                                <rect key="frame" x="290" y="14" width="22" height="22"/>
+                                                <rect key="frame" x="290" y="11" width="22" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="showDevInfo" destination="Yn8-FJ-efG" eventType="touchUpInside" id="jAg-Wb-uO5"/>
