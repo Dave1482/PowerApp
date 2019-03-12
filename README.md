@@ -1,8 +1,12 @@
 # PowerApp
-**Supports iOS 3.0-iOS 12.1.2**    
+**Supports iOS 3.0-iOS 12.1.2+**    
 
 Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
 # Changelog
+**Version 4.2:**
+* Reintroduce Check for Update Feature
+* Moved to Dynastic Repo
+
 **Version 4.1.2:**  
 * Bug Fixes
 
