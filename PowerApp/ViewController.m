@@ -32,6 +32,7 @@ extern char **environ;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
         [safeButton setTitle:@"MobileSubstrate Safe Mode" forState:UIControlStateNormal];
         [nonButton setTitle:@"Substitute Safe Mode" forState:UIControlStateNormal];
@@ -48,6 +49,51 @@ extern char **environ;
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
+    
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://github.dave1482.com/PowerApp/version"]
+                                              cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                          timeoutInterval:10.0];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                      {
+                                          NSString *receivedDataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                                          NSLog(@"%@", receivedDataString);
+                                          if (receivedDataString != [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]] && ![receivedDataString isEqual: @""])
+                                          {
+                                              NSFileManager *fileManager = [NSFileManager defaultManager];
+                                              
+                                              NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
+                                              NSString *cydiaPath = @"/Applications/Cydia.app/Info.plist";
+                                              
+                                              UIAlertController *alertCheckForUpdate;
+                                              
+                                              UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+                                              UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
+                                              }];
+                                              UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://"] options:@{} completionHandler:nil];
+                                              }];
+                                              
+                                              if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]){
+                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
+                                                  [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+                                              } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
+                                                  [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+                                              } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
+                                                  [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+                                                  [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+                                              } else {
+                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
+                                              }
+                                              [alertCheckForUpdate addAction:noUpdateBtn];
+                                              [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
+                                          }
+                                      }];
+    [dataTask resume];
 }
 
 void run_cmd(char *cmd)

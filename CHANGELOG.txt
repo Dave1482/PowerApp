@@ -1,3 +1,7 @@
+    Version 4.2:
+   • Reintroduce Check for Update Feature
+   • Moved to Dynastic Repo
+
     Version 4.1.2:
    • Bug Fixes
 
