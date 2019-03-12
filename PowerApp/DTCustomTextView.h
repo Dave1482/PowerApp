@@ -1,9 +1,10 @@
 //
 //  DTCustomTextView.h
 //  libcustomtextview
+//  PowerApp
 //
-//  Created by Dave on 7/26/18.
-//  Copyright © 2014-2019 Dave1482. All rights reserved.
+//  Modified by David Teddy, II on 3/11/2019.
+//  Copyright © 2014-2019 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
