@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,9 +13,9 @@
 		558CB39D1B3210010023C7DD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB39C1B3210010023C7DD /* main.m */; };
 		558CB3A01B3210010023C7DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB39F1B3210010023C7DD /* AppDelegate.m */; };
 		558CB3A31B3210010023C7DD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 558CB3A21B3210010023C7DD /* ViewController.m */; };
-		558CB3A61B3210010023C7DD /* Main-iOS10.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A41B3210010023C7DD /* Main-iOS10.storyboard */; };
+		558CB3A61B3210010023C7DD /* Main-iOS8.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A41B3210010023C7DD /* Main-iOS8.storyboard */; };
 		558CB3A81B3210010023C7DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A71B3210010023C7DD /* Assets.xcassets */; };
-		558CB3AB1B3210010023C7DD /* LaunchScreen-iOS10.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A91B3210010023C7DD /* LaunchScreen-iOS10.storyboard */; };
+		558CB3AB1B3210010023C7DD /* LaunchScreen-iOS8.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A91B3210010023C7DD /* LaunchScreen-iOS8.storyboard */; };
 		55F484411B334F5F009B22F9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55F484401B334F5F009B22F9 /* Default-568h@2x.png */; };
 		7F23A50620D103A400396BB3 /* PowerAppLock in Resources */ = {isa = PBXBuildFile; fileRef = 7F23A50520D103A400396BB3 /* PowerAppLock */; };
 		7F8346EC222A5923009FF126 /* devices.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F8346EB222A5923009FF126 /* devices.plist */; };
@@ -48,9 +48,9 @@
 		558CB39F1B3210010023C7DD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		558CB3A11B3210010023C7DD /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		558CB3A21B3210010023C7DD /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		558CB3A51B3210010023C7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iOS10.storyboard"; sourceTree = "<group>"; };
+		558CB3A51B3210010023C7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iOS8.storyboard"; sourceTree = "<group>"; };
 		558CB3A71B3210010023C7DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		558CB3AA1B3210010023C7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/LaunchScreen-iOS10.storyboard"; sourceTree = "<group>"; };
+		558CB3AA1B3210010023C7DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/LaunchScreen-iOS8.storyboard"; sourceTree = "<group>"; };
 		55F484401B334F5F009B22F9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7F032EFC2225C59200E6D512 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PowerApp/Info.plist; sourceTree = "<group>"; };
 		7F23A50520D103A400396BB3 /* PowerAppLock */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = PowerAppLock; sourceTree = SOURCE_ROOT; };
@@ -93,8 +93,8 @@
 		558CB39A1B3210010023C7DD /* PowerApp */ = {
 			isa = PBXGroup;
 			children = (
-				558CB3A91B3210010023C7DD /* LaunchScreen-iOS10.storyboard */,
-				558CB3A41B3210010023C7DD /* Main-iOS10.storyboard */,
+				558CB3A91B3210010023C7DD /* LaunchScreen-iOS8.storyboard */,
+				558CB3A41B3210010023C7DD /* Main-iOS8.storyboard */,
 				558CB39C1B3210010023C7DD /* main.m */,
 				558CB39E1B3210010023C7DD /* AppDelegate.h */,
 				558CB39F1B3210010023C7DD /* AppDelegate.m */,
@@ -169,7 +169,7 @@
 				};
 			};
 			buildConfigurationList = 558CB3931B3210010023C7DD /* Build configuration list for PBXProject "PowerApp" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -191,14 +191,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558CB3AB1B3210010023C7DD /* LaunchScreen-iOS10.storyboard in Resources */,
+				558CB3AB1B3210010023C7DD /* LaunchScreen-iOS8.storyboard in Resources */,
 				7F8346EC222A5923009FF126 /* devices.plist in Resources */,
 				55F484411B334F5F009B22F9 /* Default-568h@2x.png in Resources */,
 				7FEE5F6C2233964E0087B367 /* CHANGELOG.txt in Resources */,
 				7F23A50620D103A400396BB3 /* PowerAppLock in Resources */,
 				558CB3A81B3210010023C7DD /* Assets.xcassets in Resources */,
 				553DD19F1B3A119B00520D71 /* cLog.txt in Resources */,
-				558CB3A61B3210010023C7DD /* Main-iOS10.storyboard in Resources */,
+				558CB3A61B3210010023C7DD /* Main-iOS8.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,20 +238,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		558CB3A41B3210010023C7DD /* Main-iOS10.storyboard */ = {
+		558CB3A41B3210010023C7DD /* Main-iOS8.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				558CB3A51B3210010023C7DD /* Base */,
 			);
-			name = "Main-iOS10.storyboard";
+			name = "Main-iOS8.storyboard";
 			sourceTree = "<group>";
 		};
-		558CB3A91B3210010023C7DD /* LaunchScreen-iOS10.storyboard */ = {
+		558CB3A91B3210010023C7DD /* LaunchScreen-iOS8.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				558CB3AA1B3210010023C7DD /* Base */,
 			);
-			name = "LaunchScreen-iOS10.storyboard";
+			name = "LaunchScreen-iOS8.storyboard";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -372,7 +372,7 @@
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				ENABLE_TESTABILITY = NO;
 				INFOPLIST_FILE = PowerApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
@@ -397,7 +397,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				INFOPLIST_FILE = PowerApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dave1482.PowerAppBeta;

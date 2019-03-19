@@ -49,7 +49,17 @@ extern char **environ;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
     
-    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://github.dave1482.com/PowerApp/version"]
+    NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    NSString *versionURL;
+    NSString *keyString;
+    if ([amIBeta containsString:@"beta"]){
+        versionURL = @"https://github.dave1482.com/PowerApp/betaVersion";
+        keyString = @"CFBundleVersion";
+    } else {
+        versionURL = @"https://github.dave1482.com/PowerApp/version";
+        keyString = @"CFBundleShortVersionString";
+    }
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
                                               cachePolicy:NSURLRequestReloadIgnoringCacheData
                                           timeoutInterval:10.0];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -57,8 +67,11 @@ extern char **environ;
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                                       {
                                           NSString *receivedDataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                                          NSString *keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
                                           NSLog(@"%@", receivedDataString);
-                                          if (receivedDataString != [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]] && ![receivedDataString isEqual: @""])
+                                          NSLog(@"%@", keyInfo);
+                                          
+                                          if (![receivedDataString isEqual:keyInfo] && ![receivedDataString isEqual: @""])
                                           {
                                               NSFileManager *fileManager = [NSFileManager defaultManager];
                                               

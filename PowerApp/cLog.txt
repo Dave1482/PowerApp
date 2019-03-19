@@ -1,3 +1,7 @@
+Version 4.3.0:
+• Added iOS 8.x/9.x support back (newest features
+available on iOS 8.x and 9.x devices again!)
+
 Version 4.2:
 • Reintroduce Check for Update Feature
 • Moved to Dynastic Repo
@@ -12,7 +16,7 @@ Version 4.1.1:
 
 Version 4.1.0:
 • Reverted Changes for iOS 7-9
-• Last Version for iOS 9.x and lower
+• Last Version for iOS 8.x and lower
 • Changed Changelog code for version number coloring
 
 Version 4.0.2:
