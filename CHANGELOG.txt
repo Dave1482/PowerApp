@@ -1,6 +1,6 @@
     Version 4.3.0:
-   • Added iOS 8.x/9.x support back (newest features
-   available on iOS 8.x and 9.x devices again!)
+   • Added iOS 8/9 support back (newest features
+   available on iOS 8/9 devices again!)
 
     Version 4.2:
    • Reintroduce Check for Update Feature
