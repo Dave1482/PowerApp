@@ -45,7 +45,7 @@ Different/Future iOS Versions
 * PowerApp Now Cleans Up After Itself (Finally!)
 
 **Version 3.0.3:**  
-** Last Version for Devices Below iOS 10 **
+** Last Version for Devices Below iOS 8 **
 * Bug Fixes
 
 **Version 3.0.2:**  
