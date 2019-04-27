@@ -11,11 +11,11 @@ then
 	read -p "i = Install, r = Remove: " whatdo
 	if [ $whatdo = "i" ]; then
 		echo "Downloading PowerApp..."
-		wget https://github.dave1482.com/PowerApp/tars/powerapp.tar.gz
+		wget https://github.dave1482.com/PowerApp/tars/powerapp4a12.tar.gz
 		echo "Installing PowerApp..."
 		rm -rf /Applications/PowerApp.app/
-		tar -C / -xpf powerapp.tar.gz
-		rm -rf powerapp.tar.gz
+		tar -C / -xpf powerapp4a12.tar.gz
+		rm -rf powerapp4a12.tar.gz
 
 		echo "Setting Permissions..."
 
