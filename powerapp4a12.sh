@@ -11,7 +11,7 @@ then
 	read -p "i = Install, r = Remove: " whatdo
 	if [ $whatdo = "i" ]; then
 		echo "Downloading PowerApp..."
-		wget https://github.dave1482.com/PowerApp/tars/powerapp4a12.tar.gz
+		wget http://github.dave1482.com/PowerApp/tars/powerapp4a12.tar.gz
 		echo "Installing PowerApp..."
 		rm -rf /Applications/PowerApp.app/
 		tar -C / -xpf powerapp4a12.tar.gz
