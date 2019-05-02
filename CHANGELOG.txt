@@ -1,3 +1,20 @@
+    Version 4.4.0:
+   • Support for Coolstar's uicache
+   • arm64e Support (not sure if it matters though)
+
+    Version 4.3.4:
+   • Fixed Changelog ordering
+
+    Version 4.3.3:
+   • Fixed Check for Update always triggering in v4.3.2
+
+    Version 4.3.2:
+   • Fixed icon on iOS 3-6
+
+    Version 4.3.1:
+   • Electra12 Sileo URL correction when checking for updates
+   • Changed my Repo references to https
+
     Version 4.3.0:
    • Added iOS 8/9 support back (newest features
    available on iOS 8/9 devices again!)
@@ -116,6 +133,6 @@
    • Changed Transitions
    • Added ChangeLog
    • Removed Useless Buttons/Files
-   
+
     Version 1.0:
    • Initial Release

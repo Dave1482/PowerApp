@@ -47,10 +47,10 @@ void patch_setuid() {
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libjailbreak.dylib"]){
+        //if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libjailbreak.dylib"]){
             platformize_me();
             patch_setuid();
-        }
+        //}
         
         setuid(0);
         setgid(0);

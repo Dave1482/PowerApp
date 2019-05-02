@@ -22,6 +22,9 @@
 @synthesize safeButton;
 @synthesize nonButton;
 
+NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
+NSString *cydiaPath = @"/Applications/Cydia.app/Info.plist";
+
 #define _POSIX_SPAWN_DISABLE_ASLR 0x0100
 #define _POSIX_SPAWN_ALLOW_DATA_EXEC 0x2000
 extern char **environ;
@@ -75,8 +78,7 @@ extern char **environ;
                                           {
                                               NSFileManager *fileManager = [NSFileManager defaultManager];
                                               
-                                              NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
-                                              NSString *cydiaPath = @"/Applications/Cydia.app/Info.plist";
+                                              
                                               
                                               UIAlertController *alertCheckForUpdate;
                                               
@@ -85,7 +87,7 @@ extern char **environ;
                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
                                               }];
                                               UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://"] options:@{} completionHandler:nil];
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
                                               }];
                                               
                                               if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]){
@@ -230,15 +232,13 @@ void run_cmd(char *cmd)
         UIAlertController *alertRefreshButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This refreshes the SpringBoard so you can see your new apps without respringing. This will temporarily freeze your Home Screen (Exit this app after this is complete)!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *noRefreshBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
         UIAlertAction *yesRefreshBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            run_cmd("uicache");
+                run_cmd("uicache --all");
         }];
         [alertRefreshButton1 addAction:noRefreshBtn1];
         [alertRefreshButton1 addAction:yesRefreshBtn1];
         [self presentViewController:alertRefreshButton1 animated:YES completion:nil];
     } else {
-
-        run_cmd("uicache");
-        
+            run_cmd("uicache --all");
     }
 }
 
