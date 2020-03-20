@@ -99,44 +99,6 @@ extern char **environ;
         [self updateCheckWithKeyInfo:self->keyInfo];
     }];
     [dataTask resume];
-
-    
-    /*if (![receivedDataString isEqual:self->keyInfo] && ![receivedDataString isEqual: @""])
-    {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-        UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
-        }];
-        UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
-        }];
-        NSString *alertMessage = @"";
-        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
-            alertMessage = [NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString];
-        } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-            alertMessage = [NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString];
-        } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-            alertMessage = [NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString];
-        } else {
-            alertMessage = [NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString];
-        }
-        UIAlertController *alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
-            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-            [alertCheckForUpdate addAction:noUpdateBtn];
-         } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
-            [alertCheckForUpdate addAction:noUpdateBtn];
-         } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
-            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-            [alertCheckForUpdate addAction:noUpdateBtn];
-         } else {
-            [alertCheckForUpdate addAction:noUpdateBtn];
-         }
-        [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
-    }*/
     
 }
 
