@@ -2,8 +2,8 @@
 //  AppDelegate.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 3/11/2019.
-//  Copyright © 2014-2019 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 2/20/2020.
+//  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "AppDelegate.h"

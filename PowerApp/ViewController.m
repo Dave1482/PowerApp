@@ -2,8 +2,8 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 3/11/2019.
-//  Copyright © 2014-2019 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 2/20/2020.
+//  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "ViewController.h"
@@ -19,8 +19,16 @@
 @implementation ViewController
 @synthesize navBar;
 @synthesize rightButton;
+@synthesize rebootButton;
+@synthesize shutdownButton;
+@synthesize ldrButton;
+@synthesize respringButton;
 @synthesize safeButton;
 @synthesize nonButton;
+@synthesize uicButton;
+@synthesize lockButton;
+@synthesize exitButton;
+
 
 NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
 NSString *cydiaPath = @"/Applications/Cydia.app/Info.plist";
@@ -35,9 +43,27 @@ extern char **environ;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    rebootButton.layer.cornerRadius = 15;
+    shutdownButton.layer.cornerRadius = 15;
+    ldrButton.layer.cornerRadius = 15;
+    respringButton.layer.cornerRadius = 15;
+    safeButton.layer.cornerRadius = 15;
+    nonButton.layer.cornerRadius = 15;
+    uicButton.layer.cornerRadius = 15;
+    lockButton.layer.cornerRadius = 15;
+    exitButton.layer.cornerRadius = 15;
+    safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    lockButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    exitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [nonButton setTitle:@"Non-Substrate\nMode" forState:UIControlStateNormal];
+    [uicButton setTitle:@"Refresh\nCache" forState:UIControlStateNormal];
+    [lockButton setTitle:@"Lock\nDevice" forState:UIControlStateNormal];
+    [exitButton setTitle:@"Exit\nPowerApp" forState:UIControlStateNormal];
     if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-        [safeButton setTitle:@"MobileSubstrate Safe Mode" forState:UIControlStateNormal];
-        [nonButton setTitle:@"Substitute Safe Mode" forState:UIControlStateNormal];
+        [safeButton setTitle:@"Substrate\nSafe Mode" forState:UIControlStateNormal];
+        [nonButton setTitle:@"Substitute\nSafe Mode" forState:UIControlStateNormal];
     }
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
         [self setNeedsStatusBarAppearanceUpdate];
@@ -66,48 +92,52 @@ extern char **environ;
                                               cachePolicy:NSURLRequestReloadIgnoringCacheData
                                           timeoutInterval:10.0];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-                                      {
-                                          NSString *receivedDataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-                                          NSString *keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-                                          NSLog(@"%@", receivedDataString);
-                                          NSLog(@"%@", keyInfo);
-                                          
-                                          if (![receivedDataString isEqual:keyInfo] && ![receivedDataString isEqual: @""])
-                                          {
-                                              NSFileManager *fileManager = [NSFileManager defaultManager];
-                                              
-                                              
-                                              
-                                              UIAlertController *alertCheckForUpdate;
-                                              
-                                              UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-                                              UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
-                                              }];
-                                              UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
-                                              }];
-                                              
-                                              if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]){
-                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
-                                                  [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-                                              } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
-                                                  [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
-                                              } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
-                                                  [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
-                                                  [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-                                              } else {
-                                                  alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:[NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString] preferredStyle:UIAlertControllerStyleAlert];
-                                              }
-                                              [alertCheckForUpdate addAction:noUpdateBtn];
-                                              [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
-                                          }
-                                      }];
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        [self updateCheckWithKeyInfo:self->keyInfo];
+    }];
     [dataTask resume];
+
+    
+    /*if (![receivedDataString isEqual:self->keyInfo] && ![receivedDataString isEqual: @""])
+    {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
+        }];
+        NSString *alertMessage = @"";
+        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString];
+        } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString];
+        } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString];
+        } else {
+            alertMessage = [NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString];
+        }
+        UIAlertController *alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else {
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         }
+        [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
+    }*/
+    
 }
 
 void run_cmd(char *cmd)
@@ -116,7 +146,7 @@ void run_cmd(char *cmd)
     pid_t pid;
     char *argv[] = {"sh", "-c", cmd, NULL};
     int status;
-    printf("Run command: %s\n", cmd);
+    //printf("Run command: %s\n", cmd);
     status = posix_spawn(&pid, "/bin/sh", NULL, NULL, (char* const*)argv, environ);
     
     if (status == 0) {
@@ -163,7 +193,7 @@ void run_cmd(char *cmd)
         }];
         [alertShutdownBtn1 addAction:noShutdownBtn1];
         [alertShutdownBtn1 addAction:yesShutdownBtn1];
-        [self presentViewController:alertShutdownBtn1 animated:YES completion:nil];
+        [self.parentViewController presentViewController:alertShutdownBtn1 animated:YES completion:nil];
     } else {
         setuid(0);
         setgid(0);
@@ -173,17 +203,46 @@ void run_cmd(char *cmd)
 }
 
 - (IBAction)respringButtonPressed {
+    long btnControlValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"];
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
         UIAlertController *alertRespringBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will Respring your device. This will stop all apps!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *noRespringBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
         UIAlertAction *yesRespringBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            run_cmd("killall -9 SpringBoard");
+            switch (btnControlValue)
+            {
+               case 0:
+                    run_cmd("killall -9 SpringBoard");
+                    break;
+               case 1:
+                    [self sbreloadCheck];
+                    break;
+                case 2:
+                    [self ldRunCheck];
+                    break;
+               default:
+                    run_cmd("killall -9 SpringBoard");
+                 break;
+            }
         }];
         [alertRespringBtn1 addAction:noRespringBtn1];
         [alertRespringBtn1 addAction:yesRespringBtn1];
         [self presentViewController:alertRespringBtn1 animated:YES completion:nil];
     } else {
-        run_cmd("killall -9 SpringBoard");
+        switch (btnControlValue)
+        {
+           case 0:
+                run_cmd("killall -9 SpringBoard");
+                break;
+           case 1:
+                [self sbreloadCheck];
+                break;
+           case 2:
+                [self ldRunCheck];
+                break;
+           default:
+                run_cmd("killall -9 SpringBoard");
+             break;
+        }
     }
 }
 
@@ -306,15 +365,107 @@ void run_cmd(char *cmd)
 
 - (void)colorMe {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        }
         self.view.backgroundColor = [UIColor whiteColor];
         navBar.barTintColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        }
         self.view.backgroundColor = [UIColor blackColor];
         navBar.barTintColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
 }
+
+- (void) updateCheckWithKeyInfo:(NSString *)leInfo   {
+    UIAlertController *alertCheckForUpdate;
+    NSString *alertMessage;
+    if (![receivedDataString isEqual:leInfo] && ![receivedDataString isEqual: @""])
+    {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
+        }];
+        
+        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString];
+        } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString];
+        } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            alertMessage = [NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString];
+        } else {
+            alertMessage = [NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString];
+        }
+        alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+        if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+            [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+            [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         } else {
+            [alertCheckForUpdate addAction:noUpdateBtn];
+         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
+        });
+    }
+}
+
+- (void) ldRunCheck {
+    UIAlertController *alertMissingLD;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/ldRun"]){
+        setuid(0);
+        setgid(0);
+        run_cmd("ldRun");
+    } else {
+        alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nChange Respring setting to the \"killall\" option and respring?" preferredStyle:UIAlertControllerStyleAlert];
+    }
+    UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+        [preferences setInteger:0 forKey:@"btnControl"];
+        [preferences synchronize];
+        run_cmd("killall -9 SpringBoard");
+    }];
+    [alertMissingLD addAction:noLDBtn1];
+    [alertMissingLD addAction:yesLDBtn1];
+    [self presentViewController:alertMissingLD animated:YES completion:nil];
+
+}
+
+- (void) sbreloadCheck {
+    UIAlertController *alertMissingSBRELOAD;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/sbreload"]){
+        run_cmd("sbreload");
+    } else {
+        alertMissingSBRELOAD = [UIAlertController alertControllerWithTitle:@"Unable to sbreload" message:@"Your device is missing the \"sbreload\" command to run successfully.\n\nChange Respring setting to the \"killall\" option and respring?" preferredStyle:UIAlertControllerStyleAlert];
+    }
+    UIAlertAction *noSBBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    UIAlertAction *yesSBBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+        [preferences setInteger:0 forKey:@"btnControl"];
+        [preferences synchronize];
+        run_cmd("killall -9 SpringBoard");
+    }];
+    [alertMissingSBRELOAD addAction:noSBBtn1];
+    [alertMissingSBRELOAD addAction:yesSBBtn1];
+    [self presentViewController:alertMissingSBRELOAD animated:YES completion:nil];
+    return;
+}
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -327,6 +478,5 @@ void run_cmd(char *cmd)
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 @end

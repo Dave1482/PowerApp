@@ -2,8 +2,8 @@
 //  SettingsViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 3/11/2019.
-//  Copyright © 2014-2019 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 2/20/2020.
+//  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "SettingsViewController.h"
@@ -18,11 +18,13 @@
 @synthesize lightSwitch;
 @synthesize lockSwitch;
 @synthesize infoSwitch;
+@synthesize btnSwitchControl;
 @synthesize alertLabel;
 @synthesize lightLabel;
 @synthesize lockLabel;
 @synthesize showInfoLabel;
 @synthesize infoLabel;
+@synthesize btnSwitchLabel;
 
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
@@ -61,6 +63,9 @@ NSString *deviceAndAppInfo()
     }
     infoLabel.text = deviceAndAppInfo();
     if(lightSwitch.on){
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        }
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
@@ -69,8 +74,12 @@ NSString *deviceAndAppInfo()
         lockLabel.textColor = [UIColor blackColor];
         showInfoLabel.textColor = [UIColor blackColor];
         infoLabel.textColor = [UIColor blackColor];
+        btnSwitchLabel.textColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        }
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
@@ -79,8 +88,10 @@ NSString *deviceAndAppInfo()
         lockLabel.textColor = [UIColor whiteColor];
         showInfoLabel.textColor = [UIColor whiteColor];
         infoLabel.textColor = [UIColor whiteColor];
+        btnSwitchLabel.textColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
+    [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
     
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -99,6 +110,9 @@ NSString *deviceAndAppInfo()
 
 - (IBAction)lightSwitchSwitched{
 if(lightSwitch.on){
+    if (@available(iOS 13, *)) {
+        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+    }
     [self setNeedsStatusBarAppearanceUpdate];
     navBar.barTintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -107,12 +121,16 @@ if(lightSwitch.on){
     lockLabel.textColor = [UIColor blackColor];
     showInfoLabel.textColor = [UIColor blackColor];
     infoLabel.textColor = [UIColor blackColor];
+    btnSwitchLabel.textColor = [UIColor blackColor];
     //[navBar setBarStyle:UIBarStyleDefault];
     [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     [preferences setBool:YES forKey:@"lightSwitch"];
     [preferences synchronize];
 } else {
+    if (@available(iOS 13, *)) {
+        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+    }
     [self setNeedsStatusBarAppearanceUpdate];
     navBar.barTintColor = [UIColor blackColor];
     self.view.backgroundColor = [UIColor blackColor];
@@ -121,6 +139,7 @@ if(lightSwitch.on){
     lockLabel.textColor = [UIColor whiteColor];
     showInfoLabel.textColor = [UIColor whiteColor];
     infoLabel.textColor = [UIColor whiteColor];
+    btnSwitchLabel.textColor = [UIColor whiteColor];
     [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     [preferences setBool:NO forKey:@"lightSwitch"];
@@ -154,8 +173,15 @@ if(lightSwitch.on){
     }
 }
 
+- (IBAction)btnSwitchControlSelected {
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    NSLog(@"%li", (long)btnSwitchControl.selectedSegmentIndex);
+    [preferences setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
+    [preferences synchronize];
+}
+
 - (IBAction)showDevInfo{
-    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: https://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2019" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: http://dave1482.com/\nProject Page: http://dave1482.com/projects/powerapp/\nRepo: https://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2020" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
     [devAlert addAction:doneDevBtn];
     [self presentViewController:devAlert animated:YES completion:nil];

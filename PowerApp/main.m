@@ -2,8 +2,8 @@
 //  main.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 3/11/2019.
-//  Copyright © 2014-2019 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 2/20/2020.
+//  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -47,10 +47,8 @@ void patch_setuid() {
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
-        //if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libjailbreak.dylib"]){
-            platformize_me();
-            patch_setuid();
-        //}
+        platformize_me();
+        patch_setuid();
         
         setuid(0);
         setgid(0);

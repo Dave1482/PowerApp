@@ -1,3 +1,13 @@
+Version 5.0:
+• Button Redesign
+• New Commands Options
+for Respring in Settings
+• Fixed Alerts Settings label
+• Early iOS 14-15 Preparations
+
+Version 4.4.1:
+• Added latest devices to device list
+
 Version 4.4.0:
 • Support for Coolstar's uicache
 • arm64e Support (not sure if it matters though)
