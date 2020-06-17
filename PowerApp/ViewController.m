@@ -155,7 +155,7 @@ void run_cmd(char *cmd)
         }];
         [alertShutdownBtn1 addAction:noShutdownBtn1];
         [alertShutdownBtn1 addAction:yesShutdownBtn1];
-        [self.parentViewController presentViewController:alertShutdownBtn1 animated:YES completion:nil];
+        [self presentViewController:alertShutdownBtn1 animated:YES completion:nil];
     } else {
         setuid(0);
         setgid(0);
