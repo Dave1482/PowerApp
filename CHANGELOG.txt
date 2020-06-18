@@ -1,4 +1,13 @@
-    Version 5.0:
+     Version 5.1:
+    • Shutdown button fix when using alerts
+    • Settings page remodel
+    • UI Fixes
+    • Added more device models
+    • Launchctl reboot support
+    • When pressing Exit PowerApp,
+    call "exit" instead of "abort"
+
+     Version 5.0:
     • Button Redesign
     • New Commands Options
     for Respring in Settings

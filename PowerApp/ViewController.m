@@ -2,7 +2,7 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 2/20/2020.
+//  Modified by David Teddy, II on 6/17/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -303,7 +303,7 @@ void run_cmd(char *cmd)
         }
         run_cmd("/Applications/PowerApp.app/PowerAppLock");
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"] == YES){
-            abort();
+            exit(0);
         }
 
     }
@@ -314,14 +314,14 @@ void run_cmd(char *cmd)
         UIAlertController *alertExitButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This only kills PowerApp. Great if you want to save your home button.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *noExitBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
         UIAlertAction *yesExitBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            abort();
+            exit(0);
         }];
         [alertExitButton1 addAction:noExitBtn1];
         [alertExitButton1 addAction:yesExitBtn1];
         [self presentViewController:alertExitButton1 animated:YES completion:nil];
 
     } else {
-        abort();
+        exit(0);
     }
 }
 

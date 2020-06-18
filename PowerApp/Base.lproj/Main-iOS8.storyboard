@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad10_5" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -419,7 +419,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKj-Zx-Z4Q">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="44"/>
+                                <rect key="frame" x="0.0" y="-6" width="834" height="50"/>
                                 <items>
                                     <navigationItem title="Changelog" id="znz-Q1-vVU">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="cXG-Sv-gOx">
@@ -464,9 +464,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="gKj-Zx-Z4Q" secondAttribute="trailing" constant="-20" id="JKp-Qi-Twp"/>
                             <constraint firstItem="RsF-RC-VhT" firstAttribute="top" secondItem="Bzs-OP-IJo" secondAttribute="bottom" id="O0I-Ad-nh8"/>
                             <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="bottom" secondItem="hvn-Fk-qOa" secondAttribute="bottom" constant="44" id="TLJ-7g-fPI"/>
-                            <constraint firstItem="Bzs-OP-IJo" firstAttribute="top" secondItem="hvn-Fk-qOa" secondAttribute="bottom" constant="54" id="ZTd-se-43H"/>
+                            <constraint firstItem="Bzs-OP-IJo" firstAttribute="top" secondItem="gKj-Zx-Z4Q" secondAttribute="bottom" constant="10" id="gnE-Zv-yRt"/>
                             <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="leading" secondItem="SdO-G6-XMn" secondAttribute="leadingMargin" constant="-20" id="kcC-Vq-uVa"/>
-                            <constraint firstItem="gKj-Zx-Z4Q" firstAttribute="top" secondItem="hvn-Fk-qOa" secondAttribute="bottom" id="nZu-nP-v3B"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
