@@ -15,6 +15,7 @@ Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Goi
 https://repo.dave1482.com
 
 **Version 5.0:**
+** Last Installable Version for iOS 3.0 to iOS 7.1.2 **
 * Button Redesign
 * New Commands Options for Respring in Settings
 * Fixed Alerts Settings label
