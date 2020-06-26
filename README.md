@@ -14,7 +14,7 @@ Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Goi
 * New package made for devices below iOS 8, available on
 https://repo.dave1482.com
 
-**Version 5.0:**
+**Version 5.0:**  
 ** Last Installable Version for iOS 3.0 to iOS 7.1.2 **
 * Button Redesign
 * New Commands Options for Respring in Settings
