@@ -2,7 +2,7 @@
 //  ViewController.h
 //  PowerApp
 //
-//  Modified by David Teddy, II on 6/17/2020.
+//  Modified by David Teddy, II on 6/25/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -31,12 +31,12 @@
 @property (nonatomic) IBOutlet UIBarButtonItem *rightButton;
 @property (nonatomic) IBOutlet UIButton *rebootButton;
 @property (nonatomic) IBOutlet UIButton *shutdownButton;
+@property (nonatomic) IBOutlet UIButton *softRebootButton;
 @property (nonatomic) IBOutlet UIButton *ldrButton;
 @property (nonatomic) IBOutlet UIButton *respringButton;
 @property (nonatomic) IBOutlet UIButton *safeButton;
 @property (nonatomic) IBOutlet UIButton *nonButton;
 @property (nonatomic) IBOutlet UIButton *uicButton;
-@property (nonatomic) IBOutlet UIButton *lockButton;
 @property (nonatomic) IBOutlet UIButton *exitButton;
 
 
@@ -46,13 +46,11 @@
 - (void) updateCheckWithKeyInfo:(NSString *)leInfo;
 - (IBAction)rebootButtonPressed;
 - (IBAction)shutdownButtonPressed;
+- (IBAction)softRebootButtonPressed;
 - (IBAction)respringButtonPressed;
 - (IBAction)safeModeButtonPressed;
 - (IBAction)nonMobileSubstrateModeButtonPressed;
 - (IBAction)refreshCacheButtonPressed;
-- (IBAction)lockButtonPressed;
 - (IBAction)exitButtonPressed;
 
 @end
-
-

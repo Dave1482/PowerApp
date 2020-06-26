@@ -4,8 +4,11 @@
     • UI Fixes
     • Added more device models
     • Launchctl reboot support
+    • Remove "Lock Device"
     • When pressing Exit PowerApp,
     call "exit" instead of "abort"
+    • New package made for devices below iOS 8, available on
+    https://repo.dave1482.com
 
      Version 5.0:
     • Button Redesign

@@ -2,46 +2,43 @@
 //  SettingsViewController.h
 //  PowerApp
 //
-//  Modified by David Teddy, II on 6/17/2020.
+//  Modified by David Teddy, II on 6/25/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
 
-@interface SettingsViewController : UIViewController <UINavigationBarDelegate, UIBarPositioningDelegate>{
+@interface SettingsViewController : UIViewController <UINavigationBarDelegate, UIBarPositioningDelegate, UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UINavigationBar *navBar;
+    IBOutlet UITableView *settingsTable;
     IBOutlet UISwitch *alertSwitch;
     IBOutlet UISwitch *lightSwitch;
-    IBOutlet UISwitch *lockSwitch;
-    IBOutlet UISwitch *infoSwitch;
     IBOutlet UISegmentedControl *btnSwitchControl;
-    IBOutlet UILabel *alertLabel;
-    IBOutlet UILabel *lightLabel;
-    IBOutlet UILabel *lockLabel;
-    IBOutlet UILabel *showInfoLabel;
-    IBOutlet UILabel *infoLabel;
-    IBOutlet UILabel *btnSwitchLabel;
+    UITableViewCell *lightCell;
+    UITableViewCell *alertCell;
+    UITableViewCell *respringCell;
+    UITableViewCell *appVersionCell;
+    UITableViewCell *versionCell;
+    UITableViewCell *deviceCell;
+    UILabel *appVersionLabel;
+    UILabel *versionLabel;
+    UILabel *deviceLabel;
 }
 
 @property (nonatomic) IBOutlet UINavigationBar *navBar;
-@property (nonatomic) IBOutlet UISwitch *alertSwitch;
-@property (nonatomic) IBOutlet UISwitch *lightSwitch;
-@property (nonatomic) IBOutlet UISwitch *lockSwitch;
-@property (nonatomic) IBOutlet UISwitch *infoSwitch;
-@property (nonatomic) IBOutlet UISegmentedControl *btnSwitchControl;
-@property (nonatomic, retain) IBOutlet UILabel *alertLabel;
-@property (nonatomic, retain) IBOutlet UILabel *lightLabel;
-@property (nonatomic, retain) IBOutlet UILabel *lockLabel;
-@property (nonatomic, retain) IBOutlet UILabel *showInfoLabel;
-@property (nonatomic, retain) IBOutlet UILabel *infoLabel;
-@property (nonatomic, retain) IBOutlet UILabel *btnSwitchLabel;
+@property (nonatomic, readonly, copy) NSString *cellID;
+@property (strong,nonatomic) UITableView *settingsTable;
+@property (nonatomic) UISwitch *alertSwitch;
+@property (nonatomic) UISwitch *lightSwitch;
+@property (nonatomic) UISegmentedControl *btnSwitchControl;
 - (IBAction)alertSwitchSwitched;
 - (IBAction)lightSwitchSwitched;
-- (IBAction)lockSwitchSwitched;
-- (IBAction)infoSwitchSwitched;
 - (IBAction)btnSwitchControlSelected;
 - (IBAction)dismissSettingsViewController;
+- (NSString *)informationOf:(NSString *)req;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 
 @end
 

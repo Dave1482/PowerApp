@@ -2,7 +2,7 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 6/17/2020.
+//  Modified by David Teddy, II on 6/25/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -21,12 +21,12 @@
 @synthesize rightButton;
 @synthesize rebootButton;
 @synthesize shutdownButton;
+@synthesize softRebootButton;
 @synthesize ldrButton;
 @synthesize respringButton;
 @synthesize safeButton;
 @synthesize nonButton;
 @synthesize uicButton;
-@synthesize lockButton;
 @synthesize exitButton;
 
 
@@ -43,34 +43,18 @@ extern char **environ;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    rebootButton.layer.cornerRadius = 15;
-    shutdownButton.layer.cornerRadius = 15;
-    ldrButton.layer.cornerRadius = 15;
-    respringButton.layer.cornerRadius = 15;
-    safeButton.layer.cornerRadius = 15;
-    nonButton.layer.cornerRadius = 15;
-    uicButton.layer.cornerRadius = 15;
-    lockButton.layer.cornerRadius = 15;
-    exitButton.layer.cornerRadius = 15;
-    safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    lockButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    exitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [nonButton setTitle:@"Non-Substrate\nMode" forState:UIControlStateNormal];
-    [uicButton setTitle:@"Refresh\nCache" forState:UIControlStateNormal];
-    [lockButton setTitle:@"Lock\nDevice" forState:UIControlStateNormal];
-    [exitButton setTitle:@"Exit\nPowerApp" forState:UIControlStateNormal];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-        [safeButton setTitle:@"Substrate\nSafe Mode" forState:UIControlStateNormal];
-        [nonButton setTitle:@"Substitute\nSafe Mode" forState:UIControlStateNormal];
-    }
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        }
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     } else {
+        if (@available(iOS 13, *)) {
+            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        }
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
@@ -78,6 +62,28 @@ extern char **environ;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
     
+    rebootButton.layer.cornerRadius = 15;
+    shutdownButton.layer.cornerRadius = 15;
+    softRebootButton.layer.cornerRadius = 15;
+    ldrButton.layer.cornerRadius = 15;
+    respringButton.layer.cornerRadius = 15;
+    safeButton.layer.cornerRadius = 15;
+    nonButton.layer.cornerRadius = 15;
+    uicButton.layer.cornerRadius = 15;
+    exitButton.layer.cornerRadius = 15;
+    safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    softRebootButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    exitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+    [nonButton setTitle:@"Non-Substrate\nMode" forState:UIControlStateNormal];
+    [uicButton setTitle:@"Refresh\nCache" forState:UIControlStateNormal];
+    [exitButton setTitle:@"Exit\nPowerApp" forState:UIControlStateNormal];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+        [safeButton setTitle:@"Substrate\nSafe Mode" forState:UIControlStateNormal];
+        [nonButton setTitle:@"Substitute\nSafe Mode" forState:UIControlStateNormal];
+    }
     NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     NSString *versionURL;
     NSString *keyString;
@@ -162,6 +168,21 @@ void run_cmd(char *cmd)
         run_cmd("halt");
     }
 
+}
+
+- (IBAction)softRebootButtonPressed {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
+        UIAlertController *alertSoftRebootButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will REBOOT your device, but you should still retain your jailbreak.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                run_cmd("launchctl reboot userspace");
+        }];
+        [alertSoftRebootButton1 addAction:noSoftRebootBtn1];
+        [alertSoftRebootButton1 addAction:yesSoftRebootBtn1];
+        [self presentViewController:alertSoftRebootButton1 animated:YES completion:nil];
+    } else {
+            run_cmd("launchctl reboot userspace");
+    }
 }
 
 - (IBAction)respringButtonPressed {
@@ -260,52 +281,6 @@ void run_cmd(char *cmd)
         [self presentViewController:alertRefreshButton1 animated:YES completion:nil];
     } else {
             run_cmd("uicache --all");
-    }
-}
-
-- (IBAction)lockButtonPressed {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-        UIAlertController *alertLockButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This only locks your device. Great if you want to save your power button.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *noLockBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-        UIAlertAction *yesLockBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            char *gsDylib = "/System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices";
-            void *handle = dlopen(gsDylib, RTLD_NOW);
-            if (handle) {
-                
-                void (*_GSEventLockDevice)(void) = dlsym(handle, "GSEventLockDevice");
-                if (_GSEventLockDevice)  {
-                    _GSEventLockDevice();
-                    
-                }
-                dlclose(handle);
-                
-            }
-            run_cmd("/Applications/PowerApp.app/PowerAppLock");
-            if([[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"] == YES){
-                abort();
-            }
-        }];
-        [alertLockButton1 addAction:noLockBtn1];
-        [alertLockButton1 addAction:yesLockBtn1];
-        [self presentViewController:alertLockButton1 animated:YES completion:nil];
-    } else {
-        char *gsDylib = "/System/Library/PrivateFrameworks/GraphicsServices.framework/GraphicsServices";
-        void *handle = dlopen(gsDylib, RTLD_NOW);
-        if (handle) {
-            
-            void (*_GSEventLockDevice)(void) = dlsym(handle, "GSEventLockDevice");
-            if (_GSEventLockDevice)  {
-                _GSEventLockDevice();
-                
-            }
-            dlclose(handle);
-            
-        }
-        run_cmd("/Applications/PowerApp.app/PowerAppLock");
-        if([[NSUserDefaults standardUserDefaults] boolForKey:@"lockSwitch.enabled"] == YES){
-            exit(0);
-        }
-
     }
 }
 

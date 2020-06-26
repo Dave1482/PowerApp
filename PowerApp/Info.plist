@@ -25,15 +25,15 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>5.1-beta2006172330</string>
+	<string>5.1-beta2006252030</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen-iOS8</string>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	<string>Main-iOS8</string>
+	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarHidden~ipad</key>
