@@ -1,1 +1,10 @@
-theme: jekyll-theme-hacker
+title: PowerApp
+remote_theme: Dave1482/jekyll-theme-leaf
+iconURL: /roundPowerAppIcon.png
+author: Dave1482
+social:
+  twitter: realDave1482
+  github: Dave1482
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
