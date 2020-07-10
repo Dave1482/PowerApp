@@ -61,7 +61,8 @@ extern char **environ;
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
-    
+    // For version 5.2.1
+    // UIColor *customBorderColor = [UIColor colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1.0];
     rebootButton.layer.cornerRadius = 15;
     shutdownButton.layer.cornerRadius = 15;
     softRebootButton.layer.cornerRadius = 15;
@@ -71,6 +72,26 @@ extern char **environ;
     nonButton.layer.cornerRadius = 15;
     uicButton.layer.cornerRadius = 15;
     exitButton.layer.cornerRadius = 15;
+    /* For Version 5.2.1
+    rebootButton.layer.borderWidth = 1;
+    shutdownButton.layer.borderWidth = 1;
+    softRebootButton.layer.borderWidth = 1;
+    ldrButton.layer.borderWidth = 1;
+    respringButton.layer.borderWidth = 1;
+    safeButton.layer.borderWidth = 1;
+    nonButton.layer.borderWidth = 1;
+    uicButton.layer.borderWidth = 1;
+    exitButton.layer.borderWidth = 1;
+    rebootButton.layer.borderColor = customBorderColor;
+    shutdownButton.layer.borderColor = customBorderColor;
+    softRebootButton.layer.borderColor = customBorderColor;
+    ldrButton.layer.borderColor = customBorderColor;
+    respringButton.layer.borderColor = customBorderColor;
+    safeButton.layer.borderColor = customBorderColor;
+    nonButton.layer.borderColor = customBorderColor;
+    uicButton.layer.borderColor = customBorderColor;
+    exitButton.layer.borderColor = customBorderColor;
+    */
     safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
