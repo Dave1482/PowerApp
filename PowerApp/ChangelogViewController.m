@@ -60,7 +60,7 @@
             NSTextCheckingResult *match = [matches objectAtIndex:matchIdx];
             NSRange matchRange = [match range];
             NSString *version = [changes.text substringWithRange:matchRange];
-            [changes boldSubstring: version ofSize:16.0 colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+            [changes boldSubstring: version ofSize:16.0 colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1.0];
         }
     }
     // Yay, no more updating this for each new version!
