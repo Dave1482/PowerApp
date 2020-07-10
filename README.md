@@ -1,9 +1,21 @@
 # PowerApp
-**Supports iOS 3.0-iOS 13.5+**    
+**Supports iOS 3.0-iOS 14+**    
 
 Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
 # Changelog
-**Version 5.0:**
+**Version 5.1:**
+* Shutdown button fix when using alerts
+* Settings page remodel
+* UI Fixes
+* Added more device models
+* Launchctl reboot support
+* Remove "Lock Device"
+* When pressing Exit PowerApp, call "exit" instead of "abort"
+* New package made for devices below iOS 8, available on
+https://repo.dave1482.com
+
+**Version 5.0:**  
+** Last Installable Version for iOS 3.0 to iOS 7.1.2 **
 * Button Redesign
 * New Commands Options for Respring in Settings
 * Fixed Alerts Settings label
