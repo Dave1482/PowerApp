@@ -18,6 +18,7 @@
 @synthesize alertSwitch;
 @synthesize lightSwitch;
 @synthesize btnSwitchControl;
+@synthesize rebootSwitchControl;
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -96,7 +97,17 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    switch (section) {
+        case 0:
+            return 4;
+            break;
+        case 1:
+            return 3;
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -120,6 +131,16 @@
         
     if ([indexPath section] == 0) {
         if ( [indexPath row] == 0 ){
+            rebootCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+            rebootCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
+            rebootCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            rebootCell.textLabel.text = @"Quick Action Reboot:";
+            rebootCell.accessoryView = rebootSwitchControl;
+            [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
+            [rebootSwitchControl addTarget:self action:@selector(rebootSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+            return rebootCell;
+        } else if ( [indexPath row] == 1 ){
             respringCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             respringCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
@@ -129,7 +150,7 @@
             [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
             [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
             return respringCell;
-        } else if ( [indexPath row] == 1) {
+        } else if ( [indexPath row] == 2) {
             lightCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             lightCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             lightCell.textLabel.text = @"Light Theme";
@@ -137,7 +158,7 @@
             lightCell.accessoryView = lightSwitch;
             [lightSwitch addTarget:self action:@selector(lightSwitchSwitched) forControlEvents:UIControlEventValueChanged];
             return lightCell;
-        } else if ( [indexPath row] == 2) {
+        } else if ( [indexPath row] == 3) {
             alertCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             alertCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             alertCell.textLabel.text = @"Alerts";
@@ -183,12 +204,7 @@
 }
 
 
-- (void)switchChanged:(id)sender {
-    UISwitch *switchControl = sender;
-    NSLog( @"The switch is %@", switchControl.on ? @"ON" : @"OFF" );
-}
-
-- (IBAction)alertSwitchSwitched{
+- (void)alertSwitchSwitched{
     if(alertSwitch.on){
         NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
         [preferences setBool:YES forKey:@"alertSwitch.enabled"];
@@ -200,7 +216,7 @@
     }
 }
 
-- (IBAction)lightSwitchSwitched{
+- (void)lightSwitchSwitched{
     if(lightSwitch.on){
         if (@available(iOS 13, *)) {
             [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
@@ -226,10 +242,17 @@
     }
 }
 
-- (IBAction)btnSwitchControlSelected {
+- (void)btnSwitchControlSelected {
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     NSLog(@"%li", (long)btnSwitchControl.selectedSegmentIndex);
     [preferences setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
+    [preferences synchronize];
+}
+
+- (void)rebootSwitchControlSelected {
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    NSLog(@"%li", (long)rebootSwitchControl.selectedSegmentIndex);
+    [preferences setInteger:rebootSwitchControl.selectedSegmentIndex forKey:@"rebootControl"];
     [preferences synchronize];
 }
 

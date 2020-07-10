@@ -12,11 +12,13 @@
 @interface SettingsViewController : UIViewController <UINavigationBarDelegate, UIBarPositioningDelegate, UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UINavigationBar *navBar;
     IBOutlet UITableView *settingsTable;
-    IBOutlet UISwitch *alertSwitch;
-    IBOutlet UISwitch *lightSwitch;
-    IBOutlet UISegmentedControl *btnSwitchControl;
+    UISwitch *alertSwitch;
+    UISwitch *lightSwitch;
+    UISegmentedControl *btnSwitchControl;
+    UISegmentedControl *rebootSwitchControl;
     UITableViewCell *lightCell;
     UITableViewCell *alertCell;
+    UITableViewCell *rebootCell;
     UITableViewCell *respringCell;
     UITableViewCell *appVersionCell;
     UITableViewCell *versionCell;
@@ -32,9 +34,11 @@
 @property (nonatomic) UISwitch *alertSwitch;
 @property (nonatomic) UISwitch *lightSwitch;
 @property (nonatomic) UISegmentedControl *btnSwitchControl;
-- (IBAction)alertSwitchSwitched;
-- (IBAction)lightSwitchSwitched;
-- (IBAction)btnSwitchControlSelected;
+@property (nonatomic) UISegmentedControl *rebootSwitchControl;
+- (void)alertSwitchSwitched;
+- (void)lightSwitchSwitched;
+- (void)btnSwitchControlSelected;
+- (void)rebootSwitchControlSelected;
 - (IBAction)dismissSettingsViewController;
 - (NSString *)informationOf:(NSString *)req;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
