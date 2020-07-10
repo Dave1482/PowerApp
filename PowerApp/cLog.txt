@@ -1,5 +1,6 @@
 Version 5.2:
 • Added app icon shortcuts (iOS 9+)
+• Code improvements
 
 Version 5.1:
 • Shutdown button fix when using alerts
