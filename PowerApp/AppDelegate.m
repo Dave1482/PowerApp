@@ -72,7 +72,7 @@ void run_action(char *cmd)
             run_action("killall -9 SpringBoard");
             break;
         case 1:
-            [self sbreloadCheck];
+            run_action("killall -9 SpringBoard");
             break;
         case 2:
             [self ldRunCheck];
@@ -92,18 +92,6 @@ void run_action(char *cmd)
         setuid(0);
         setgid(0);
         run_action("ldRun");
-    } else {
-        NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-        [preferences setInteger:0 forKey:@"btnControl"];
-        [preferences synchronize];
-        run_action("killall -9 SpringBoard");
-    }
-    return;
-}
-
-- (void) sbreloadCheck {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/sbreload"]){
-        run_action("sbreload");
     } else {
         NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
         [preferences setInteger:0 forKey:@"btnControl"];
@@ -138,7 +126,6 @@ void run_action(char *cmd)
     }
     return nahhh;
 }
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return YES;
 }

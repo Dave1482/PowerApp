@@ -15,7 +15,6 @@
     IBOutlet UIBarButtonItem *rightButton;
     IBOutlet UIButton *rebootButton;
     IBOutlet UIButton *shutdownButton;
-    IBOutlet UIButton *ldrButton;
     IBOutlet UIButton *respringButton;
     IBOutlet UIButton *uicButton;
     IBOutlet UIButton *lockButton;
@@ -32,7 +31,6 @@
 @property (nonatomic) IBOutlet UIButton *rebootButton;
 @property (nonatomic) IBOutlet UIButton *shutdownButton;
 @property (nonatomic) IBOutlet UIButton *softRebootButton;
-@property (nonatomic) IBOutlet UIButton *ldrButton;
 @property (nonatomic) IBOutlet UIButton *respringButton;
 @property (nonatomic) IBOutlet UIButton *safeButton;
 @property (nonatomic) IBOutlet UIButton *nonButton;

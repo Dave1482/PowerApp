@@ -14,7 +14,6 @@
 @property (strong, nonatomic) UIWindow *window;
 
 - (void) ldRunCheck;
-- (void) sbreloadCheck;
 - (void) rebootActionPressed;
 - (void) shutdownActionPressed;
 - (void) respringActionPressed;

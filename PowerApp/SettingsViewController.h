@@ -16,33 +16,41 @@
     UISwitch *lightSwitch;
     UISegmentedControl *btnSwitchControl;
     UISegmentedControl *rebootSwitchControl;
-    UITableViewCell *lightCell;
-    UITableViewCell *alertCell;
-    UITableViewCell *rebootCell;
-    UITableViewCell *respringCell;
-    UITableViewCell *appVersionCell;
-    UITableViewCell *versionCell;
-    UITableViewCell *deviceCell;
+    UISegmentedControl *iconControl;
+    UITableViewCell *cell;
+    UITableViewCell *iconCell;
     UILabel *appVersionLabel;
     UILabel *versionLabel;
     UILabel *deviceLabel;
+    UILabel *appIcon1Label;
+    UILabel *appIcon2Label;
+    UILabel *appIcon3Label;
+    int selectedCell;
 }
 
 @property (nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, readonly, copy) NSString *cellID;
+@property (nonatomic, readonly, copy) NSString *iconCellID;
 @property (strong,nonatomic) UITableView *settingsTable;
 @property (nonatomic) UISwitch *alertSwitch;
 @property (nonatomic) UISwitch *lightSwitch;
 @property (nonatomic) UISegmentedControl *btnSwitchControl;
 @property (nonatomic) UISegmentedControl *rebootSwitchControl;
+@property (nonatomic) UISegmentedControl *iconControl;
+
 - (void)alertSwitchSwitched;
 - (void)lightSwitchSwitched;
 - (void)btnSwitchControlSelected;
 - (void)rebootSwitchControlSelected;
+- (void)iconSwitchControlSelected;
 - (IBAction)dismissSettingsViewController;
 - (NSString *)informationOf:(NSString *)req;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

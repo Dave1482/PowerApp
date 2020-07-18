@@ -19,8 +19,7 @@
 @synthesize lightSwitch;
 @synthesize btnSwitchControl;
 @synthesize rebootSwitchControl;
-
-#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+@synthesize iconControl;
 
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTopAttached;
@@ -71,7 +70,8 @@
     [alertSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"]];
     settingsTable.delegate = self;
     settingsTable.dataSource = self;
-
+    settingsTable.rowHeight = UITableViewAutomaticDimension;
+    settingsTable.estimatedRowHeight = UITableViewAutomaticDimension;
     if(lightSwitch.on){
         if (@available(iOS 13, *)) {
             [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
@@ -90,10 +90,13 @@
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
     [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
+    [settingsTable invalidateIntrinsicContentSize];
+    
 }
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -103,6 +106,12 @@
             break;
         case 1:
             return 3;
+            break;
+        case 2:
+            if (@available(iOS 10.3, *)) {
+            return 3;
+            }
+            return 0;
             break;
         default:
             return 0;
@@ -118,6 +127,12 @@
         case 1:
             return @"Information";
             break;
+        case 2:
+            if (@available(iOS 10.3, *)) {
+            return @"App Icon";
+            }
+            return nil;
+            break;
         default:
             return nil;
             break;
@@ -125,82 +140,171 @@
 }
 
 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    selectedCell = (int)indexPath.row;
+    [settingsTable reloadData];
+    NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
+    if ([indexPath section] == 2){
+        if(@available (iOS 10.3, *)){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (indexPath.row > 0){
+                    if ([[UIApplication sharedApplication] supportsAlternateIcons]){
+                        [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:^(NSError * _Nullable error) {
+                            if (error) {
+                                NSLog (@"Error changing icon: %@",error);
+                            }
+                        }];
+                    } else {
+                        [[UIApplication sharedApplication] setAlternateIconName:nil completionHandler:^(NSError * _Nullable error) {
+                            if (error) {
+                                NSLog (@"Error changing icon: %@",error);
+                            }
+                        }];
+                    }
+                }
+            });
+        }
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath section] == 2){
+        [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ( [indexPath section] == 2 ){
+        return 84.0f;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ( [indexPath section] == 2 ){
+        return 84.0f;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
+ }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"SwitchCell";
+    static NSString *iconCellID = @"IconCell";
     [settingsTable registerClass:UITableViewCell.self forCellReuseIdentifier:cellID];
-        
+    [settingsTable registerClass:UITableViewCell.self forCellReuseIdentifier:iconCellID];
+    cell = [settingsTable dequeueReusableCellWithIdentifier:cellID];
+    iconCell = [settingsTable dequeueReusableCellWithIdentifier:iconCellID];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    iconCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:iconCellID];
     if ([indexPath section] == 0) {
         if ( [indexPath row] == 0 ){
-            rebootCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-            rebootCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
-            rebootCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            rebootCell.textLabel.text = @"Quick Action Reboot:";
-            rebootCell.accessoryView = rebootSwitchControl;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = @"Quick Action Reboot:";
+            cell.accessoryView = rebootSwitchControl;
             [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
             [rebootSwitchControl addTarget:self action:@selector(rebootSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-            return rebootCell;
+            return cell;
         } else if ( [indexPath row] == 1 ){
-            respringCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-            respringCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
-            respringCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            respringCell.textLabel.text = @"Respring:";
-            respringCell.accessoryView = btnSwitchControl;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = @"Respring:";
+            cell.accessoryView = btnSwitchControl;
             [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
             [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-            return respringCell;
+            return cell;
         } else if ( [indexPath row] == 2) {
-            lightCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-            lightCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            lightCell.textLabel.text = @"Light Theme";
-            lightCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            lightCell.accessoryView = lightSwitch;
+            cell.textLabel.text = @"Light Theme";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryView = lightSwitch;
             [lightSwitch addTarget:self action:@selector(lightSwitchSwitched) forControlEvents:UIControlEventValueChanged];
-            return lightCell;
+            return cell;
         } else if ( [indexPath row] == 3) {
-            alertCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-            alertCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            alertCell.textLabel.text = @"Alerts";
-            alertCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            alertCell.accessoryView = alertSwitch;
+            cell.textLabel.text = @"Alerts";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryView = alertSwitch;
             [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
-            return alertCell;
+            return cell;
         }
     } else if ([indexPath section] == 1) {
         if ( [indexPath row] == 0 ){
-            appVersionCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             appVersionLabel = [[UILabel alloc] init];
             appVersionLabel.text = [self informationOf:@"app"];
             [appVersionLabel sizeToFit];
-            appVersionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            appVersionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            appVersionCell.textLabel.text = @"App Version:";
-            appVersionCell.accessoryView = appVersionLabel;
-            return appVersionCell;
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = @"App Version:";
+            cell.accessoryView = appVersionLabel;
+            return cell;
         } else if ( [indexPath row] == 1) {
-            versionCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             versionLabel = [[UILabel alloc] init];
             versionLabel.text = [self informationOf:@"ios"];
             [versionLabel sizeToFit];
-            versionCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            versionCell.textLabel.text = @"iOS Version:";
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            versionCell.accessoryView = versionLabel;
-            return versionCell;
+            cell.textLabel.text = @"iOS Version:";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryView = versionLabel;
+            return cell;
         } else if ( [indexPath row] == 2) {
-            deviceCell = [settingsTable dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
             deviceLabel = [[UILabel alloc] init];
             deviceLabel.text = [self informationOf:@"dev"];
             [deviceLabel sizeToFit];
-            deviceCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            deviceCell.textLabel.text = @"Device Model:";
-            deviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            deviceCell.accessoryView = deviceLabel;
-            return deviceCell;
+            cell.textLabel.text = @"Device Model:";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryView = deviceLabel;
+            return cell;
+        }
+    } else if ( @available(iOS 10.3, *)){
+        if ( [indexPath section] == 2 ){
+            if ( [indexPath row] == 0 ){
+                iconCell.imageView.image = [UIImage imageNamed:@"insetIcon60x60"];
+                iconCell.imageView.layer.cornerRadius = 12.0;
+                iconCell.imageView.layer.masksToBounds = YES;
+                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                iconCell.textLabel.text = @"New Option 1";
+                if([indexPath row] == selectedCell) {
+                    iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    iconCell.selected = YES;
+                } else {
+                    iconCell.accessoryType = UITableViewCellAccessoryNone;
+                    iconCell.selected = NO;
+                }
+                return iconCell;
+            } else if ( [indexPath row] == 1 ){
+                iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/outsetIcon-60"];
+                iconCell.imageView.layer.cornerRadius = 12.0;
+                iconCell.imageView.layer.masksToBounds = YES;
+                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                iconCell.textLabel.text = @"New Option 2";
+                if([indexPath row] == selectedCell) {
+                    iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    iconCell.selected = YES;
+                } else {
+                    iconCell.accessoryType = UITableViewCellAccessoryNone;
+                    iconCell.selected = NO;
+                }
+                return iconCell;
+            } else if ( [indexPath row] == 2 ){
+                iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/originalIcon-60"];
+                iconCell.imageView.layer.cornerRadius = 12.0;
+                iconCell.imageView.layer.masksToBounds = YES;
+                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                iconCell.textLabel.text = @"Original";
+                if([indexPath row] == selectedCell) {
+                    iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    iconCell.selected = YES;
+                } else {
+                    iconCell.accessoryType = UITableViewCellAccessoryNone;
+                    iconCell.selected = NO;
+                }
+                return iconCell;
+            }
         }
     }
-    return nil;
+    return cell;
 }
 
 
@@ -244,15 +348,19 @@
 
 - (void)btnSwitchControlSelected {
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-    NSLog(@"%li", (long)btnSwitchControl.selectedSegmentIndex);
     [preferences setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
     [preferences synchronize];
 }
 
 - (void)rebootSwitchControlSelected {
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-    NSLog(@"%li", (long)rebootSwitchControl.selectedSegmentIndex);
     [preferences setInteger:rebootSwitchControl.selectedSegmentIndex forKey:@"rebootControl"];
+    [preferences synchronize];
+}
+
+- (void)iconSwitchControlSelected {
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    [preferences setInteger:iconControl.selectedSegmentIndex forKey:@"iconControl"];
     [preferences synchronize];
 }
 

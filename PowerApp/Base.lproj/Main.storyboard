@@ -255,7 +255,7 @@
                                     <outlet property="delegate" destination="Khs-Nw-13E" id="ILq-LH-jSd"/>
                                 </connections>
                             </navigationBar>
-                            <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="63e-jO-XVW">
+                            <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="63e-jO-XVW">
                                 <rect key="frame" x="0.0" y="44" width="320" height="524"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
@@ -267,7 +267,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IconCell" rowHeight="84" id="CSe-gp-AiP">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="84"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CSe-gp-AiP" id="Bhi-ih-6U0">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
+                                <sections/>
                                 <connections>
                                     <outlet property="dataSource" destination="Khs-Nw-13E" id="L1a-T6-bJK"/>
                                     <outlet property="delegate" destination="Khs-Nw-13E" id="0xy-Fi-XKY"/>
@@ -281,7 +290,11 @@
                             <constraint firstItem="63e-jO-XVW" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leadingMargin" constant="-16" id="8lL-si-OzA"/>
                             <constraint firstItem="63e-jO-XVW" firstAttribute="top" secondItem="7Fi-if-vLk" secondAttribute="bottom" id="AKq-Ab-OZT"/>
                             <constraint firstItem="7Fi-if-vLk" firstAttribute="bottom" secondItem="YeA-dQ-BHw" secondAttribute="bottom" constant="44" id="BoQ-Da-AjN"/>
+                            <constraint firstItem="63e-jO-XVW" firstAttribute="top" secondItem="7Fi-if-vLk" secondAttribute="bottom" id="M4t-Sr-j5T"/>
+                            <constraint firstItem="63e-jO-XVW" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leading" id="ORF-IU-Z8Q"/>
+                            <constraint firstAttribute="trailing" secondItem="63e-jO-XVW" secondAttribute="trailing" id="PMm-oU-nos"/>
                             <constraint firstItem="63e-jO-XVW" firstAttribute="bottom" secondItem="clS-gB-Gcp" secondAttribute="bottomMargin" id="TsW-sy-Md6"/>
+                            <constraint firstItem="4R5-DG-17v" firstAttribute="top" secondItem="63e-jO-XVW" secondAttribute="bottom" id="XAJ-C7-Uw4"/>
                             <constraint firstItem="7Fi-if-vLk" firstAttribute="centerX" secondItem="clS-gB-Gcp" secondAttribute="centerX" id="lKY-hy-9NO"/>
                             <constraint firstItem="63e-jO-XVW" firstAttribute="centerX" secondItem="7Fi-if-vLk" secondAttribute="centerX" id="oE1-EC-Sdb"/>
                         </constraints>

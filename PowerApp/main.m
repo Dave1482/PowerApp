@@ -49,7 +49,6 @@ int main(int argc, char * argv[]) {
     @autoreleasepool {
         platformize_me();
         patch_setuid();
-        
         setuid(0);
         setgid(0);
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));

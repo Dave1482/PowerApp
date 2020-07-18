@@ -22,7 +22,6 @@
 @synthesize rebootButton;
 @synthesize shutdownButton;
 @synthesize softRebootButton;
-@synthesize ldrButton;
 @synthesize respringButton;
 @synthesize safeButton;
 @synthesize nonButton;
@@ -31,7 +30,7 @@
 
 
 NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
-NSString *cydiaPath = @"/Applications/Cydia.app/Info.plist";
+NSString *cydiaPath = @"/Applications/Cydia.app/Cydia";
 
 #define _POSIX_SPAWN_DISABLE_ASLR 0x0100
 #define _POSIX_SPAWN_ALLOW_DATA_EXEC 0x2000
@@ -61,37 +60,33 @@ extern char **environ;
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
-    // For version 5.2.1
-    // UIColor *customBorderColor = [UIColor colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1.0];
+    UIColor *customRedBorderColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
+    UIColor *customGreenBorderColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1];
+    UIColor *customBlueBorderColor = [UIColor colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1];
     rebootButton.layer.cornerRadius = 15;
     shutdownButton.layer.cornerRadius = 15;
     softRebootButton.layer.cornerRadius = 15;
-    ldrButton.layer.cornerRadius = 15;
     respringButton.layer.cornerRadius = 15;
     safeButton.layer.cornerRadius = 15;
     nonButton.layer.cornerRadius = 15;
     uicButton.layer.cornerRadius = 15;
     exitButton.layer.cornerRadius = 15;
-    /* For Version 5.2.1
-    rebootButton.layer.borderWidth = 1;
-    shutdownButton.layer.borderWidth = 1;
-    softRebootButton.layer.borderWidth = 1;
-    ldrButton.layer.borderWidth = 1;
-    respringButton.layer.borderWidth = 1;
-    safeButton.layer.borderWidth = 1;
-    nonButton.layer.borderWidth = 1;
-    uicButton.layer.borderWidth = 1;
-    exitButton.layer.borderWidth = 1;
-    rebootButton.layer.borderColor = customBorderColor;
-    shutdownButton.layer.borderColor = customBorderColor;
-    softRebootButton.layer.borderColor = customBorderColor;
-    ldrButton.layer.borderColor = customBorderColor;
-    respringButton.layer.borderColor = customBorderColor;
-    safeButton.layer.borderColor = customBorderColor;
-    nonButton.layer.borderColor = customBorderColor;
-    uicButton.layer.borderColor = customBorderColor;
-    exitButton.layer.borderColor = customBorderColor;
-    */
+    rebootButton.layer.borderWidth = 2;
+    shutdownButton.layer.borderWidth = 2;
+    softRebootButton.layer.borderWidth = 2;
+    respringButton.layer.borderWidth = 2;
+    safeButton.layer.borderWidth = 2;
+    nonButton.layer.borderWidth = 2;
+    uicButton.layer.borderWidth = 2;
+    exitButton.layer.borderWidth = 2;
+    rebootButton.layer.borderColor = customRedBorderColor.CGColor;
+    shutdownButton.layer.borderColor = customRedBorderColor.CGColor;
+    softRebootButton.layer.borderColor = customBlueBorderColor.CGColor;
+    respringButton.layer.borderColor = customBlueBorderColor.CGColor;
+    safeButton.layer.borderColor = customBlueBorderColor.CGColor;
+    nonButton.layer.borderColor = customBlueBorderColor.CGColor;
+    uicButton.layer.borderColor = customGreenBorderColor.CGColor;
+    exitButton.layer.borderColor = customGreenBorderColor.CGColor;
     safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
