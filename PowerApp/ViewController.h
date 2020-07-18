@@ -21,6 +21,9 @@
     IBOutlet UIButton *exitButton;
     IBOutlet UIButton *safeButton;
     IBOutlet UIButton *nonButton;
+    UIColor *customRedBorderColor;
+    UIColor *customGreenBorderColor;
+    UIColor *customBlueBorderColor;
     NSString *receivedDataString;
     NSString *keyInfo;
     

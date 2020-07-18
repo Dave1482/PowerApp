@@ -41,6 +41,9 @@ extern char **environ;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    customRedBorderColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
+    customGreenBorderColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1];
+    customBlueBorderColor = [UIColor colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1];
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
         if (@available(iOS 13, *)) {
@@ -59,10 +62,39 @@ extern char **environ;
         self.view.backgroundColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
+    if( (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"] != 0 ){
+        int borderW = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
+        rebootButton.layer.borderWidth = borderW;
+        shutdownButton.layer.borderWidth = borderW;
+        softRebootButton.layer.borderWidth = borderW;
+        respringButton.layer.borderWidth = borderW;
+        safeButton.layer.borderWidth = borderW;
+        nonButton.layer.borderWidth = borderW;
+        uicButton.layer.borderWidth = borderW;
+        exitButton.layer.borderWidth = borderW;
+        NSLog(@"%d", borderW);
+        if (borderW > 0) {
+            rebootButton.layer.borderColor = customRedBorderColor.CGColor;
+            shutdownButton.layer.borderColor = customRedBorderColor.CGColor;
+            softRebootButton.layer.borderColor = customBlueBorderColor.CGColor;
+            respringButton.layer.borderColor = customBlueBorderColor.CGColor;
+            safeButton.layer.borderColor = customBlueBorderColor.CGColor;
+            nonButton.layer.borderColor = customBlueBorderColor.CGColor;
+            uicButton.layer.borderColor = customGreenBorderColor.CGColor;
+            exitButton.layer.borderColor = customGreenBorderColor.CGColor;
+        } else {
+            rebootButton.layer.borderColor = nil;
+            shutdownButton.layer.borderColor = nil;
+            softRebootButton.layer.borderColor = nil;
+            respringButton.layer.borderColor = nil;
+            safeButton.layer.borderColor = nil;
+            nonButton.layer.borderColor = nil;
+            uicButton.layer.borderColor = nil;
+            exitButton.layer.borderColor = nil;
+        }
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
-    UIColor *customRedBorderColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
-    UIColor *customGreenBorderColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1];
-    UIColor *customBlueBorderColor = [UIColor colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1];
     rebootButton.layer.cornerRadius = 15;
     shutdownButton.layer.cornerRadius = 15;
     softRebootButton.layer.cornerRadius = 15;
@@ -71,22 +103,6 @@ extern char **environ;
     nonButton.layer.cornerRadius = 15;
     uicButton.layer.cornerRadius = 15;
     exitButton.layer.cornerRadius = 15;
-    rebootButton.layer.borderWidth = 2;
-    shutdownButton.layer.borderWidth = 2;
-    softRebootButton.layer.borderWidth = 2;
-    respringButton.layer.borderWidth = 2;
-    safeButton.layer.borderWidth = 2;
-    nonButton.layer.borderWidth = 2;
-    uicButton.layer.borderWidth = 2;
-    exitButton.layer.borderWidth = 2;
-    rebootButton.layer.borderColor = customRedBorderColor.CGColor;
-    shutdownButton.layer.borderColor = customRedBorderColor.CGColor;
-    softRebootButton.layer.borderColor = customBlueBorderColor.CGColor;
-    respringButton.layer.borderColor = customBlueBorderColor.CGColor;
-    safeButton.layer.borderColor = customBlueBorderColor.CGColor;
-    nonButton.layer.borderColor = customBlueBorderColor.CGColor;
-    uicButton.layer.borderColor = customGreenBorderColor.CGColor;
-    exitButton.layer.borderColor = customGreenBorderColor.CGColor;
     safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -317,6 +333,34 @@ void run_cmd(char *cmd)
 }
 
 - (void)colorMe {
+    int borderW = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
+    rebootButton.layer.borderWidth = borderW;
+    shutdownButton.layer.borderWidth = borderW;
+    softRebootButton.layer.borderWidth = borderW;
+    respringButton.layer.borderWidth = borderW;
+    safeButton.layer.borderWidth = borderW;
+    nonButton.layer.borderWidth = borderW;
+    uicButton.layer.borderWidth = borderW;
+    exitButton.layer.borderWidth = borderW;
+    if (borderW > 0) {
+        rebootButton.layer.borderColor = customRedBorderColor.CGColor;
+        shutdownButton.layer.borderColor = customRedBorderColor.CGColor;
+        softRebootButton.layer.borderColor = customBlueBorderColor.CGColor;
+        respringButton.layer.borderColor = customBlueBorderColor.CGColor;
+        safeButton.layer.borderColor = customBlueBorderColor.CGColor;
+        nonButton.layer.borderColor = customBlueBorderColor.CGColor;
+        uicButton.layer.borderColor = customGreenBorderColor.CGColor;
+        exitButton.layer.borderColor = customGreenBorderColor.CGColor;
+    } else {
+        rebootButton.layer.borderColor = nil;
+        shutdownButton.layer.borderColor = nil;
+        softRebootButton.layer.borderColor = nil;
+        respringButton.layer.borderColor = nil;
+        safeButton.layer.borderColor = nil;
+        nonButton.layer.borderColor = nil;
+        uicButton.layer.borderColor = nil;
+        exitButton.layer.borderColor = nil;
+    }
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
         if (@available(iOS 13, *)) {
             [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];

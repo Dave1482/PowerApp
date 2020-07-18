@@ -15,6 +15,7 @@
     UISwitch *alertSwitch;
     UISwitch *lightSwitch;
     UISegmentedControl *btnSwitchControl;
+    UISegmentedControl *borderSwitchControl;
     UISegmentedControl *rebootSwitchControl;
     UISegmentedControl *iconControl;
     UITableViewCell *cell;
@@ -35,12 +36,14 @@
 @property (nonatomic) UISwitch *alertSwitch;
 @property (nonatomic) UISwitch *lightSwitch;
 @property (nonatomic) UISegmentedControl *btnSwitchControl;
+@property (nonatomic) UISegmentedControl *borderSwitchControl;
 @property (nonatomic) UISegmentedControl *rebootSwitchControl;
 @property (nonatomic) UISegmentedControl *iconControl;
 
 - (void)alertSwitchSwitched;
 - (void)lightSwitchSwitched;
 - (void)btnSwitchControlSelected;
+- (void)borderSwitchControlSelected;
 - (void)rebootSwitchControlSelected;
 - (void)iconSwitchControlSelected;
 - (IBAction)dismissSettingsViewController;

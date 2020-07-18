@@ -18,6 +18,7 @@
 @synthesize alertSwitch;
 @synthesize lightSwitch;
 @synthesize btnSwitchControl;
+@synthesize borderSwitchControl;
 @synthesize rebootSwitchControl;
 @synthesize iconControl;
 
@@ -90,8 +91,15 @@
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     }
     [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
-    [settingsTable invalidateIntrinsicContentSize];
-    
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    if ([preferences integerForKey:@"iconSelect"]){
+        selectedCell = (int)[preferences integerForKey:@"iconSelect"];
+    } else {
+        selectedCell = 0;
+        [preferences setInteger:selectedCell forKey:@"iconSelect"];
+        [preferences synchronize];
+    }
+    [borderSwitchControl setSelectedSegmentIndex:selectedCell];
 }
 
 
@@ -102,7 +110,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return 4;
+            return 5;
             break;
         case 1:
             return 3;
@@ -142,14 +150,14 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    selectedCell = (int)indexPath.row;
-    [settingsTable reloadData];
-    NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
-    if ([indexPath section] == 2){
-        if(@available (iOS 10.3, *)){
+    if (@available (iOS 10.3, *)){
+        if([indexPath section] == 2){
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (indexPath.row > 0){
-                    if ([[UIApplication sharedApplication] supportsAlternateIcons]){
+                self->selectedCell = (int)indexPath.row;
+                [self->settingsTable reloadData];
+                NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
+                if ([[UIApplication sharedApplication] supportsAlternateIcons]){
+                    if (indexPath.row > 0){
                         [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:^(NSError * _Nullable error) {
                             if (error) {
                                 NSLog (@"Error changing icon: %@",error);
@@ -163,6 +171,10 @@
                         }];
                     }
                 }
+                NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+                [preferences setInteger:self->selectedCell forKey:@"iconSelect"];
+                [preferences synchronize];
+                
             });
         }
     }
@@ -199,11 +211,14 @@
     cell = [settingsTable dequeueReusableCellWithIdentifier:cellID];
     iconCell = [settingsTable dequeueReusableCellWithIdentifier:iconCellID];
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     iconCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:iconCellID];
+    iconCell.imageView.layer.cornerRadius = 12.0;
+    iconCell.imageView.layer.masksToBounds = YES;
+    iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
     if ([indexPath section] == 0) {
         if ( [indexPath row] == 0 ){
             rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = @"Quick Action Reboot:";
             cell.accessoryView = rebootSwitchControl;
             [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
@@ -211,21 +226,25 @@
             return cell;
         } else if ( [indexPath row] == 1 ){
             btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = @"Respring:";
             cell.accessoryView = btnSwitchControl;
             [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
             [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
             return cell;
-        } else if ( [indexPath row] == 2) {
+        } else if ( [indexPath row] == 2 ){
+            borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick"]];
+            cell.textLabel.text = @"Button Border:";
+            cell.accessoryView = borderSwitchControl;
+            [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
+            [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+            return cell;
+        } else if ( [indexPath row] == 3) {
             cell.textLabel.text = @"Light Theme";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryView = lightSwitch;
             [lightSwitch addTarget:self action:@selector(lightSwitchSwitched) forControlEvents:UIControlEventValueChanged];
             return cell;
-        } else if ( [indexPath row] == 3) {
+        } else if ( [indexPath row] == 4) {
             cell.textLabel.text = @"Alerts";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryView = alertSwitch;
             [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
             return cell;
@@ -235,8 +254,6 @@
             appVersionLabel = [[UILabel alloc] init];
             appVersionLabel.text = [self informationOf:@"app"];
             [appVersionLabel sizeToFit];
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = @"App Version:";
             cell.accessoryView = appVersionLabel;
             return cell;
@@ -245,7 +262,6 @@
             versionLabel.text = [self informationOf:@"ios"];
             [versionLabel sizeToFit];
             cell.textLabel.text = @"iOS Version:";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryView = versionLabel;
             return cell;
         } else if ( [indexPath row] == 2) {
@@ -253,7 +269,6 @@
             deviceLabel.text = [self informationOf:@"dev"];
             [deviceLabel sizeToFit];
             cell.textLabel.text = @"Device Model:";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryView = deviceLabel;
             return cell;
         }
@@ -261,10 +276,7 @@
         if ( [indexPath section] == 2 ){
             if ( [indexPath row] == 0 ){
                 iconCell.imageView.image = [UIImage imageNamed:@"insetIcon60x60"];
-                iconCell.imageView.layer.cornerRadius = 12.0;
-                iconCell.imageView.layer.masksToBounds = YES;
-                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                iconCell.textLabel.text = @"New Option 1";
+                iconCell.textLabel.text = @"Default";
                 if([indexPath row] == selectedCell) {
                     iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
                     iconCell.selected = YES;
@@ -275,10 +287,7 @@
                 return iconCell;
             } else if ( [indexPath row] == 1 ){
                 iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/outsetIcon-60"];
-                iconCell.imageView.layer.cornerRadius = 12.0;
-                iconCell.imageView.layer.masksToBounds = YES;
-                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                iconCell.textLabel.text = @"New Option 2";
+                iconCell.textLabel.text = @"Light";
                 if([indexPath row] == selectedCell) {
                     iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
                     iconCell.selected = YES;
@@ -289,9 +298,6 @@
                 return iconCell;
             } else if ( [indexPath row] == 2 ){
                 iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/originalIcon-60"];
-                iconCell.imageView.layer.cornerRadius = 12.0;
-                iconCell.imageView.layer.masksToBounds = YES;
-                iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 iconCell.textLabel.text = @"Original";
                 if([indexPath row] == selectedCell) {
                     iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -349,6 +355,12 @@
 - (void)btnSwitchControlSelected {
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     [preferences setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
+    [preferences synchronize];
+}
+
+- (void)borderSwitchControlSelected {
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    [preferences setInteger:(int)borderSwitchControl.selectedSegmentIndex forKey:@"borderControl"];
     [preferences synchronize];
 }
 
