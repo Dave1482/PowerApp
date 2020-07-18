@@ -1,4 +1,4 @@
-# PowerApp
+# PowerApp - [Link to GitHub](https://github.com/Dave1482/PowerApp/)
 **v5.0 and below supports iOS 3.0-iOS 14+**    
 **v5.1 and above supports iOS 8.0-iOS 14+**    
 
