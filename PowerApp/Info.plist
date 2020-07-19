@@ -116,6 +116,41 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Reboot</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Reboot</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.dave1482.powerapp.Reboot</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Shutdown</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Shutdown</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.dave1482.powerapp.Shutdown</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Respring</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Respring</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.dave1482.powerapp.Respring</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>Safemode</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Safe Mode</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.dave1482.powerapp.SafeMode</string>
+		</dict>
+	</array>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarHidden~ipad</key>

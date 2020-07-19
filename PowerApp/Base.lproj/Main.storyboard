@@ -43,6 +43,47 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="VHj-SV-7ax"/>
                                 </connections>
                             </navigationBar>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Zy4-wI-7hY">
+                                <rect key="frame" x="10" y="54" width="145" height="118.5"/>
+                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Reboot">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    </preferredSymbolConfiguration>
+                                </state>
+                                <connections>
+                                    <action selector="rebootButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="pde-H3-ibc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="f2p-bH-jd7">
+                                <rect key="frame" x="165" y="54" width="145" height="118.5"/>
+                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Shutdown">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    </preferredSymbolConfiguration>
+                                </state>
+                                <connections>
+                                    <action selector="shutdownButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="U7d-iZ-9rk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="89P-49-Ye0">
+                                <rect key="frame" x="10" y="182.5" width="145" height="118.5"/>
+                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Soft Reboot">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    </preferredSymbolConfiguration>
+                                </state>
+                                <connections>
+                                    <action selector="softRebootButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="wvk-QH-Iq6"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tFe-pk-b9p">
                                 <rect key="frame" x="165" y="182.5" width="145" height="118.5"/>
                                 <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,20 +123,6 @@
                                     <action selector="nonMobileSubstrateModeButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="MN2-cY-Qfs"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="f2p-bH-jd7">
-                                <rect key="frame" x="165" y="54" width="145" height="118.5"/>
-                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Shutdown">
-                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                    </preferredSymbolConfiguration>
-                                </state>
-                                <connections>
-                                    <action selector="shutdownButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="U7d-iZ-9rk"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-Pf-SZL">
                                 <rect key="frame" x="10" y="439.5" width="145" height="118.5"/>
                                 <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
@@ -108,33 +135,6 @@
                                 </state>
                                 <connections>
                                     <action selector="refreshCacheButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="rz5-Rl-I5G"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="89P-49-Ye0">
-                                <rect key="frame" x="10" y="182.5" width="145" height="118.5"/>
-                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Soft Reboot">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                    </preferredSymbolConfiguration>
-                                </state>
-                                <connections>
-                                    <action selector="softRebootButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="wvk-QH-Iq6"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Zy4-wI-7hY">
-                                <rect key="frame" x="10" y="54" width="145" height="118.5"/>
-                                <color key="backgroundColor" red="0.74647049492385786" green="0.74647049492385786" blue="0.74647049492385786" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Reboot">
-                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default" weight="regular">
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                    </preferredSymbolConfiguration>
-                                </state>
-                                <connections>
-                                    <action selector="rebootButtonPressed" destination="dkx-z0-nzr" eventType="touchUpInside" id="pde-H3-ibc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="LA8-k9-5Q8">
