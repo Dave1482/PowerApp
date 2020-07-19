@@ -20,12 +20,13 @@
     UISegmentedControl *iconControl;
     UITableViewCell *cell;
     UITableViewCell *iconCell;
-    UILabel *appVersionLabel;
-    UILabel *versionLabel;
-    UILabel *deviceLabel;
-    UILabel *appIcon1Label;
-    UILabel *appIcon2Label;
-    UILabel *appIcon3Label;
+    UILabel *label;
+    UIImage *payIcon;
+    UIImage *twtIcon;
+    UIImage *webIcon;
+    UIImage *gitIcon;
+    UIImage *repoIcon;
+    NSMutableArray *devArray;
     int selectedCell;
 }
 
@@ -48,12 +49,11 @@
 - (void)iconSwitchControlSelected;
 - (IBAction)dismissSettingsViewController;
 - (NSString *)informationOf:(NSString *)req;
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+/*- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
-
+*/
 @end
 

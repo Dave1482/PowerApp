@@ -69,10 +69,11 @@
     alertSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
     [lightSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"]];
     [alertSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"]];
+    payIcon = [UIImage imageNamed:@"paypal"];
+    twtIcon = [UIImage imageNamed:@"twitter"];
+    devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/realDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
     settingsTable.delegate = self;
     settingsTable.dataSource = self;
-    settingsTable.rowHeight = UITableViewAutomaticDimension;
-    settingsTable.estimatedRowHeight = UITableViewAutomaticDimension;
     if(lightSwitch.on){
         if (@available(iOS 13, *)) {
             [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
@@ -81,6 +82,7 @@
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        gitIcon = [UIImage imageNamed:@"githubBlack"];
     } else {
         if (@available(iOS 13, *)) {
             [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
@@ -89,6 +91,7 @@
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
     [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
@@ -104,7 +107,11 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    if (@available(iOS 10.3, *)) {
+        return 4;
+    } else {
+        return 3;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -119,8 +126,13 @@
             if (@available(iOS 10.3, *)) {
             return 3;
             }
-            return 0;
+            return 6;
             break;
+        case 3:
+            if (@available (iOS 10.3, *)) {
+                return 6;
+            }
+            return 0;
         default:
             return 0;
             break;
@@ -139,8 +151,13 @@
             if (@available(iOS 10.3, *)) {
             return @"App Icon";
             }
-            return nil;
+            return @"Developer";
             break;
+        case 3:
+            if (@available(iOS 10.3, *)) {
+                return @"Developer";
+            }
+            return nil;
         default:
             return nil;
             break;
@@ -171,37 +188,49 @@
                         }];
                     }
                 }
+                
                 NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
                 [preferences setInteger:self->selectedCell forKey:@"iconSelect"];
                 [preferences synchronize];
-                
+                NSMutableArray *projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
+                self->webIcon = [UIImage imageNamed:projectIcon[self->selectedCell]];
             });
+        } else if ([indexPath section] == 3){
+            NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
+            NSLog(@"URLString: %@",devURLString.description);
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
         }
+    } else if ([indexPath section] == 2){
+        NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
+        NSLog(@"URLString: %@",devURLString.description);
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
     }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath section] == 2){
-        [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        if (@available(iOS 10.3, *)){
+            [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        } else {
+            [settingsTable deselectRowAtIndexPath:indexPath animated:YES];
+        }
+    } else if ([indexPath section] == 3){
+        [settingsTable deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ( [indexPath section] == 2 ){
-        return 84.0f;
+    if (@available(iOS 10.3, *)) {
+        if ( [indexPath section] == 2 ){
+            return 84.0f;
+        } else {
+        return UITableViewAutomaticDimension;
+        }
     } else {
         return UITableViewAutomaticDimension;
     }
 }
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ( [indexPath section] == 2 ){
-        return 84.0f;
-    } else {
-        return UITableViewAutomaticDimension;
-    }
- }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"SwitchCell";
@@ -215,6 +244,7 @@
     iconCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:iconCellID];
     iconCell.imageView.layer.cornerRadius = 12.0;
     iconCell.imageView.layer.masksToBounds = YES;
+    
     iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
     if ([indexPath section] == 0) {
         if ( [indexPath row] == 0 ){
@@ -232,7 +262,7 @@
             [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
             return cell;
         } else if ( [indexPath row] == 2 ){
-            borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick"]];
+            borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
             cell.textLabel.text = @"Button Border:";
             cell.accessoryView = borderSwitchControl;
             [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
@@ -251,29 +281,29 @@
         }
     } else if ([indexPath section] == 1) {
         if ( [indexPath row] == 0 ){
-            appVersionLabel = [[UILabel alloc] init];
-            appVersionLabel.text = [self informationOf:@"app"];
-            [appVersionLabel sizeToFit];
+            label = [[UILabel alloc] init];
+            label.text = [self informationOf:@"app"];
+            [label sizeToFit];
             cell.textLabel.text = @"App Version:";
-            cell.accessoryView = appVersionLabel;
+            cell.accessoryView = label;
             return cell;
         } else if ( [indexPath row] == 1) {
-            versionLabel = [[UILabel alloc] init];
-            versionLabel.text = [self informationOf:@"ios"];
-            [versionLabel sizeToFit];
+            label = [[UILabel alloc] init];
+            label.text = [self informationOf:@"ios"];
+            [label sizeToFit];
             cell.textLabel.text = @"iOS Version:";
-            cell.accessoryView = versionLabel;
+            cell.accessoryView = label;
             return cell;
         } else if ( [indexPath row] == 2) {
-            deviceLabel = [[UILabel alloc] init];
-            deviceLabel.text = [self informationOf:@"dev"];
-            [deviceLabel sizeToFit];
+            label = [[UILabel alloc] init];
+            label.text = [self informationOf:@"dev"];
+            [label sizeToFit];
             cell.textLabel.text = @"Device Model:";
-            cell.accessoryView = deviceLabel;
+            cell.accessoryView = label;
             return cell;
         }
-    } else if ( @available(iOS 10.3, *)){
-        if ( [indexPath section] == 2 ){
+    } else if ([indexPath section] == 2){
+        if ( @available(iOS 10.3, *)){
             if ( [indexPath row] == 0 ){
                 iconCell.imageView.image = [UIImage imageNamed:@"insetIcon60x60"];
                 iconCell.textLabel.text = @"Default";
@@ -308,7 +338,72 @@
                 }
                 return iconCell;
             }
+        } else {
+            if ( [indexPath row] == 0) {
+                cell.imageView.image = payIcon;
+                cell.textLabel.text = @"PayPal";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 1) {
+                cell.imageView.image = twtIcon;
+                cell.textLabel.text = @"Twitter";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 2) {
+                cell.imageView.image = gitIcon;
+                cell.textLabel.text = @"GitHub";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 3) {
+                cell.imageView.image = webIcon;
+                cell.textLabel.text = @"Project Page";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 4) {
+                cell.imageView.image = repoIcon;
+                cell.textLabel.text = @"Repo";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 5) {
+                cell.textLabel.text = @"Copyright \u00A9 Dave1482";
+                cell.userInteractionEnabled = NO;
+                return cell;
+            }
         }
+    } else if ( @available(iOS 10.3, *)){
+        if ([indexPath section] == 3) {
+            if ( [indexPath row] == 0) {
+                cell.imageView.image = payIcon;
+                cell.textLabel.text = @"PayPal";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 1) {
+                cell.imageView.image = twtIcon;
+                cell.textLabel.text = @"Twitter";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 2) {
+                cell.imageView.image = gitIcon;
+                cell.textLabel.text = @"GitHub";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 3) {
+                cell.imageView.image = webIcon;
+                cell.textLabel.text = @"Project Page";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 4) {
+                cell.imageView.image = repoIcon;
+                cell.textLabel.text = @"Repo";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                return cell;
+            } else if ( [indexPath row] == 5) {
+                cell.textLabel.text = @"Copyright \u00A9 Dave1482";
+                cell.userInteractionEnabled = NO;
+                return cell;
+            }
+        }
+        
     }
     return cell;
 }
@@ -335,6 +430,7 @@
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        gitIcon = [UIImage imageNamed:@"githubBlack"];
         NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
         [preferences setBool:YES forKey:@"lightSwitch"];
         [preferences synchronize];
@@ -346,9 +442,15 @@
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
         [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        gitIcon = [UIImage imageNamed:@"githubWhite"];
         NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
         [preferences setBool:NO forKey:@"lightSwitch"];
         [preferences synchronize];
+    }
+    if(@available(iOS 10.3,*)){
+        [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -377,7 +479,7 @@
 }
 
 - (IBAction)showDevInfo{
-    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: https://dave1482.com/\nProject Page: https://dave1482.com/projects/powerapp/\nRepo: https://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2020" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nWebsite: https://dave1482.com/\nProject Page: https://powerapp.dave1482.com/\nRepo: https://repo.dave1482.com/\nEmail: dave1482@dave1482.com\n\nCopyright © 2014-2020" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
     [devAlert addAction:doneDevBtn];
     [self presentViewController:devAlert animated:YES completion:nil];

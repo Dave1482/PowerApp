@@ -64,6 +64,11 @@ extern char **environ;
     }
     if( (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"] != 0 ){
         int borderW = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
+        if (borderW == 3){
+            borderW = borderW * 3;
+        } else if (borderW == 2){
+            borderW = borderW + 1;
+        }
         rebootButton.layer.borderWidth = borderW;
         shutdownButton.layer.borderWidth = borderW;
         softRebootButton.layer.borderWidth = borderW;
@@ -72,7 +77,6 @@ extern char **environ;
         nonButton.layer.borderWidth = borderW;
         uicButton.layer.borderWidth = borderW;
         exitButton.layer.borderWidth = borderW;
-        NSLog(@"%d", borderW);
         if (borderW > 0) {
             rebootButton.layer.borderColor = customRedBorderColor.CGColor;
             shutdownButton.layer.borderColor = customRedBorderColor.CGColor;
@@ -92,6 +96,7 @@ extern char **environ;
             uicButton.layer.borderColor = nil;
             exitButton.layer.borderColor = nil;
         }
+
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
@@ -334,6 +339,11 @@ void run_cmd(char *cmd)
 
 - (void)colorMe {
     int borderW = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
+    if (borderW == 3){
+        borderW = borderW * 3;
+    } else if (borderW == 2){
+        borderW = borderW + 1;
+    }
     rebootButton.layer.borderWidth = borderW;
     shutdownButton.layer.borderWidth = borderW;
     softRebootButton.layer.borderWidth = borderW;
