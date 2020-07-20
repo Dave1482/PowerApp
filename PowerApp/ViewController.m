@@ -50,8 +50,6 @@ char *shutdownChar;
   
   [self colorMe];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
-  
   rebootButton.layer.cornerRadius = 15;
   shutdownButton.layer.cornerRadius = 15;
   softRebootButton.layer.cornerRadius = 15;
@@ -94,9 +92,7 @@ char *shutdownChar;
     [self updateCheckWithKeyInfo:self->keyInfo];
   }];
   [dataTask resume];
-  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
-  
 }
 
 void run_cmd(char *cmd)
@@ -120,6 +116,26 @@ void run_cmd(char *cmd)
     }
   } else {
     printf("posix_spawn: %s\n", strerror(status));
+  }
+}
+
+- (void)showInfo {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"] != NO){
+    NSString *info;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+      info = @"\nThank you for using PowerApp! PLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section of the Settings page";
+    } else {
+      info = @"\nThank you for using PowerApp! PLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
+    }
+    UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    [infoAlert addAction:doneDevBtn];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      [self presentViewController:infoAlert animated:YES completion:nil];
+    });
   }
 }
 
@@ -386,12 +402,14 @@ void run_cmd(char *cmd)
   if (![receivedDataString isEqual:leInfo] && ![receivedDataString isEqual: @""])
   {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    UIAlertAction *noUpdateBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
     UIAlertAction *yesCydiaUpdateBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
     }];
     UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+      [self showInfo];
     }];
     
     if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
@@ -404,22 +422,20 @@ void run_cmd(char *cmd)
       alertMessage = [NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString];
     }
     alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-    if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
-      [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-      [alertCheckForUpdate addAction:noUpdateBtn];
-     } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-      [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
-      [alertCheckForUpdate addAction:noUpdateBtn];
-     } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+    if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
       [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
       [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-      [alertCheckForUpdate addAction:noUpdateBtn];
-     } else {
-      [alertCheckForUpdate addAction:noUpdateBtn];
-     }
+    } else if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
+      [alertCheckForUpdate addAction:yesSileoUpdateBtn];
+    } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+      [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+    }
+    [alertCheckForUpdate addAction:cancelBtn];
     dispatch_async(dispatch_get_main_queue(), ^{
       [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
     });
+  } else {
+    [self showInfo];
   }
 }
 

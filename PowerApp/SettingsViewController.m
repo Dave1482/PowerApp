@@ -75,81 +75,15 @@
   devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/realDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
-  
-  if (@available(iOS 13, *)){
-    switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]){
-      case 0:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
-        [self setNeedsStatusBarAppearanceUpdate];
-        navBar.barTintColor = [UIColor whiteColor];
-        self.view.backgroundColor = [UIColor whiteColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-        gitIcon = [UIImage imageNamed:@"githubBlack"];
-        break;
-      case 1:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
-        [self setNeedsStatusBarAppearanceUpdate];
-        navBar.barTintColor = [UIColor blackColor];
-        self.view.backgroundColor = [UIColor blackColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-        gitIcon = [UIImage imageNamed:@"githubWhite"];
-        break;
-      case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
-        if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
-          [self setNeedsStatusBarAppearanceUpdate];
-          navBar.barTintColor = [UIColor blackColor];
-          self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-          gitIcon = [UIImage imageNamed:@"githubWhite"];
-        } else {
-          [self setNeedsStatusBarAppearanceUpdate];
-          navBar.barTintColor = [UIColor whiteColor];
-          self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-          gitIcon = [UIImage imageNamed:@"githubBlack"];
-        }
-        break;
-      default:
-        if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
-          [self setNeedsStatusBarAppearanceUpdate];
-          navBar.barTintColor = [UIColor whiteColor];
-          self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-          gitIcon = [UIImage imageNamed:@"githubBlack"];
-        } else {
-          [self setNeedsStatusBarAppearanceUpdate];
-          navBar.barTintColor = [UIColor blackColor];
-          self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-          gitIcon = [UIImage imageNamed:@"githubWhite"];
-        }
-        break;
-    }
-  } else {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
-      [self setNeedsStatusBarAppearanceUpdate];
-      navBar.barTintColor = [UIColor whiteColor];
-      self.view.backgroundColor = [UIColor whiteColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-      gitIcon = [UIImage imageNamed:@"githubBlack"];
-    } else {
-      [self setNeedsStatusBarAppearanceUpdate];
-      navBar.barTintColor = [UIColor blackColor];
-      self.view.backgroundColor = [UIColor blackColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-      gitIcon = [UIImage imageNamed:@"githubWhite"];
-    }
-  }
+  [self colorSettings];
   if(@available(iOS 10.3,*)){
     [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
   } else {
     [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
   }
-
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
   projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
   [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
-  
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"]){
     selectedCell = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"];
   } else {
@@ -160,11 +94,7 @@
   webIcon = [UIImage imageNamed:projectIcon[selectedCell]];
   [borderSwitchControl setSelectedSegmentIndex:selectedCell];
 }
--(void)observeValueForKeyPath:(NSString *)aKeyPath ofObject:(id)anObject
-    change:(NSDictionary *)aChange context:(void *)aContext
-{
-  [self colorSettings];
-}
+
 - (void)colorSettings {
   if (@available(iOS 13, *)){
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]){
@@ -231,11 +161,7 @@
       gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
   }
-  if(@available(iOS 10.3,*)){
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
-  } else {
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
-  }
+  
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -623,7 +549,14 @@
 }
 
 - (IBAction)showDevInfo{
-  UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nEmail: dave1482@dave1482.com\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020" preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertController *devAlert;
+  NSString *info;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+  } else {
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"More information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+  }
+  devAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
   [devAlert addAction:doneDevBtn];
   [self presentViewController:devAlert animated:YES completion:nil];

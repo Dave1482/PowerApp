@@ -22,14 +22,14 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [self colorChanges];
+  
   
   [changes setFont:[UIFont systemFontOfSize:16]];
   
   cLog = [[NSBundle mainBundle] pathForResource:@"cLog" ofType:@"txt"];
   changes.text = [NSString stringWithContentsOfFile:cLog encoding:NSUTF8StringEncoding error:NULL];
   [changes setTextAlignment:NSTextAlignmentLeft];
-
+  [self colorChanges];
   NSError *error = NULL;
   regex = [NSRegularExpression regularExpressionWithPattern:@"Version \\d?\\d?\\d\\.\\d\\.?\\d?:" options:0 error:&error];
   matches = [regex matchesInString:changes.text options:0 range:NSMakeRange(0, [changes.text length])];
@@ -150,12 +150,19 @@
 }
 
 - (IBAction)showDevInfo{
-  UIAlertController *devAlert = [UIAlertController alertControllerWithTitle:@"Developer Information" message:@"Dave1482\nEmail: dave1482@dave1482.com\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020" preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertController *devAlert;
+  NSString *info;
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+  } else {
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"More information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+  }
+  devAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
   [devAlert addAction:doneDevBtn];
   [self presentViewController:devAlert animated:YES completion:nil];
 }
-
+ 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
   if(@available (iOS 13, *)){

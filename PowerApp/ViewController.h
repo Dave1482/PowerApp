@@ -38,6 +38,7 @@
 @property (nonatomic) IBOutlet UIButton *uicButton;
 @property (nonatomic) IBOutlet UIButton *exitButton;
 
+- (void) showInfo;
 - (void) colorMe;
 - (void) ldRunCheck;
 - (void) sbreloadCheck;
