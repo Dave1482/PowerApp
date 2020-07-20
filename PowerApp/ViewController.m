@@ -424,24 +424,23 @@ void run_cmd(char *cmd)
 }
 
 - (void) ldRunCheck {
-  UIAlertController *alertMissingLD;
   if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/ldRun"]){
     setuid(0);
     setgid(0);
     run_cmd("ldRun");
   } else {
-    alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nChange Respring setting to the \"killall\" option and respring?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nChange Respring setting to the \"killall\" option and respring?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+      [preferences setInteger:0 forKey:@"btnControl"];
+      [preferences synchronize];
+      run_cmd("killall -9 SpringBoard");
+    }];
+    [alertMissingLD addAction:noLDBtn1];
+    [alertMissingLD addAction:yesLDBtn1];
+    [self presentViewController:alertMissingLD animated:YES completion:nil];
   }
-  UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-  UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-    [preferences setInteger:0 forKey:@"btnControl"];
-    [preferences synchronize];
-    run_cmd("killall -9 SpringBoard");
-  }];
-  [alertMissingLD addAction:noLDBtn1];
-  [alertMissingLD addAction:yesLDBtn1];
-  [self presentViewController:alertMissingLD animated:YES completion:nil];
 
 }
 
