@@ -24,12 +24,14 @@ extern char **environ;
 
 char *rebChar;
 char *shutChar;
+char *ldChar;
 
 void run_action(char *cmd)
 {
   rebChar = "kill 1";
   shutChar = "halt";
-  if (cmd != rebChar && cmd != shutChar) {
+  ldChar = "ldRun";
+  if (cmd != rebChar && cmd != shutChar && cmd != ldChar) {
     setgid(501);
     setuid(501);
   }
