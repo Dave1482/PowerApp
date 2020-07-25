@@ -39,6 +39,7 @@ NSString *installerPath = @"/Applications/Installer.app/Info.plist";
 extern char **environ;
 char *rebootChar;
 char *shutdownChar;
+char *ldRunChar;
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
   return UIBarPositionTopAttached;
 }
@@ -125,7 +126,8 @@ void run_cmd(char *cmd)
 {
   rebootChar = "kill 1";
   shutdownChar = "halt";
-  if (cmd != rebootChar && cmd != shutdownChar) {
+  ldRunChar = "ldRun";
+  if (cmd != rebootChar && cmd != shutdownChar && cmd != ldRunChar) {
     setgid(501);
     setuid(501);
   }

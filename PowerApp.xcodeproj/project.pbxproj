@@ -17,6 +17,9 @@
 		558CB3AB1B3210010023C7DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 558CB3A91B3210010023C7DD /* LaunchScreen.storyboard */; };
 		55F484411B334F5F009B22F9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55F484401B334F5F009B22F9 /* Default-568h@2x.png */; };
 		7F03121D24C289920017D53D /* AltIcons in Resources */ = {isa = PBXBuildFile; fileRef = 7F03121C24C289920017D53D /* AltIcons */; };
+		7F3915D824CBE9DF00C5710B /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3915D524CBE9DE00C5710B /* Icon-60@2x.png */; };
+		7F3915D924CBE9DF00C5710B /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3915D624CBE9DF00C5710B /* Icon-60.png */; };
+		7F3915DA24CBE9DF00C5710B /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3915D724CBE9DF00C5710B /* Icon-60@3x.png */; };
 		7F77ED0324C27F0600206A3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F77ED0224C27F0500206A3A /* Assets.xcassets */; };
 		7F8346EC222A5923009FF126 /* devices.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F8346EB222A5923009FF126 /* devices.plist */; };
 		7F9A61BF21310D7800D7E510 /* DTCustomTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9A61BE21310D7800D7E510 /* DTCustomTextView.m */; };
@@ -53,6 +56,9 @@
 		55F484401B334F5F009B22F9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7F03121C24C289920017D53D /* AltIcons */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; path = AltIcons; sourceTree = SOURCE_ROOT; };
 		7F032EFC2225C59200E6D512 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PowerApp/Info.plist; sourceTree = "<group>"; };
+		7F3915D524CBE9DE00C5710B /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
+		7F3915D624CBE9DF00C5710B /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
+		7F3915D724CBE9DF00C5710B /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
 		7F77ED0224C27F0500206A3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7F8346EB222A5923009FF126 /* devices.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = devices.plist; sourceTree = "<group>"; };
 		7F9A61BD21310D7800D7E510 /* DTCustomTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCustomTextView.h; sourceTree = "<group>"; };
@@ -119,6 +125,9 @@
 				7FEE5F6B2233964E0087B367 /* CHANGELOG.txt */,
 				7F8346EB222A5923009FF126 /* devices.plist */,
 				553DD19E1B3A119B00520D71 /* cLog.txt */,
+				7F3915D624CBE9DF00C5710B /* Icon-60.png */,
+				7F3915D524CBE9DE00C5710B /* Icon-60@2x.png */,
+				7F3915D724CBE9DF00C5710B /* Icon-60@3x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -195,14 +204,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F3915D924CBE9DF00C5710B /* Icon-60.png in Resources */,
 				558CB3AB1B3210010023C7DD /* LaunchScreen.storyboard in Resources */,
 				7F8346EC222A5923009FF126 /* devices.plist in Resources */,
 				7F03121D24C289920017D53D /* AltIcons in Resources */,
 				55F484411B334F5F009B22F9 /* Default-568h@2x.png in Resources */,
 				7FEE5F6C2233964E0087B367 /* CHANGELOG.txt in Resources */,
+				7F3915D824CBE9DF00C5710B /* Icon-60@2x.png in Resources */,
 				553DD19F1B3A119B00520D71 /* cLog.txt in Resources */,
 				7F77ED0324C27F0600206A3A /* Assets.xcassets in Resources */,
 				558CB3A61B3210010023C7DD /* Main.storyboard in Resources */,
+				7F3915DA24CBE9DF00C5710B /* Icon-60@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +386,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer: dave1482@ymail.com (GF5F4ZXAA3)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "6.0-beta2007242100";
+				CURRENT_PROJECT_VERSION = "6.0-beta2007242300";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				ENABLE_TESTABILITY = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -405,7 +417,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "6.0-beta2007242100";
+				CURRENT_PROJECT_VERSION = "6.0-beta2007242300";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				INFOPLIST_FILE = PowerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
