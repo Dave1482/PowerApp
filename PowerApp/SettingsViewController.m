@@ -353,7 +353,7 @@
       [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
       return cell;
     } else if ( [indexPath row] == 2 ){
-      borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
+      borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick"]];//, @"THICC"]];
       cell.textLabel.text = @"Button Border:";
       cell.accessoryView = borderSwitchControl;
       [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];

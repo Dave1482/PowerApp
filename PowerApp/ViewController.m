@@ -100,8 +100,8 @@ char *shutdownChar;
     versionURL = @"https://github.dave1482.com/PowerApp/version";
     keyString = @"CFBundleShortVersionString";
   }
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if([prefs objectForKey:@"didFirstLaunch"] && [prefs boolForKey:@"didFirstLaunch"] == YES) {
+  //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  //if([prefs objectForKey:@"didFirstLaunch"] && [prefs boolForKey:@"didFirstLaunch"] == YES) {
     NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
                           cachePolicy:NSURLRequestReloadIgnoringCacheData
                         timeoutInterval:10.0];
@@ -113,11 +113,11 @@ char *shutdownChar;
       [self updateCheckWithKeyInfo:self->keyInfo];
     }];
     [dataTask resume];
-  } else {
+  /*} else {
     [prefs setBool:YES forKey:@"didFirstLaunch"];
     [prefs synchronize];
     [self showInfo];
-  }
+  }*/
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
@@ -238,13 +238,38 @@ void run_cmd(char *cmd)
         [alertRespringBtn1 addAction:yesRespringBtn1];
         [self presentViewController:alertRespringBtn1 animated:YES completion:nil];
       } else {
-        UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" instead?" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-        UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" or open a package manager?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *yesCydiaPkgBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesSileoPkgBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesZebraPkgBtn = [UIAlertAction actionWithTitle:@"Zebra" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"zbra://packages/com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesInstallerPkgBtn = [UIAlertAction actionWithTitle:@"Installer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"installer://show/bundleid=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+        }];
+        UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
           run_cmd("killall -9 SpringBoard");
         }];
-        [alertMissingLD addAction:noLDBtn1];
+        UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        if ([fileManager fileExistsAtPath:cydiaPath]) {
+          [alertMissingLD addAction:yesCydiaPkgBtn];
+        }
+        if ([fileManager fileExistsAtPath:sileoPath]) {
+          [alertMissingLD addAction:yesSileoPkgBtn];
+        }
+        if ([fileManager fileExistsAtPath:zebraPath]) {
+          [alertMissingLD addAction:yesZebraPkgBtn];
+        }
+        if ([fileManager fileExistsAtPath:installerPath]) {
+          [alertMissingLD addAction:yesInstallerPkgBtn];
+        }
         [alertMissingLD addAction:yesLDBtn1];
+        [alertMissingLD addAction:noLDBtn1];
         [self presentViewController:alertMissingLD animated:YES completion:nil];
       }
     } else {
@@ -546,13 +571,38 @@ void run_cmd(char *cmd)
     setgid(0);
     run_cmd("ldRun");
   } else {
-    UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" instead?" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-    UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" or open a package manager?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yesCydiaPkgBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *yesSileoPkgBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *yesZebraPkgBtn = [UIAlertAction actionWithTitle:@"Zebra" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"zbra://packages/com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *yesInstallerPkgBtn = [UIAlertAction actionWithTitle:@"Installer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"installer://show/bundleid=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
       run_cmd("killall -9 SpringBoard");
     }];
-    [alertMissingLD addAction:noLDBtn1];
+    UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    if ([fileManager fileExistsAtPath:cydiaPath]) {
+      [alertMissingLD addAction:yesCydiaPkgBtn];
+    }
+    if ([fileManager fileExistsAtPath:sileoPath]) {
+      [alertMissingLD addAction:yesSileoPkgBtn];
+    }
+    if ([fileManager fileExistsAtPath:zebraPath]) {
+      [alertMissingLD addAction:yesZebraPkgBtn];
+    }
+    if ([fileManager fileExistsAtPath:installerPath]) {
+      [alertMissingLD addAction:yesInstallerPkgBtn];
+    }
     [alertMissingLD addAction:yesLDBtn1];
+    [alertMissingLD addAction:noLDBtn1];
     [self presentViewController:alertMissingLD animated:YES completion:nil];
   }
 
