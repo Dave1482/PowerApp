@@ -243,7 +243,7 @@ void run_cmd(char *cmd)
         NSFileManager *fileManager = [NSFileManager defaultManager];
         UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" or open a package manager?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *yesCydiaPkgBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?source=https://repo.packix.com/&package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
         }];
         UIAlertAction *yesSileoPkgBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
           [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.midnightchips.ldrun"] options:@{} completionHandler:nil];
@@ -576,7 +576,7 @@ void run_cmd(char *cmd)
     NSFileManager *fileManager = [NSFileManager defaultManager];
     UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" or open a package manager?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *yesCydiaPkgBtn = [UIAlertAction actionWithTitle:@"Cydia" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://url/https://cydia.saurik.com/api/share#?source=https://repo.packix.com/&package=com.midnightchips.ldrun"] options:@{} completionHandler:nil];
     }];
     UIAlertAction *yesSileoPkgBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.midnightchips.ldrun"] options:@{} completionHandler:nil];

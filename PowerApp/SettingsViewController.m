@@ -163,12 +163,17 @@
       [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
       gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
+    [UIView performWithoutAnimation:^{
+      [settingsTable beginUpdates];
+      [settingsTable reloadData];
+      [settingsTable endUpdates];
+    }];
   }
-  [UIView performWithoutAnimation:^{
-    [settingsTable beginUpdates];
-    [settingsTable reloadData];
-    [settingsTable endUpdates];
-  }];
+  if (@available (iOS 10.3, *)){
+    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
+  } else {
+    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+  }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -253,7 +258,6 @@
     if([indexPath section] == 2){
       dispatch_async(dispatch_get_main_queue(), ^{
         self->selectedCell = (int)indexPath.row;
-        [self->settingsTable reloadData];
         NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
         if ([[UIApplication sharedApplication] supportsAlternateIcons]){
           if (indexPath.row > 0){
@@ -262,10 +266,11 @@
             [[UIApplication sharedApplication] setAlternateIconName:nil completionHandler:nil];
           }
         }
-        
         [[NSUserDefaults standardUserDefaults] setInteger:self->selectedCell forKey:@"iconSelect"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         self->webIcon = [UIImage imageNamed:self->projectIcon[self->selectedCell]];
+        [self->settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+        [self->settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
       });
     } else if ([indexPath section] == 3){
       NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];

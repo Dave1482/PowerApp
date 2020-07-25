@@ -386,7 +386,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer: dave1482@ymail.com (GF5F4ZXAA3)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "6.0-beta2007242330";
+				CURRENT_PROJECT_VERSION = "6.0-beta2007250000";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				ENABLE_TESTABILITY = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -417,7 +417,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = "6.0-beta2007242330";
+				CURRENT_PROJECT_VERSION = "6.0-beta2007250000";
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				INFOPLIST_FILE = PowerApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
