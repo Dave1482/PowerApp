@@ -2,7 +2,7 @@
 //  ViewController.h
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/19/2020.
+//  Modified by David Teddy, II on 7/24/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -24,7 +24,6 @@
   UIColor *customBlueBorderColor;
   NSString *receivedDataString;
   NSString *keyInfo;
-  
 }
 
 @property (nonatomic) IBOutlet UINavigationBar *navBar;
@@ -41,6 +40,7 @@
 - (void) showInfo;
 - (void) colorMe;
 - (void) ldRunCheck;
+- (void) ldRunButtonCheck;
 - (void) sbreloadCheck;
 - (void) updateCheckWithKeyInfo:(NSString *)leInfo;
 - (IBAction)rebootButtonPressed;

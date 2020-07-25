@@ -2,7 +2,7 @@
 //  SettingsViewController.h
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/19/2020.
+//  Modified by David Teddy, II on 7/24/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -28,6 +28,7 @@
   UIImage *repoIcon;
   NSMutableArray *projectIcon;
   NSMutableArray *devArray;
+  UIColor *tableColor;
   int selectedCell;
 }
 

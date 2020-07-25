@@ -2,7 +2,7 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/19/2020.
+//  Modified by David Teddy, II on 7/24/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -28,11 +28,14 @@
 @synthesize uicButton;
 @synthesize exitButton;
 
-NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
 NSString *cydiaPath = @"/Applications/Cydia.app/Cydia";
+NSString *sileoPath = @"/Applications/Sileo.app/Info.plist";
+NSString *zebraPath = @"/Applications/Zebra.app/Info.plist";
+NSString *installerPath = @"/Applications/Installer.app/Info.plist";
 
 #define _POSIX_SPAWN_DISABLE_ASLR 0x0100
 #define _POSIX_SPAWN_ALLOW_DATA_EXEC 0x2000
+
 extern char **environ;
 char *rebootChar;
 char *shutdownChar;
@@ -63,7 +66,23 @@ char *shutdownChar;
   uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   softRebootButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   exitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-  [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+  NSArray *jbCheck = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:@"/etc" error:nil];
+  NSString *etcItem;
+  NSString *jbItem;
+  for (etcItem in jbCheck)
+  {
+      if ([etcItem containsString:@".installed-chimera"]) {
+        jbItem = etcItem;
+        break;
+      } else {
+        jbItem = @"noChimera";
+      }
+  }
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"] || [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/etc/%@", jbItem]] || [[NSFileManager defaultManager] fileExistsAtPath:@"/.bootstrapped_electra"]){
+    [softRebootButton setTitle:@"ldRun" forState:UIControlStateNormal];
+  } else {
+    [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+  }
   [nonButton setTitle:@"Non-Substrate\nMode" forState:UIControlStateNormal];
   [uicButton setTitle:@"Refresh\nCache" forState:UIControlStateNormal];
   [exitButton setTitle:@"Exit\nPowerApp" forState:UIControlStateNormal];
@@ -81,17 +100,24 @@ char *shutdownChar;
     versionURL = @"https://github.dave1482.com/PowerApp/version";
     keyString = @"CFBundleShortVersionString";
   }
-  NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
-                        cachePolicy:NSURLRequestReloadIgnoringCacheData
-                      timeoutInterval:10.0];
-  NSURLSession *session = [NSURLSession sharedSession];
-  
-  NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-    self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    [self updateCheckWithKeyInfo:self->keyInfo];
-  }];
-  [dataTask resume];
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if([prefs objectForKey:@"didFirstLaunch"] && [prefs boolForKey:@"didFirstLaunch"] == YES) {
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
+                          cachePolicy:NSURLRequestReloadIgnoringCacheData
+                        timeoutInterval:10.0];
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+      self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+      self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+      [self updateCheckWithKeyInfo:self->keyInfo];
+    }];
+    [dataTask resume];
+  } else {
+    [prefs setBool:YES forKey:@"didFirstLaunch"];
+    [prefs synchronize];
+    [self showInfo];
+  }
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
@@ -120,23 +146,40 @@ void run_cmd(char *cmd)
 }
 
 - (void)showInfo {
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"] != NO){
     NSString *info;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-      info = @"\nThank you for using PowerApp! PLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section of the Settings page";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+      info = @"\nPLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, or the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section in Settings";
     } else {
-      info = @"\nThank you for using PowerApp! PLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
+      info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
     }
-    UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:@"Thank You For Using\nPowerApp!" message:info preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+        NSString *versionURL;
+        NSString *keyString;
+        if ([amIBeta containsString:@"beta"]){
+          versionURL = @"https://github.dave1482.com/PowerApp/betaVersion";
+          keyString = @"CFBundleVersion";
+        } else {
+          versionURL = @"https://github.dave1482.com/PowerApp/version";
+          keyString = @"CFBundleShortVersionString";
+        }
+        NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
+                              cachePolicy:NSURLRequestReloadIgnoringCacheData
+                            timeoutInterval:10.0];
+        NSURLSession *session = [NSURLSession sharedSession];
+        
+        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+          self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+          [self updateCheckWithKeyInfo:self->keyInfo];
+        }];
+        [dataTask resume];
+      }];
     [infoAlert addAction:doneDevBtn];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-      [[NSUserDefaults standardUserDefaults] synchronize];
-      [self presentViewController:infoAlert animated:YES completion:nil];
-    });
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self presentViewController:infoAlert animated:YES completion:nil];
+  });
 }
 
 - (IBAction)rebootButtonPressed {
@@ -181,17 +224,45 @@ void run_cmd(char *cmd)
 }
 
 - (IBAction)softRebootButtonPressed {
-  if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
-    UIAlertController *alertSoftRebootButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will REBOOT your device, but you should still retain your jailbreak.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *noSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
-    UIAlertAction *yesSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        run_cmd("launchctl reboot userspace");
-    }];
-    [alertSoftRebootButton1 addAction:noSoftRebootBtn1];
-    [alertSoftRebootButton1 addAction:yesSoftRebootBtn1];
-    [self presentViewController:alertSoftRebootButton1 animated:YES completion:nil];
+  if ([softRebootButton.titleLabel.text isEqualToString:@"ldRun"]){
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
+      if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/ldRun"]){
+        UIAlertController *alertRespringBtn1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will run ldRun to ldrestart your device. This will stop all apps!\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noRespringBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesRespringBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          setuid(0);
+          setgid(0);
+          run_cmd("ldRun");
+        }];
+        [alertRespringBtn1 addAction:noRespringBtn1];
+        [alertRespringBtn1 addAction:yesRespringBtn1];
+        [self presentViewController:alertRespringBtn1 animated:YES completion:nil];
+      } else {
+        UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" instead?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+        UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          run_cmd("killall -9 SpringBoard");
+        }];
+        [alertMissingLD addAction:noLDBtn1];
+        [alertMissingLD addAction:yesLDBtn1];
+        [self presentViewController:alertMissingLD animated:YES completion:nil];
+      }
+    } else {
+      [self ldRunButtonCheck];
+    }
   } else {
-      run_cmd("launchctl reboot userspace");
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"] == YES){
+      UIAlertController *alertSoftRebootButton1 = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"This will REBOOT your device, but you should still retain your jailbreak.\n\nContinue?" preferredStyle:UIAlertControllerStyleAlert];
+      UIAlertAction *noSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+      UIAlertAction *yesSoftRebootBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+          run_cmd("launchctl reboot userspace");
+      }];
+      [alertSoftRebootButton1 addAction:noSoftRebootBtn1];
+      [alertSoftRebootButton1 addAction:yesSoftRebootBtn1];
+      [self presentViewController:alertSoftRebootButton1 animated:YES completion:nil];
+    } else {
+        run_cmd("launchctl reboot userspace");
+    }
   }
 }
 
@@ -397,8 +468,10 @@ void run_cmd(char *cmd)
 }
 
 - (void) updateCheckWithKeyInfo:(NSString *)leInfo   {
+  NSString *deviceType = [UIDevice currentDevice].model;
   UIAlertController *alertCheckForUpdate;
   NSString *alertMessage;
+  
   if (![receivedDataString isEqual:leInfo] && ![receivedDataString isEqual: @""])
   {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -406,36 +479,43 @@ void run_cmd(char *cmd)
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"cydia://sources"] options:@{} completionHandler:nil];
     }];
     UIAlertAction *yesSileoUpdateBtn = [UIAlertAction actionWithTitle:@"Sileo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo://package/com.dave1482.powerapp"] options:@{} completionHandler:nil];
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"sileo:///"] options:@{} completionHandler:nil];
     }];
-    UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-      [self showInfo];
+    UIAlertAction *yesZebraUpdateBtn = [UIAlertAction actionWithTitle:@"Zebra" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"zbra:///"] options:@{} completionHandler:nil];
     }];
-    
-    if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
-      alertMessage = [NSString stringWithFormat:@"Open Sileo to update PowerApp to v%@?", receivedDataString];
-    } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-      alertMessage = [NSString stringWithFormat:@"Open Cydia to update PowerApp to v%@?", receivedDataString];
-    } else if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-      alertMessage = [NSString stringWithFormat:@"Open Cydia/Sileo to update PowerApp to v%@?", receivedDataString];
+    UIAlertAction *yesInstallerUpdateBtn = [UIAlertAction actionWithTitle:@"Installer" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"installer:///"] options:@{} completionHandler:nil];
+    }];
+    UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    if ([fileManager fileExistsAtPath:sileoPath] || [fileManager fileExistsAtPath:cydiaPath] || [fileManager fileExistsAtPath:zebraPath] || [fileManager fileExistsAtPath:installerPath]) {
+      alertMessage = [NSString stringWithFormat:@"PowerApp v%@\nAvailable!", receivedDataString];
     } else {
-      alertMessage = [NSString stringWithFormat:@"PowerApp v%@ is available but for some reason you don't have Sileo or Cydia.", receivedDataString];
+      alertMessage = [NSString stringWithFormat:@"PowerApp v%@\nis available but for some reason you don't have Sileo or Cydia.", receivedDataString];
     }
+    if([deviceType isEqualToString:@"iPad"]) {
     alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-    if ([fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
+    } else {
+      alertCheckForUpdate = [UIAlertController alertControllerWithTitle:@"New Update Available" message:alertMessage preferredStyle:UIAlertControllerStyleActionSheet];
+    }
+    
+    if ([fileManager fileExistsAtPath:cydiaPath]) {
       [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+    }
+    if ([fileManager fileExistsAtPath:sileoPath]) {
       [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-    } else if ([fileManager fileExistsAtPath:sileoPath] && ![fileManager fileExistsAtPath:cydiaPath]) {
-      [alertCheckForUpdate addAction:yesSileoUpdateBtn];
-    } else if (![fileManager fileExistsAtPath:sileoPath] && [fileManager fileExistsAtPath:cydiaPath]) {
-      [alertCheckForUpdate addAction:yesCydiaUpdateBtn];
+    }
+    if ([fileManager fileExistsAtPath:zebraPath]) {
+      [alertCheckForUpdate addAction:yesZebraUpdateBtn];
+    }
+    if ([fileManager fileExistsAtPath:installerPath]) {
+      [alertCheckForUpdate addAction:yesInstallerUpdateBtn];
     }
     [alertCheckForUpdate addAction:cancelBtn];
+
     dispatch_async(dispatch_get_main_queue(), ^{
       [self presentViewController:alertCheckForUpdate animated:YES completion:nil];
     });
-  } else {
-    [self showInfo];
   }
 }
 
@@ -451,6 +531,24 @@ void run_cmd(char *cmd)
       NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
       [preferences setInteger:0 forKey:@"btnControl"];
       [preferences synchronize];
+      run_cmd("killall -9 SpringBoard");
+    }];
+    [alertMissingLD addAction:noLDBtn1];
+    [alertMissingLD addAction:yesLDBtn1];
+    [self presentViewController:alertMissingLD animated:YES completion:nil];
+  }
+
+}
+
+- (void) ldRunButtonCheck {
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/ldRun"]){
+    setuid(0);
+    setgid(0);
+    run_cmd("ldRun");
+  } else {
+    UIAlertController *alertMissingLD = [UIAlertController alertControllerWithTitle:@"Unable to ldrestart" message:@"Your device is missing the \"ldRun\" package (com.midnightchips.ldrun) to run \"ldrestart\" successfully.\n\nRespring with \"killall\" instead?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noLDBtn1 = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
+    UIAlertAction *yesLDBtn1 = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
       run_cmd("killall -9 SpringBoard");
     }];
     [alertMissingLD addAction:noLDBtn1];

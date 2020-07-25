@@ -2,7 +2,7 @@
 //  SettingsViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/19/2020.
+//  Modified by David Teddy, II on 7/24/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -76,12 +76,7 @@
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
   [self colorSettings];
-  if(@available(iOS 10.3,*)){
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
-  } else {
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
-  }
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
+  
   projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
   [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"]){
@@ -93,6 +88,7 @@
   }
   webIcon = [UIImage imageNamed:projectIcon[selectedCell]];
   [borderSwitchControl setSelectedSegmentIndex:selectedCell];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (void)colorSettings {
@@ -144,6 +140,11 @@
           [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
           gitIcon = [UIImage imageNamed:@"githubWhite"];
         }
+        [UIView performWithoutAnimation:^{
+          [settingsTable beginUpdates];
+          [settingsTable reloadData];
+          [settingsTable endUpdates];
+        }];
         break;
     }
   } else {
@@ -151,17 +152,23 @@
       [self setNeedsStatusBarAppearanceUpdate];
       navBar.barTintColor = [UIColor whiteColor];
       self.view.backgroundColor = [UIColor whiteColor];
+      tableColor = [UIColor groupTableViewBackgroundColor];
       [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
       gitIcon = [UIImage imageNamed:@"githubBlack"];
     } else {
       [self setNeedsStatusBarAppearanceUpdate];
       navBar.barTintColor = [UIColor blackColor];
       self.view.backgroundColor = [UIColor blackColor];
+      tableColor = [UIColor blackColor];
       [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
       gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
   }
-  
+  [UIView performWithoutAnimation:^{
+    [settingsTable beginUpdates];
+    [settingsTable reloadData];
+    [settingsTable endUpdates];
+  }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -232,7 +239,7 @@
       break;
     case 3:
       if (@available(iOS 10.3, *)) {
-        return @"Copyright \u00A9 Dave1482";;
+        return @"Copyright \u00A9 Dave1482";
       }
       return nil;
     default:
@@ -250,17 +257,9 @@
         NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
         if ([[UIApplication sharedApplication] supportsAlternateIcons]){
           if (indexPath.row > 0){
-            [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:nil/*^(NSError * _Nullable error) {
-              if (error) {
-                NSLog (@"Error changing icon: %@",error);
-              }
-            }*/];
+            [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:nil];
           } else {
-            [[UIApplication sharedApplication] setAlternateIconName:nil completionHandler:nil/*^(NSError * _Nullable error) {
-              if (error) {
-                NSLog (@"Error changing icon: %@",error);
-              }
-            }*/];
+            [[UIApplication sharedApplication] setAlternateIconName:nil completionHandler:nil];
           }
         }
         
@@ -270,12 +269,10 @@
       });
     } else if ([indexPath section] == 3){
       NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
-      NSLog(@"URLString: %@",devURLString.description);
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
     }
   } else if ([indexPath section] == 2){
     NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
-    NSLog(@"URLString: %@",devURLString.description);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
   }
 }
@@ -317,7 +314,28 @@
   iconCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:iconCellID];
   iconCell.imageView.layer.cornerRadius = 12.0;
   iconCell.imageView.layer.masksToBounds = YES;
-  
+  if (@available (iOS 13, *)){
+  } else {
+    settingsTable.backgroundColor = tableColor;
+    if(lightSwitch.on){
+      
+      settingsTable.separatorColor = [UIColor colorWithRed:199.0/256.0 green:199.0/256.0 blue:201.0/256.0 alpha:1.0];
+      cell.backgroundView.backgroundColor = [UIColor whiteColor];
+      cell.backgroundColor = [UIColor whiteColor];
+      iconCell.backgroundColor = [UIColor whiteColor];
+      cell.textLabel.textColor = [UIColor blackColor];
+      iconCell.textLabel.textColor = [UIColor blackColor];
+      label.textColor = [UIColor blackColor];
+    } else {
+      settingsTable.separatorColor = [UIColor colorWithRed:61.0/256.0 green:61.0/256.0 blue:68.0/256.0 alpha:0.70];
+      
+      cell.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.12 alpha:1.0];
+      iconCell.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.12 alpha:1.0];
+      cell.textLabel.textColor = [UIColor whiteColor];
+      iconCell.textLabel.textColor = [UIColor whiteColor];
+      label.textColor = [UIColor whiteColor];
+    }
+  }
   iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
   if ([indexPath section] == 0) {
     if ( [indexPath row] == 0 ){
@@ -496,56 +514,33 @@
 - (void)lightControlSelected{
   [[NSUserDefaults standardUserDefaults] setInteger:self->lightControl.selectedSegmentIndex forKey:@"lightControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  [self colorSettings];
 }
 
 - (void)lightSwitchSwitched {
   if(lightSwitch.on){
-    if (@available(iOS 13, *)) {
-      [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
-    }
-    [self setNeedsStatusBarAppearanceUpdate];
-    navBar.barTintColor = [UIColor whiteColor];
-    self.view.backgroundColor = [UIColor whiteColor];
-    [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-    gitIcon = [UIImage imageNamed:@"githubBlack"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"lightSwitch"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    self->settingsTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
   } else {
-    if (@available(iOS 13, *)) {
-      [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
-    }
-    [self setNeedsStatusBarAppearanceUpdate];
-    navBar.barTintColor = [UIColor blackColor];
-    self.view.backgroundColor = [UIColor blackColor];
-    [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    gitIcon = [UIImage imageNamed:@"githubWhite"];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"lightSwitch"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-  }
-  if(@available(iOS 10.3,*)){
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
-  } else {
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+    self->settingsTable.backgroundColor = [UIColor blackColor];
   }
 }
 
 - (void)btnSwitchControlSelected {
   [[NSUserDefaults standardUserDefaults] setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  NSLog(@"%ldd", (long)[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]);
-}
+  }
 
 - (void)borderSwitchControlSelected {
   [[NSUserDefaults standardUserDefaults] setInteger:borderSwitchControl.selectedSegmentIndex forKey:@"borderControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  NSLog(@"%ldd", (long)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]);
 }
 
 - (void)rebootSwitchControlSelected {
   [[NSUserDefaults standardUserDefaults] setInteger:rebootSwitchControl.selectedSegmentIndex forKey:@"rebootControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  NSLog(@"%ldd", (long)[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]);
 }
 
 - (IBAction)showDevInfo{

@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/19/2020.
+//  Modified by David Teddy, II on 7/24/2020.
 //  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -157,7 +157,6 @@ void run_action(char *cmd)
     if ([[NSUserDefaults standardUserDefaults] integerForKey:@"systemTheme"] != (int)UITraitCollection.currentTraitCollection.userInterfaceStyle) {
       if ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"] == 2) {
         [[NSUserDefaults standardUserDefaults] setInteger:(int)UITraitCollection.currentTraitCollection.userInterfaceStyle forKey:@"systemTheme"];
-        NSLog(@"%d", (int)UITraitCollection.currentTraitCollection.userInterfaceStyle);
       }
     }
   }

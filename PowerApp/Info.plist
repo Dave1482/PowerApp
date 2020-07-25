@@ -112,10 +112,6 @@
 	<string>public.app-category.utilities</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
@@ -151,6 +147,10 @@
 			<string>com.dave1482.powerapp.SafeMode</string>
 		</dict>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarHidden~ipad</key>
