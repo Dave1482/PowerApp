@@ -75,8 +75,6 @@
   devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/realDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
-  [self colorSettings];
-  
   projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
   [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"]){
@@ -88,6 +86,7 @@
   }
   webIcon = [UIImage imageNamed:projectIcon[selectedCell]];
   [borderSwitchControl setSelectedSegmentIndex:selectedCell];
+  [self colorSettings];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
