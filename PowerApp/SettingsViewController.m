@@ -86,6 +86,7 @@
   }
   webIcon = [UIImage imageNamed:projectIcon[selectedCell]];
   [borderSwitchControl setSelectedSegmentIndex:selectedCell];
+  lightDidChange = YES;
   [self colorSettings];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
@@ -139,13 +140,9 @@
           [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
           gitIcon = [UIImage imageNamed:@"githubWhite"];
         }
-        [UIView performWithoutAnimation:^{
-          [settingsTable beginUpdates];
-          [settingsTable reloadData];
-          [settingsTable endUpdates];
-        }];
         break;
     }
+    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
   } else {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
       [self setNeedsStatusBarAppearanceUpdate];
@@ -162,16 +159,15 @@
       [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
       gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
-    [UIView performWithoutAnimation:^{
-      [settingsTable beginUpdates];
-      [settingsTable reloadData];
-      [settingsTable endUpdates];
-    }];
-  }
-  if (@available (iOS 10.3, *)){
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
-  } else {
-    [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+    if(@available(iOS 13, *)){
+      [settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+      [UIView performWithoutAnimation:^{
+        [settingsTable beginUpdates];
+        [settingsTable reloadData];
+        [settingsTable endUpdates];
+      }];
+    }
   }
 }
 
@@ -268,8 +264,11 @@
         [[NSUserDefaults standardUserDefaults] setInteger:self->selectedCell forKey:@"iconSelect"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         self->webIcon = [UIImage imageNamed:self->projectIcon[self->selectedCell]];
-        [self->settingsTable reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
-        [self->settingsTable reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationNone];
+        [UIView performWithoutAnimation:^{
+          [self->settingsTable beginUpdates];
+          [self->settingsTable reloadData];
+          [self->settingsTable endUpdates];
+        }];
       });
     } else if ([indexPath section] == 3){
       NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
@@ -285,7 +284,7 @@
 {
   if ([indexPath section] == 2){
     if (@available(iOS 10.3, *)){
-      [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
     } else {
       [settingsTable deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -319,28 +318,32 @@
   iconCell.imageView.layer.cornerRadius = 12.0;
   iconCell.imageView.layer.masksToBounds = YES;
   if (@available (iOS 13, *)){
+    iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
   } else {
+    UIView *customColorView = [[UIView alloc] init];
     settingsTable.backgroundColor = tableColor;
     if(lightSwitch.on){
-      
       settingsTable.separatorColor = [UIColor colorWithRed:199.0/256.0 green:199.0/256.0 blue:201.0/256.0 alpha:1.0];
       cell.backgroundView.backgroundColor = [UIColor whiteColor];
       cell.backgroundColor = [UIColor whiteColor];
       iconCell.backgroundColor = [UIColor whiteColor];
+      iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
       cell.textLabel.textColor = [UIColor blackColor];
       iconCell.textLabel.textColor = [UIColor blackColor];
       label.textColor = [UIColor blackColor];
+      customColorView.backgroundColor = [UIColor colorWithRed:209.0/256.0 green:209.0/256.0 blue:214.0/256.0 alpha:1.0];
     } else {
-      settingsTable.separatorColor = [UIColor colorWithRed:61.0/256.0 green:61.0/256.0 blue:68.0/256.0 alpha:0.70];
-      
+      settingsTable.separatorColor = [UIColor colorWithRed:61.0/256.0 green:61.0/256.0 blue:68.0/256.0 alpha:0.7];
       cell.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.12 alpha:1.0];
       iconCell.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.12 alpha:1.0];
+      iconCell.selectionStyle = UITableViewCellSelectionStyleGray;
       cell.textLabel.textColor = [UIColor whiteColor];
       iconCell.textLabel.textColor = [UIColor whiteColor];
       label.textColor = [UIColor whiteColor];
+      customColorView.backgroundColor = [UIColor colorWithRed:58/256.0 green:58/256.0 blue:60/256.0 alpha:1.0];
     }
+    iconCell.selectedBackgroundView =  customColorView;
   }
-  iconCell.selectionStyle = UITableViewCellSelectionStyleDefault;
   if ([indexPath section] == 0) {
     if ( [indexPath row] == 0 ){
       rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
@@ -357,7 +360,7 @@
       [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
       return cell;
     } else if ( [indexPath row] == 2 ){
-      borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick"]];//, @"THICC"]];
+      borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
       cell.textLabel.text = @"Button Border:";
       cell.accessoryView = borderSwitchControl;
       [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
@@ -506,6 +509,7 @@
 }
 
 - (void)alertSwitchSwitched{
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
   if(alertSwitch.on){
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"alertSwitch.enabled"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -513,6 +517,7 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"alertSwitch.enabled"];
     [[NSUserDefaults standardUserDefaults] synchronize];
   }
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (void)lightControlSelected{
@@ -524,36 +529,40 @@
   if(lightSwitch.on){
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"lightSwitch"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    self->settingsTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
   } else {
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"lightSwitch"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    self->settingsTable.backgroundColor = [UIColor blackColor];
   }
 }
 
 - (void)btnSwitchControlSelected {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
   [[NSUserDefaults standardUserDefaults] setInteger:btnSwitchControl.selectedSegmentIndex forKey:@"btnControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
   }
 
 - (void)borderSwitchControlSelected {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
   [[NSUserDefaults standardUserDefaults] setInteger:borderSwitchControl.selectedSegmentIndex forKey:@"borderControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (void)rebootSwitchControlSelected {
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
   [[NSUserDefaults standardUserDefaults] setInteger:rebootSwitchControl.selectedSegmentIndex forKey:@"rebootControl"];
   [[NSUserDefaults standardUserDefaults] synchronize];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
 - (IBAction)showDevInfo{
   UIAlertController *devAlert;
   NSString *info;
   if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
   } else {
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"More information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
   }
   devAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];

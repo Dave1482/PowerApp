@@ -29,6 +29,7 @@
   NSMutableArray *projectIcon;
   NSMutableArray *devArray;
   UIColor *tableColor;
+  BOOL lightDidChange;
   int selectedCell;
 }
 

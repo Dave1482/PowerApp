@@ -256,7 +256,7 @@
                                 </connections>
                             </navigationBar>
                             <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="63e-jO-XVW">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="89" width="414" height="773"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" id="mGa-8E-2ea">
@@ -288,7 +288,7 @@
                         <constraints>
                             <constraint firstItem="7Fi-if-vLk" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leadingMargin" constant="-20" id="3dg-ac-U42"/>
                             <constraint firstItem="7Fi-if-vLk" firstAttribute="bottom" secondItem="YeA-dQ-BHw" secondAttribute="bottom" constant="44" id="BoQ-Da-AjN"/>
-                            <constraint firstItem="63e-jO-XVW" firstAttribute="top" secondItem="7Fi-if-vLk" secondAttribute="bottom" id="M4t-Sr-j5T"/>
+                            <constraint firstItem="63e-jO-XVW" firstAttribute="top" secondItem="7Fi-if-vLk" secondAttribute="bottom" constant="1" id="M4t-Sr-j5T"/>
                             <constraint firstItem="63e-jO-XVW" firstAttribute="leading" secondItem="clS-gB-Gcp" secondAttribute="leading" id="ORF-IU-Z8Q"/>
                             <constraint firstAttribute="trailing" secondItem="63e-jO-XVW" secondAttribute="trailing" id="PMm-oU-nos"/>
                             <constraint firstItem="4R5-DG-17v" firstAttribute="top" secondItem="63e-jO-XVW" secondAttribute="bottom" id="XAJ-C7-Uw4"/>
@@ -305,7 +305,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmZ-Te-Ck8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="152.80000000000001" y="1732.9835082458771"/>
+            <point key="canvasLocation" x="152.17391304347828" y="1732.3660714285713"/>
         </scene>
         <!--Changelog View Controller-->
         <scene sceneID="IOs-lr-MGu">

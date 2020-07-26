@@ -101,8 +101,8 @@ char *ldRunChar;
     versionURL = @"https://github.dave1482.com/PowerApp/version";
     keyString = @"CFBundleShortVersionString";
   }
-  //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  //if([prefs objectForKey:@"didFirstLaunch"] && [prefs boolForKey:@"didFirstLaunch"] == YES) {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if([prefs objectForKey:@"didFirstLaunch"] && [prefs boolForKey:@"didFirstLaunch"] == YES) {
     NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:versionURL]
                           cachePolicy:NSURLRequestReloadIgnoringCacheData
                         timeoutInterval:10.0];
@@ -114,11 +114,11 @@ char *ldRunChar;
       [self updateCheckWithKeyInfo:self->keyInfo];
     }];
     [dataTask resume];
-  /*} else {
+  } else {
     [prefs setBool:YES forKey:@"didFirstLaunch"];
     [prefs synchronize];
     [self showInfo];
-  }*/
+  }
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorMe) name:NSUserDefaultsDidChangeNotification object:nil];
 }
 

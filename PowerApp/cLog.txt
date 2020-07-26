@@ -1,16 +1,26 @@
 Version 6.0:
-• Added alternate app icons (iOS 10.3+)
+• Added dark mode back
+to Settings (< iOS 13)
+• Added links for all 4 main package managers when checking for updates or downloading ldRun
+• Added alternate
+app icons (iOS 10.3+)
+• Added quick action icons (iOS 9+)
 • Added Developer section to Settings
-• Added option to customize button borders
-• Added option for automatic theme changing (iOS 13+)
+• Added Donation link
+to Settings (PayPal)
+• Added option to
+customize button borders
+• Added option for automatic
+theme changing (iOS 13+)
 • Settings now properly fills screen
 • Reintroduced Settings scrolling
 • Developer Information alert changes
-• Added a "First Launch" information alert
-• Changed Check for Update Alert to Action Sheets
-on supported devices
+• Added a "First Launch"
+information alert
+• Changed Check for Update Alert to Action Sheets on supported devices
 • Disabled Soft Reboot for certain jailbreaks
 • Added ldRun button for certain jailbreaks
+• Only recolor app if light theme was changed
 • Code optimizations
 • Bug Fixes
 
