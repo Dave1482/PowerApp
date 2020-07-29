@@ -127,7 +127,7 @@ void run_cmd(char *cmd)
   rebootChar = "kill 1";
   shutdownChar = "halt";
   ldRunChar = "ldRun";
-  if (cmd != rebootChar && cmd != shutdownChar && cmd != ldRunChar) {
+  if (strcmp(cmd, rebootChar) && strcmp(cmd, shutdownChar) && strcmp(cmd, ldRunChar)) {
     setgid(501);
     setuid(501);
   }
