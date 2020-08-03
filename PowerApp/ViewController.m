@@ -127,10 +127,22 @@ void run_cmd(char *cmd)
   rebootChar = "kill 1";
   shutdownChar = "halt";
   ldRunChar = "ldRun";
-  if (strcmp(cmd, rebootChar) && strcmp(cmd, shutdownChar) && strcmp(cmd, ldRunChar)) {
+  
+  // UNTESTED BEGIN
+  if (strcmp(cmd, rebootChar) || strcmp(cmd, shutdownChar) || strcmp(cmd, ldRunChar)) {
+    setgid(0);
+    setuid(0);
+  } else {
     setgid(501);
     setuid(501);
   }
+  // UNTESTED END
+  /* ORIGINAL BEGIN
+  if (cmd != rebootChar && cmd != shutdownChar && cmd != ldRunChar) {
+    setgid(501);
+    setuid(501);
+  }
+     ORIGINAL END */
   pid_t pid;
   char *argv[] = {"sh", "-c", cmd, NULL};
   int status;
