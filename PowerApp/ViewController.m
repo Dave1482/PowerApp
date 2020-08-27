@@ -421,6 +421,24 @@ void run_cmd(char *cmd)
 }
 
 - (void)colorMe {
+  // UNTESTED BEGIN
+  long btnControlValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"];
+  switch (btnControlValue)
+    {
+      case 0:
+        [respringButton setTitle:@"Respring\n(\"killall\")" forState:UIControlStateNormal];
+        break;
+      case 1:
+        [respringButton setTitle:@"Respring\n(\"sbreload\")" forState:UIControlStateNormal];
+        break;
+      case 2:
+        [respringButton setTitle:@"Respring\n(\"ldrestart\")" forState:UIControlStateNormal];
+        break;
+      default:
+        [respringButton setTitle:@"Respring" forState:UIControlStateNormal];
+        break;
+    }
+  // UNTESTED END
   int borderW = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
   if (borderW == 3){
     borderW = borderW * 3;
