@@ -5,6 +5,12 @@
 Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
 # Changelog
 
+**Version 6.0.1:**
+* Added latest devices to device list
+* Fixed Settings text being cut off on small screen devices
+* Fixed icon remaining on homescreen after uninstall
+* Moved to Chariz Repo
+
 **Version 6.0:**
 * Added dark mode back to Settings (< iOS 13)
 * Added links for all 4 main package managers when checking for updates or downloading ldRun

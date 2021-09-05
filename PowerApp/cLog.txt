@@ -1,3 +1,9 @@
+Version 6.0.1:
+• Added latest devices to device list
+• Fixed Settings text being cut off on small screen devices
+• Fixed icon remaining on homescreen after uninstall
+• Moved to Chariz Repo
+
 Version 6.0:
 • Added dark mode back
 to Settings (< iOS 13)

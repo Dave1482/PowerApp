@@ -3,7 +3,7 @@
 //  PowerApp
 //
 //  Modified by David Teddy, II on 7/24/2020.
-//  Copyright © 2014-2020 David Teddy, II (Dave1482). All rights reserved.
+//  Copyright © 2014-2022 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "SettingsViewController.h"
@@ -72,7 +72,7 @@
   payIcon = [UIImage imageNamed:@"paypal"];
   twtIcon = [UIImage imageNamed:@"twitter"];
   repoIcon = [UIImage imageNamed:@"repoIcon"];
-  devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/realDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
+  devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/xDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
   projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
@@ -182,7 +182,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   switch (section) {
     case 0:
-      return 5;
+      if (@available(iOS 13, *)) {
+        return 9;
+      }
+      return 8;
       break;
     case 1:
       return 3;
@@ -346,45 +349,91 @@
   }
   if ([indexPath section] == 0) {
     if ( [indexPath row] == 0 ){
-      rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
-      cell.textLabel.text = @"Quick Action Reboot:";
-      cell.accessoryView = rebootSwitchControl;
-      [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
-      [rebootSwitchControl addTarget:self action:@selector(rebootSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-      return cell;
+        cell.textLabel.text = @"Respring Mode";
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        return cell;
     } else if ( [indexPath row] == 1 ){
-      btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
-      cell.textLabel.text = @"Respring:";
-      cell.accessoryView = btnSwitchControl;
-      [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
-      [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-      return cell;
+        btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
+        btnSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        btnSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
+        [cell.contentView addSubview:btnSwitchControl];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
+        [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+        [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
+        [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+        return cell;
     } else if ( [indexPath row] == 2 ){
-      borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
-      cell.textLabel.text = @"Button Border:";
-      cell.accessoryView = borderSwitchControl;
-      [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
-      [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-      return cell;
-    } else if ( [indexPath row] == 3) {
+        cell.textLabel.text = @"Button Border Thickness";
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        return cell;
+    } else if ( [indexPath row] == 3 ){
+        borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
+        [cell.contentView addSubview:borderSwitchControl];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        borderSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        borderSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
+        [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
+        [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    } else if ( [indexPath row] == 4 ){
+        cell.textLabel.text = @"Quick Action Reboot Mode";
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        return cell;
+    } else if ( [indexPath row] == 5 ){
+        rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
+        [cell.contentView addSubview:rebootSwitchControl];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        rebootSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        rebootSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
+        [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
+        [rebootSwitchControl addTarget:self action:@selector(rebootSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    } else if ( [indexPath row] == 6) {
       if(@available (iOS 13, *)){
-        lightControl = [[UISegmentedControl alloc] initWithItems:@[@"Light", @"Dark", @"Auto"]];
-        cell.textLabel.text = @"Theme:";
-        cell.accessoryView = lightControl;
-        [lightControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]];
-        [lightControl addTarget:self action:@selector(lightControlSelected) forControlEvents:UIControlEventValueChanged];
-      return cell;
+        cell.textLabel.text = @"Theme";
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        return cell;
       } else {
         cell.textLabel.text = @"Light Theme";
         cell.accessoryView = lightSwitch;
         [lightSwitch addTarget:self action:@selector(lightSwitchSwitched) forControlEvents:UIControlEventValueChanged];
         return cell;
       }
-    } else if ( [indexPath row] == 4) {
-      cell.textLabel.text = @"Alerts";
-      cell.accessoryView = alertSwitch;
-      [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
-      return cell;
+    } else if ( [indexPath row] == 7) {
+      if(@available (iOS 13, *)){
+        lightControl = [[UISegmentedControl alloc] initWithItems:@[@"Light", @"Dark", @"Auto"]];
+        [cell.contentView addSubview:lightControl];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
+        lightControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        lightControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
+        [lightControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]];
+        [lightControl addTarget:self action:@selector(lightControlSelected) forControlEvents:UIControlEventValueChanged];
+        return cell;
+      } else {cell.textLabel.text = @"Alerts";
+          cell.accessoryView = alertSwitch;
+          [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
+          return cell;
+      }
+    } if(@available (iOS 13, *)){
+        if ( [indexPath row] == 8){
+        cell.textLabel.text = @"Alerts";
+        cell.accessoryView = alertSwitch;
+        [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
+        return cell;
+      }
     }
   } else if ([indexPath section] == 1) {
     if ( [indexPath row] == 0 ){
@@ -560,9 +609,9 @@
   UIAlertController *devAlert;
   NSString *info;
   if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © Dave1482";
   } else {
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © 2014-2020\nDave1482";
+    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © Dave1482";
   }
   devAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
