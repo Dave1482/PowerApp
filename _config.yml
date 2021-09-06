@@ -3,7 +3,7 @@ remote_theme: Dave1482/jekyll-theme-leaf
 iconURL: /roundPowerAppIcon.png
 author: Dave1482
 social:
-  twitter: realDave1482
+  twitter: xDave1482
   github: Dave1482
 plugins:
  - jekyll-feed
