@@ -10,7 +10,6 @@ Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Goi
 * Added 2 new alternative icons
 * Enabled userspace reboots on certain jailbreaks where it was disabled
 * Fixed missing Safe Mode Quick Action icon
-* Moved to Chariz Repo
 
 **Version 6.0.1:**
 * Added latest devices to device list
