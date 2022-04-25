@@ -2,8 +2,8 @@
 //  SettingsViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/24/2020.
-//  Copyright © 2014-2022 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 4/24/2022.
+//  Copyright © Since 2014 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "SettingsViewController.h"

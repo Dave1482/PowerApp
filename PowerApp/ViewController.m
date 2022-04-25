@@ -2,8 +2,8 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 7/24/2020.
-//  Copyright © 2014-2022 David Teddy, II (Dave1482). All rights reserved.
+//  Modified by David Teddy, II on 4/24/2022.
+//  Copyright © Since 2014 David Teddy, II (Dave1482). All rights reserved.
 //
 
 #import "ViewController.h"
@@ -62,6 +62,7 @@ char *ldRunChar;
   nonButton.layer.cornerRadius = 15;
   uicButton.layer.cornerRadius = 15;
   exitButton.layer.cornerRadius = 15;
+  respringButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   safeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   nonButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   uicButton.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -79,21 +80,22 @@ char *ldRunChar;
         jbItem = @"noChimera";
       }
   }
-  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"] ||
-      [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/etc/%@", jbItem]] ||
-      [[NSFileManager defaultManager] fileExistsAtPath:@"/.bootstrapped_electra"]
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey/jailbreakd.plist"] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:@"/taurine/jailbreakd.plist"] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:@"/chimera/jailbreakd.plist"]
       ){
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey/jailbreakd.plist"] ||
-        [[NSFileManager defaultManager] fileExistsAtPath:@"/taurine/jailbreakd.plist"] ||
-        [[NSFileManager defaultManager] fileExistsAtPath:@"/chimera/jailbreakd.plist"]
-        ){
-      [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
-    } else {
-      [softRebootButton setTitle:@"ldRun" forState:UIControlStateNormal];
-    }
-  } else {
     [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+  } else {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/etc/%@", jbItem]] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:@"/.bootstrapped_electra"]
+        ){
+          [softRebootButton setTitle:@"ldRun" forState:UIControlStateNormal];
+        } else {
+          [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+        }
   }
+  
   [nonButton setTitle:@"Non-Substrate\nMode" forState:UIControlStateNormal];
   [uicButton setTitle:@"Refresh\nCache" forState:UIControlStateNormal];
   [exitButton setTitle:@"Exit\nPowerApp" forState:UIControlStateNormal];
