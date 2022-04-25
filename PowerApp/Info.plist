@@ -12,6 +12,20 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
+			<key>blueIcon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AltIcons/blueIcon-20</string>
+					<string>AltIcons/blueIcon-29</string>
+					<string>AltIcons/blueIcon-40</string>
+					<string>AltIcons/blueIcon-60</string>
+					<string>AltIcons/blueIcon-76</string>
+					<string>AltIcons/blueIcon-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
 			<key>originalIcon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -36,6 +50,20 @@
 					<string>AltIcons/outsetIcon-60</string>
 					<string>AltIcons/outsetIcon-76</string>
 					<string>AltIcons/outsetIcon-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>whiteIcon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AltIcons/whiteIcon-20</string>
+					<string>AltIcons/whiteIcon-29</string>
+					<string>AltIcons/whiteIcon-40</string>
+					<string>AltIcons/whiteIcon-60</string>
+					<string>AltIcons/whiteIcon-76</string>
+					<string>AltIcons/whiteIcon-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -55,6 +83,20 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
+			<key>blueIcon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AltIcons/blueIcon-20</string>
+					<string>AltIcons/blueIcon-29</string>
+					<string>AltIcons/blueIcon-40</string>
+					<string>AltIcons/blueIcon-60</string>
+					<string>AltIcons/blueIcon-76</string>
+					<string>AltIcons/blueIcon-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
 			<key>originalIcon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -83,6 +125,20 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
+			<key>whiteIcon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AltIcons/whiteIcon-20</string>
+					<string>AltIcons/whiteIcon-29</string>
+					<string>AltIcons/whiteIcon-40</string>
+					<string>AltIcons/whiteIcon-60</string>
+					<string>AltIcons/whiteIcon-76</string>
+					<string>AltIcons/whiteIcon-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
 		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
@@ -97,7 +153,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0.1</string>
+	<string>6.1</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
@@ -140,7 +196,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>Safemode</string>
+			<string>SafeMode</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Safe Mode</string>
 			<key>UIApplicationShortcutItemType</key>

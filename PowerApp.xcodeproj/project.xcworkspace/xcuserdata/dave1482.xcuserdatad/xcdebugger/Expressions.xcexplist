@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "mach_msg:(null)">
+      </ContextState>
+      <ContextState
+         contextName = "__60-[SettingsViewController tableView:didSelectRowAtIndexPath:]_block_invoke:SettingsViewController.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

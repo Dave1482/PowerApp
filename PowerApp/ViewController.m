@@ -79,8 +79,18 @@ char *ldRunChar;
         jbItem = @"noChimera";
       }
   }
-  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"] || [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/etc/%@", jbItem]] || [[NSFileManager defaultManager] fileExistsAtPath:@"/.bootstrapped_electra"]){
-    [softRebootButton setTitle:@"ldRun" forState:UIControlStateNormal];
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/.installed_odyssey"] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/etc/%@", jbItem]] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:@"/.bootstrapped_electra"]
+      ){
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey/jailbreakd.plist"] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:@"/taurine/jailbreakd.plist"] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:@"/chimera/jailbreakd.plist"]
+        ){
+      [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
+    } else {
+      [softRebootButton setTitle:@"ldRun" forState:UIControlStateNormal];
+    }
   } else {
     [softRebootButton setTitle:@"Soft\nReboot" forState:UIControlStateNormal];
   }
@@ -161,10 +171,17 @@ void run_cmd(char *cmd)
 
 - (void)showInfo {
     NSString *info;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-      info = @"\nPLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, or the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section in Settings";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey/jailbreakd.plist"] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:@"/taurine/jailbreakd.plist"] ||
+        [[NSFileManager defaultManager] fileExistsAtPath:@"/chimera/jailbreakd.plist"]
+        ){
+          info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on old versions of Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
     } else {
-      info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
+      if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+        info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on old versions of Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
+      } else {
+        info = @"\nPLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, or the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section in Settings";
+      }
     }
     UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:@"Thank You For Using\nPowerApp!" message:info preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {

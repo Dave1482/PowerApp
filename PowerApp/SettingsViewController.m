@@ -75,7 +75,7 @@
   devArray = [[NSMutableArray alloc] initWithObjects:@"https://paypal.me/DaveT1482", @"https://twitter.com/xDave1482", @"https://github.com/Dave1482/PowerApp/", @"https://powerapp.dave1482.com/", @"https://repo.dave1482.com/", nil];
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
-  projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", nil];
+  projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", @"projBlueIcon", @"projWhiteIcon", nil];
   [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"]){
     selectedCell = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"];
@@ -191,9 +191,9 @@
       return 3;
       break;
     case 2:
-      if (@available(iOS 10.3, *)) {
+      /*if (@available(iOS 10.3, *)) {
         return 3;
-      }
+      } */ //Change this if adding more icons
       return 5;
       break;
     case 3:
@@ -256,7 +256,7 @@
     if([indexPath section] == 2){
       dispatch_async(dispatch_get_main_queue(), ^{
         self->selectedCell = (int)indexPath.row;
-        NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", nil];
+        NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", @"blueIcon", @"whiteIcon", nil];
         if ([[UIApplication sharedApplication] supportsAlternateIcons]){
           if (indexPath.row > 0){
             [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:nil];
@@ -471,7 +471,7 @@
         return iconCell;
       } else if ( [indexPath row] == 1 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/outsetIcon-60"];
-        iconCell.textLabel.text = @"Light";
+        iconCell.textLabel.text = @"Gray";
         if([indexPath row] == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
@@ -481,6 +481,24 @@
       } else if ( [indexPath row] == 2 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/originalIcon-60"];
         iconCell.textLabel.text = @"Original";
+        if([indexPath row] == selectedCell) {
+          iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+          iconCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        return iconCell;
+      } else if ( [indexPath row] == 3 ){
+        iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/blueIcon-60"];
+        iconCell.textLabel.text = @"Blue";
+        if([indexPath row] == selectedCell) {
+          iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+          iconCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        return iconCell;
+      } else if ( [indexPath row] == 4 ){
+        iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/whiteIcon-60"];
+        iconCell.textLabel.text = @"Light (by @project11x)";
         if([indexPath row] == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
@@ -608,10 +626,17 @@
 - (IBAction)showDevInfo{
   UIAlertController *devAlert;
   NSString *info;
-  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, otherwise the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © Dave1482";
+  if ([[NSFileManager defaultManager] fileExistsAtPath:@"/odyssey/jailbreakd.plist"] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:@"/taurine/jailbreakd.plist"] ||
+      [[NSFileManager defaultManager] fileExistsAtPath:@"/chimera/jailbreakd.plist"]
+      ){
+        info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on old versions of Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
   } else {
-    info = @"Thank you for using PowerApp!\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on\nChimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page\n\nCopyright © Dave1482";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/lib/libsubstitute.dylib"]){
+      info = @"\nPLEASE READ!!\n\nTo show this information again, press the top right button in either Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on old versions of Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSafe Mode:\nResprings into safe mode if MobileSubstrate is installed\n\nNon-Substrate Mode (Only for MobileSubstrate):\nIf not in safe mode, your device will respring into safe mode.\nIf the device is already in safe mode, it will respring into Non-MobileSubstrate Mode.\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nMore information in the Developer section of the Settings page";
+    } else {
+      info = @"\nPLEASE READ!!\n\nTo show this again, press the top right button in Settings or Changelog\n\nReboot:\nFully reboots your device\n\nShutdown:\nFully powers off your device\n\nSoft Reboot (not available on old\nversions of Chimera or Odyssey):\nReboots everything but the kernel and should preserve the jailbreak\n\nldRun (only on Chimera and Odyssey):\nResprings with \"ldrestart\"\n\nSubstrate Safe Mode:\nResprings into safe mode if MobileSubstrate is installed, or the device will just respring.\n\nSubstitute Safe Mode: Resprings into Safe Mode\n\nRefresh Cache:\nReloads the home screen with \"uicache\"\n\nExit PowerApp:\nCloses PowerApp\n\nMore information in the Developer section in Settings";
+    }
   }
   devAlert = [UIAlertController alertControllerWithTitle:@"App Information" message:info preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];

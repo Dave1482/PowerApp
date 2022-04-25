@@ -6,6 +6,8 @@
 	<string>32-bit Simulator</string>
 	<key>x86_64</key>
 	<string>64-bit Simulator</string>
+	<key>arm64</key>
+	<string>ARM Simulator</string>
 	<key>iPad1,1</key>
 	<string>iPad</string>
 	<key>iPad11,1</key>
@@ -20,6 +22,10 @@
 	<string>iPad 8th Gen</string>
 	<key>iPad11,7</key>
 	<string>iPad 8th Gen</string>
+	<key>iPad12,1</key>
+	<string>iPad 9th Gen</string>
+	<key>iPad12,2</key>
+	<string>iPad 9th Gen</string>
 	<key>iPad13,1</key>
 	<string>iPad Air 4</string>
 	<key>iPad13,2</key>
@@ -40,6 +46,14 @@
 	<string>iPad Pro 12.9 inch 5th Gen</string>
 	<key>iPad13,11</key>
 	<string>iPad Pro 12.9 inch 5th Gen</string>
+	<key>iPad13,16</key>
+	<string>iPad Air 5</string>
+	<key>iPad13,17</key>
+	<string>iPad Air 5</string>
+	<key>iPad14,1</key>
+	<string>iPad Mini 6</string>
+	<key>iPad14,2</key>
+	<string>iPad Mini 6</string>
 	<key>iPad2,1</key>
 	<string>iPad 2</string>
 	<key>iPad2,2</key>
@@ -180,6 +194,16 @@
 	<string>iPhone 12 Pro</string>
 	<key>iPhone13,4</key>
 	<string>iPhone 12 Pro Max</string>
+	<key>iPhone14,2</key>
+	<string>iPhone 13 Pro</string>
+	<key>iPhone14,3</key>
+	<string>iPhone 13 Pro Max</string>
+	<key>iPhone14,4</key>
+	<string>iPhone 13 Mini</string>
+	<key>iPhone14,5</key>
+	<string>iPhone 13</string>
+	<key>iPhone14,6</key>
+	<string>iPhone SE (3rd Gen.)</string>
 	<key>iPhone2,1</key>
 	<string>iPhone 3GS</string>
 	<key>iPhone3,1</key>
