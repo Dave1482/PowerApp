@@ -1,9 +1,13 @@
 # PowerApp - [Link to GitHub](https://github.com/Dave1482/PowerApp/)
 **v5.0 and below supports iOS 3.0-iOS 15+**    
-**v5.1 and above supports iOS 8.0-iOS 15+**    
+**v5.1 and above supports iOS 8.0-iOS 17+**
 
 Reboot, Shutdown, Respring, and Refresh SpringBoard without MobileSubstrate! Going into Safemode and entering Non-MobileSubstrate Mode by respringing requires MobileSubstrate, but it is not a requirement for PowerApp.
 # Changelog
+
+**Version 7.0**:
+* Added Rootless Jailbreak support (specifically for palera1n)
+* Added latest devices to device list
 
 **Version 6.1.1**:
 * Bug Fixes
