@@ -2,7 +2,7 @@
 //  ChangelogViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 4/24/2022.
+//  Modified by David Teddy, II on 11/19/2023.
 //  Copyright © Since 2014 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -24,20 +24,20 @@
   
   
   
-  [changes setFont:[UIFont systemFontOfSize:16]];
+  changes.font = [UIFont systemFontOfSize:16];
   
   cLog = [[NSBundle mainBundle] pathForResource:@"cLog" ofType:@"txt"];
   changes.text = [NSString stringWithContentsOfFile:cLog encoding:NSUTF8StringEncoding error:NULL];
-  [changes setTextAlignment:NSTextAlignmentLeft];
+  changes.textAlignment = NSTextAlignmentLeft;
   [self colorChanges];
   NSError *error = NULL;
   regex = [NSRegularExpression regularExpressionWithPattern:@"Version \\d?\\d?\\d\\.\\d\\.?\\d?:" options:0 error:&error];
-  matches = [regex matchesInString:changes.text options:0 range:NSMakeRange(0, [changes.text length])];
-  matchCount = [matches count];
+  matches = [regex matchesInString:changes.text options:0 range:NSMakeRange(0, (changes.text).length)];
+  matchCount = matches.count;
   if (matchCount) {
     for (NSUInteger matchIdx = 0; matchIdx < matchCount; matchIdx++) {
-      match = [matches objectAtIndex:matchIdx];
-      matchRange = [match range];
+      match = matches[matchIdx];
+      matchRange = match.range;
       version = [changes.text substringWithRange:matchRange];
       [changes boldSubstring: version ofSize:16.0 colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1.0];
     }
@@ -56,93 +56,93 @@
   if (@available(iOS 13, *)){
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]){
       case 0:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
         [self setNeedsStatusBarAppearanceUpdate];
-        [changes setBackgroundColor:[UIColor whiteColor]];
-        [changes setTextColor:[UIColor blackColor]];
+        changes.backgroundColor = [UIColor whiteColor];
+        changes.textColor = [UIColor blackColor];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         break;
       case 1:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
         [self setNeedsStatusBarAppearanceUpdate];
-        [changes setBackgroundColor:[UIColor blackColor]];
-        [changes setTextColor:[UIColor whiteColor]];
+        changes.backgroundColor = [UIColor blackColor];
+        changes.textColor = [UIColor whiteColor];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           [self setNeedsStatusBarAppearanceUpdate];
-          [changes setBackgroundColor:[UIColor blackColor]];
-          [changes setTextColor:[UIColor whiteColor]];
+          changes.backgroundColor = [UIColor blackColor];
+          changes.textColor = [UIColor whiteColor];
           navBar.barTintColor = [UIColor blackColor];
           self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         } else {
           [self setNeedsStatusBarAppearanceUpdate];
-          [changes setBackgroundColor:[UIColor whiteColor]];
-          [changes setTextColor:[UIColor blackColor]];
+          changes.backgroundColor = [UIColor whiteColor];
+          changes.textColor = [UIColor blackColor];
           navBar.barTintColor = [UIColor whiteColor];
           self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         }
         break;
       default:
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
           if (@available(iOS 13, *)) {
-            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+            self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
           }
           [self setNeedsStatusBarAppearanceUpdate];
-          [changes setBackgroundColor:[UIColor whiteColor]];
-          [changes setTextColor:[UIColor blackColor]];
+          changes.backgroundColor = [UIColor whiteColor];
+          changes.textColor = [UIColor blackColor];
           navBar.barTintColor = [UIColor whiteColor];
           self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         } else {
           if (@available(iOS 13, *)) {
-            [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+            self.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
           }
           [self setNeedsStatusBarAppearanceUpdate];
-          [changes setBackgroundColor:[UIColor blackColor]];
-          [changes setTextColor:[UIColor whiteColor]];
+          changes.backgroundColor = [UIColor blackColor];
+          changes.textColor = [UIColor whiteColor];
           navBar.barTintColor = [UIColor blackColor];
           self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         }
         break;
     }
   } else {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
       if (@available(iOS 13, *)) {
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
       }
       [self setNeedsStatusBarAppearanceUpdate];
-      [changes setBackgroundColor:[UIColor whiteColor]];
-      [changes setTextColor:[UIColor blackColor]];
+      changes.backgroundColor = [UIColor whiteColor];
+      changes.textColor = [UIColor blackColor];
       navBar.barTintColor = [UIColor whiteColor];
       self.view.backgroundColor = [UIColor whiteColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
 
     } else {
       if (@available(iOS 13, *)) {
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
       }
       [self setNeedsStatusBarAppearanceUpdate];
-      [changes setBackgroundColor:[UIColor blackColor]];
-      [changes setTextColor:[UIColor whiteColor]];
+      changes.backgroundColor = [UIColor blackColor];
+      changes.textColor = [UIColor whiteColor];
       navBar.barTintColor = [UIColor blackColor];
       self.view.backgroundColor = [UIColor blackColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     }
   }
   if (matchCount) {
     for (NSUInteger matchIdx = 0; matchIdx < matchCount; matchIdx++) {
-      match = [matches objectAtIndex:matchIdx];
-      matchRange = [match range];
+      match = matches[matchIdx];
+      matchRange = match.range;
       version = [changes.text substringWithRange:matchRange];
       [changes boldSubstring: version ofSize:16.0 colorWithRed:0.0 green:123.0/256.0 blue:1.0 alpha:1.0];
     }
@@ -181,7 +181,7 @@
         return UIStatusBarStyleLightContent;
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           return UIStatusBarStyleLightContent;
         } else {

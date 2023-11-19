@@ -2,7 +2,7 @@
 //  ViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 4/24/2022.
+//  Modified by David Teddy, II on 11/19/2023.
 //  Copyright © Since 2014 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 #include <spawn.h>
 #include <dlfcn.h>
 
-@interface ViewController () 
+@interface ViewController ()
 
 @end
 
@@ -103,7 +103,7 @@ char *ldRunChar;
     [safeButton setTitle:@"Substrate\nSafe Mode" forState:UIControlStateNormal];
     [nonButton setTitle:@"Substitute\nSafe Mode" forState:UIControlStateNormal];
   }
-  NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  NSString *amIBeta = [NSString stringWithFormat:@"%@", [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]];
   NSString *versionURL;
   NSString *keyString;
   if ([amIBeta containsString:@"beta"]){
@@ -122,7 +122,7 @@ char *ldRunChar;
     
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
       self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-      self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+      self->keyInfo = [[NSBundle mainBundle].infoDictionary[keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
       [self updateCheckWithKeyInfo:self->keyInfo];
     }];
     [dataTask resume];
@@ -187,7 +187,7 @@ void run_cmd(char *cmd)
     }
     UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:@"Thank You For Using\nPowerApp!" message:info preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *doneDevBtn = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+        NSString *amIBeta = [NSString stringWithFormat:@"%@", [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]];
         NSString *versionURL;
         NSString *keyString;
         if ([amIBeta containsString:@"beta"]){
@@ -204,7 +204,7 @@ void run_cmd(char *cmd)
         
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:theRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
           self->receivedDataString =  [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-          self->keyInfo = [[[[NSBundle mainBundle] infoDictionary] objectForKey:keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+          self->keyInfo = [[NSBundle mainBundle].infoDictionary[keyString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
           [self updateCheckWithKeyInfo:self->keyInfo];
         }];
         [dataTask resume];
@@ -494,39 +494,39 @@ void run_cmd(char *cmd)
   if (@available(iOS 13, *)){
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]){
       case 0:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
         self.view.backgroundColor = [UIColor whiteColor];
         navBar.barTintColor = [UIColor whiteColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         break;
       case 1:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
         self.view.backgroundColor = [UIColor blackColor];
         navBar.barTintColor = [UIColor blackColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           [self setNeedsStatusBarAppearanceUpdate];
           self.view.backgroundColor = [UIColor blackColor];
           navBar.barTintColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         } else {
           self.view.backgroundColor = [UIColor whiteColor];
           navBar.barTintColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         }
         break;
       default:
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
           self.view.backgroundColor = [UIColor whiteColor];
           navBar.barTintColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         } else {
           self.view.backgroundColor = [UIColor blackColor];
           navBar.barTintColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         }
         break;
     }
@@ -534,11 +534,11 @@ void run_cmd(char *cmd)
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"] == YES){
       self.view.backgroundColor = [UIColor whiteColor];
       navBar.barTintColor = [UIColor whiteColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
     } else {
       self.view.backgroundColor = [UIColor blackColor];
       navBar.barTintColor = [UIColor blackColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     }
   }
 }
@@ -690,7 +690,7 @@ void run_cmd(char *cmd)
         return UIStatusBarStyleLightContent;
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           return UIStatusBarStyleLightContent;
         } else {

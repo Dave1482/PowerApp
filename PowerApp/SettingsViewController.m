@@ -2,7 +2,7 @@
 //  SettingsViewController.m
 //  PowerApp
 //
-//  Modified by David Teddy, II on 4/24/2022.
+//  Modified by David Teddy, II on 11/19/2023.
 //  Copyright © Since 2014 David Teddy, II (Dave1482). All rights reserved.
 //
 
@@ -31,21 +31,21 @@
   uname(&systemInfo);
   
   NSString *devicesPlistPath = [[NSBundle mainBundle] pathForResource:@"devices" ofType:@"plist"];
-  NSString *amIBeta = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+  NSString *amIBeta = [NSString stringWithFormat:@"%@", [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]];
   NSString *keyString;
   if ([amIBeta containsString:@"beta"]){
     keyString = @"CFBundleVersion";
   } else {
     keyString = @"CFBundleShortVersionString";
   }
-  NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:keyString];
+  NSString *appVersion = [NSBundle mainBundle].infoDictionary[keyString];
   NSDictionary *iOSDevices = [NSDictionary dictionaryWithContentsOfFile:devicesPlistPath];
-  NSString* deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+  NSString* deviceModel = @(systemInfo.machine);
   NSString* deviceModelKey = [iOSDevices valueForKey:deviceModel];
   if (deviceModelKey == nil){
     deviceModelKey = deviceModel;
   }
-  NSString* iOSVersion = [[UIDevice currentDevice] systemVersion];
+  NSString* iOSVersion = [UIDevice currentDevice].systemVersion;
   NSString *info = [NSString stringWithFormat:@"%@, iOS %@\n PowerApp %@", deviceModelKey, iOSVersion, appVersion];
   NSString *appVersionString = [NSString stringWithFormat:@"%@", appVersion];
   NSString *versionString = [NSString stringWithFormat:@"%@", iOSVersion];
@@ -67,8 +67,8 @@
   [super viewDidLoad];
   lightSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
   alertSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-  [lightSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"]];
-  [alertSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"]];
+  lightSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"lightSwitch"];
+  alertSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"alertSwitch.enabled"];
   payIcon = [UIImage imageNamed:@"paypal"];
   twtIcon = [UIImage imageNamed:@"twitter"];
   repoIcon = [UIImage imageNamed:@"repoIcon"];
@@ -76,7 +76,7 @@
   settingsTable.delegate = self;
   settingsTable.dataSource = self;
   projectIcon = [NSMutableArray arrayWithObjects:@"projInIcon", @"projOutIcon", @"projOrigIcon", @"projBlueIcon", @"projWhiteIcon", nil];
-  [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
+  btnSwitchControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"];
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"]){
     selectedCell = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"iconSelect"];
   } else {
@@ -85,7 +85,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
   }
   webIcon = [UIImage imageNamed:projectIcon[selectedCell]];
-  [borderSwitchControl setSelectedSegmentIndex:selectedCell];
+  borderSwitchControl.selectedSegmentIndex = selectedCell;
   lightDidChange = YES;
   [self colorSettings];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(colorSettings) name:NSUserDefaultsDidChangeNotification object:nil];
@@ -95,34 +95,34 @@
   if (@available(iOS 13, *)){
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]){
       case 0:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleLight];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor whiteColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
         gitIcon = [UIImage imageNamed:@"githubBlack"];
         break;
       case 1:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleDark];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
         [self setNeedsStatusBarAppearanceUpdate];
         navBar.barTintColor = [UIColor blackColor];
         self.view.backgroundColor = [UIColor blackColor];
-        [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         gitIcon = [UIImage imageNamed:@"githubWhite"];
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           [self setNeedsStatusBarAppearanceUpdate];
           navBar.barTintColor = [UIColor blackColor];
           self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
           gitIcon = [UIImage imageNamed:@"githubWhite"];
         } else {
           [self setNeedsStatusBarAppearanceUpdate];
           navBar.barTintColor = [UIColor whiteColor];
           self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
           gitIcon = [UIImage imageNamed:@"githubBlack"];
         }
         break;
@@ -131,13 +131,13 @@
           [self setNeedsStatusBarAppearanceUpdate];
           navBar.barTintColor = [UIColor whiteColor];
           self.view.backgroundColor = [UIColor whiteColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
           gitIcon = [UIImage imageNamed:@"githubBlack"];
         } else {
           [self setNeedsStatusBarAppearanceUpdate];
           navBar.barTintColor = [UIColor blackColor];
           self.view.backgroundColor = [UIColor blackColor];
-          [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+          navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
           gitIcon = [UIImage imageNamed:@"githubWhite"];
         }
         break;
@@ -149,14 +149,14 @@
       navBar.barTintColor = [UIColor whiteColor];
       self.view.backgroundColor = [UIColor whiteColor];
       tableColor = [UIColor groupTableViewBackgroundColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
       gitIcon = [UIImage imageNamed:@"githubBlack"];
     } else {
       [self setNeedsStatusBarAppearanceUpdate];
       navBar.barTintColor = [UIColor blackColor];
       self.view.backgroundColor = [UIColor blackColor];
       tableColor = [UIColor blackColor];
-      [navBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+      navBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
       gitIcon = [UIImage imageNamed:@"githubWhite"];
     }
     if(@available(iOS 13, *)){
@@ -253,11 +253,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (@available (iOS 10.3, *)){
-    if([indexPath section] == 2){
+    if(indexPath.section == 2){
       dispatch_async(dispatch_get_main_queue(), ^{
         self->selectedCell = (int)indexPath.row;
-        NSArray *nameArray = [NSArray arrayWithObjects:@"", @"outsetIcon", @"originalIcon", @"blueIcon", @"whiteIcon", nil];
-        if ([[UIApplication sharedApplication] supportsAlternateIcons]){
+        NSArray *nameArray = @[@"", @"outsetIcon", @"originalIcon", @"blueIcon", @"whiteIcon"];
+        if ([UIApplication sharedApplication].supportsAlternateIcons){
           if (indexPath.row > 0){
             [[UIApplication sharedApplication] setAlternateIconName:nameArray[indexPath.row] completionHandler:nil];
           } else {
@@ -273,32 +273,32 @@
           [self->settingsTable endUpdates];
         }];
       });
-    } else if ([indexPath section] == 3){
-      NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
+    } else if (indexPath.section == 3){
+      NSString *devURLString = [NSString stringWithFormat:@"%@",devArray[indexPath.row]];
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
     }
-  } else if ([indexPath section] == 2){
-    NSString *devURLString = [NSString stringWithFormat:@"%@",[devArray objectAtIndex:indexPath.row]];
+  } else if (indexPath.section == 2){
+    NSString *devURLString = [NSString stringWithFormat:@"%@",devArray[indexPath.row]];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:devURLString] options:@{} completionHandler:nil];
   }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([indexPath section] == 2){
+  if (indexPath.section == 2){
     if (@available(iOS 10.3, *)){
         [settingsTable cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
     } else {
       [settingsTable deselectRowAtIndexPath:indexPath animated:YES];
     }
-  } else if ([indexPath section] == 3){
+  } else if (indexPath.section == 3){
     [settingsTable deselectRowAtIndexPath:indexPath animated:YES];
   }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
   if (@available(iOS 10.3, *)) {
-    if ( [indexPath section] == 2 ){
+    if ( indexPath.section == 2 ){
       return 84.0f;
     } else {
     return UITableViewAutomaticDimension;
@@ -347,58 +347,58 @@
     }
     iconCell.selectedBackgroundView =  customColorView;
   }
-  if ([indexPath section] == 0) {
-    if ( [indexPath row] == 0 ){
+  if (indexPath.section == 0) {
+    if ( indexPath.row == 0 ){
         cell.textLabel.text = @"Respring Mode";
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         return cell;
-    } else if ( [indexPath row] == 1 ){
+    } else if ( indexPath.row == 1 ){
         btnSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"killall", @"sbreload", @"ldrestart"]];
         btnSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         btnSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
         [cell.contentView addSubview:btnSwitchControl];
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
-        [btnSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"]];
+        btnSwitchControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"btnControl"];
         [btnSwitchControl addTarget:self action:@selector(btnSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
-        [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
+        borderSwitchControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
         [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
         return cell;
-    } else if ( [indexPath row] == 2 ){
+    } else if ( indexPath.row == 2 ){
         cell.textLabel.text = @"Button Border Thickness";
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         return cell;
-    } else if ( [indexPath row] == 3 ){
+    } else if ( indexPath.row == 3 ){
         borderSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"None", @"Thin", @"Thick", @"THICC"]];
         [cell.contentView addSubview:borderSwitchControl];
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         borderSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         borderSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
-        [borderSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"]];
+        borderSwitchControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"borderControl"];
         [borderSwitchControl addTarget:self action:@selector(borderSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
         return cell;
-    } else if ( [indexPath row] == 4 ){
+    } else if ( indexPath.row == 4 ){
         cell.textLabel.text = @"Quick Action Reboot Mode";
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         return cell;
-    } else if ( [indexPath row] == 5 ){
+    } else if ( indexPath.row == 5 ){
         rebootSwitchControl = [[UISegmentedControl alloc] initWithItems:@[@"Full", @"Soft"]];
         [cell.contentView addSubview:rebootSwitchControl];
         cell.backgroundColor = [UIColor clearColor];
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         rebootSwitchControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         rebootSwitchControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
-        [rebootSwitchControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"]];
+        rebootSwitchControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"rebootControl"];
         [rebootSwitchControl addTarget:self action:@selector(rebootSwitchControlSelected) forControlEvents:UIControlEventValueChanged];
         return cell;
-    } else if ( [indexPath row] == 6) {
+    } else if ( indexPath.row == 6) {
       if(@available (iOS 13, *)){
         cell.textLabel.text = @"Theme";
         cell.backgroundColor = [UIColor clearColor];
@@ -411,7 +411,7 @@
         [lightSwitch addTarget:self action:@selector(lightSwitchSwitched) forControlEvents:UIControlEventValueChanged];
         return cell;
       }
-    } else if ( [indexPath row] == 7) {
+    } else if ( indexPath.row == 7) {
       if(@available (iOS 13, *)){
         lightControl = [[UISegmentedControl alloc] initWithItems:@[@"Light", @"Dark", @"Auto"]];
         [cell.contentView addSubview:lightControl];
@@ -419,7 +419,7 @@
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, CGFLOAT_MAX);
         lightControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         lightControl.center = CGPointMake(cell.contentView.bounds.size.width/2,cell.contentView.bounds.size.height/2);
-        [lightControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"]];
+        lightControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"lightControl"];
         [lightControl addTarget:self action:@selector(lightControlSelected) forControlEvents:UIControlEventValueChanged];
         return cell;
       } else {cell.textLabel.text = @"Alerts";
@@ -428,29 +428,29 @@
           return cell;
       }
     } if(@available (iOS 13, *)){
-        if ( [indexPath row] == 8){
+        if ( indexPath.row == 8){
         cell.textLabel.text = @"Alerts";
         cell.accessoryView = alertSwitch;
         [alertSwitch addTarget:self action:@selector(alertSwitchSwitched) forControlEvents:UIControlEventValueChanged];
         return cell;
       }
     }
-  } else if ([indexPath section] == 1) {
-    if ( [indexPath row] == 0 ){
+  } else if (indexPath.section == 1) {
+    if ( indexPath.row == 0 ){
       label = [[UILabel alloc] init];
       label.text = [self informationOf:@"app"];
       [label sizeToFit];
       cell.textLabel.text = @"App Version:";
       cell.accessoryView = label;
       return cell;
-    } else if ( [indexPath row] == 1) {
+    } else if ( indexPath.row == 1) {
       label = [[UILabel alloc] init];
       label.text = [self informationOf:@"ios"];
       [label sizeToFit];
       cell.textLabel.text = @"iOS Version:";
       cell.accessoryView = label;
       return cell;
-    } else if ( [indexPath row] == 2) {
+    } else if ( indexPath.row == 2) {
       label = [[UILabel alloc] init];
       label.text = [self informationOf:@"dev"];
       [label sizeToFit];
@@ -458,48 +458,48 @@
       cell.accessoryView = label;
       return cell;
     }
-  } else if ([indexPath section] == 2){
+  } else if (indexPath.section == 2){
     if ( @available(iOS 10.3, *)){
-      if ( [indexPath row] == 0 ){
+      if ( indexPath.row == 0 ){
         iconCell.imageView.image = [UIImage imageNamed:@"insetIcon60x60"];
         iconCell.textLabel.text = @"Default";
-        if([indexPath row] == selectedCell) {
+        if(indexPath.row == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
           iconCell.accessoryType = UITableViewCellAccessoryNone;
         }
         return iconCell;
-      } else if ( [indexPath row] == 1 ){
+      } else if ( indexPath.row == 1 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/outsetIcon-60"];
         iconCell.textLabel.text = @"Gray";
-        if([indexPath row] == selectedCell) {
+        if(indexPath.row == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
           iconCell.accessoryType = UITableViewCellAccessoryNone;
         }
         return iconCell;
-      } else if ( [indexPath row] == 2 ){
+      } else if ( indexPath.row == 2 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/originalIcon-60"];
         iconCell.textLabel.text = @"Original";
-        if([indexPath row] == selectedCell) {
+        if(indexPath.row == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
           iconCell.accessoryType = UITableViewCellAccessoryNone;
         }
         return iconCell;
-      } else if ( [indexPath row] == 3 ){
+      } else if ( indexPath.row == 3 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/blueIcon-60"];
         iconCell.textLabel.text = @"Blue";
-        if([indexPath row] == selectedCell) {
+        if(indexPath.row == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
           iconCell.accessoryType = UITableViewCellAccessoryNone;
         }
         return iconCell;
-      } else if ( [indexPath row] == 4 ){
+      } else if ( indexPath.row == 4 ){
         iconCell.imageView.image = [UIImage imageNamed:@"AltIcons/whiteIcon-60"];
         iconCell.textLabel.text = @"Light (by @project11x)";
-        if([indexPath row] == selectedCell) {
+        if(indexPath.row == selectedCell) {
           iconCell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
           iconCell.accessoryType = UITableViewCellAccessoryNone;
@@ -507,29 +507,29 @@
         return iconCell;
       }
     } else {
-      if ( [indexPath row] == 0) {
+      if ( indexPath.row == 0) {
         cell.imageView.image = payIcon;
         cell.textLabel.text = @"PayPal";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 1) {
+      } else if ( indexPath.row == 1) {
         cell.imageView.image = twtIcon;
         cell.textLabel.text = @"Twitter";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 2) {
+      } else if ( indexPath.row == 2) {
         cell.imageView.image = gitIcon;
         cell.textLabel.text = @"GitHub";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 3) {
+      } else if ( indexPath.row == 3) {
         cell.imageView.image = webIcon;
         cell.imageView.layer.cornerRadius = 6.0f;
         cell.imageView.layer.masksToBounds = YES;
         cell.textLabel.text = @"Project Page";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 4) {
+      } else if ( indexPath.row == 4) {
         cell.imageView.image = repoIcon;
         cell.imageView.layer.cornerRadius = 6.0f;
         cell.imageView.layer.masksToBounds = YES;
@@ -539,30 +539,30 @@
       }
     }
   } else if ( @available(iOS 10.3, *)){
-    if ([indexPath section] == 3) {
-      if ( [indexPath row] == 0) {
+    if (indexPath.section == 3) {
+      if ( indexPath.row == 0) {
         cell.imageView.image = payIcon;
         cell.textLabel.text = @"PayPal";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 1) {
+      } else if ( indexPath.row == 1) {
         cell.imageView.image = twtIcon;
         cell.textLabel.text = @"Twitter";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 2) {
+      } else if ( indexPath.row == 2) {
         cell.imageView.image = gitIcon;
         cell.textLabel.text = @"GitHub";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 3) {
+      } else if ( indexPath.row == 3) {
         cell.imageView.image = webIcon;
         cell.imageView.layer.cornerRadius = 6.0f;
         cell.imageView.layer.masksToBounds = YES;
         cell.textLabel.text = @"Project Page";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
-      } else if ( [indexPath row] == 4) {
+      } else if ( indexPath.row == 4) {
         cell.imageView.image = repoIcon;
         cell.imageView.layer.cornerRadius = 6.0f;
         cell.imageView.layer.masksToBounds = YES;
@@ -655,7 +655,7 @@
         return UIStatusBarStyleLightContent;
         break;
       case 2:
-        [self setOverrideUserInterfaceStyle:UIUserInterfaceStyleUnspecified];
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         if( self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ){
           return UIStatusBarStyleLightContent;
         } else {

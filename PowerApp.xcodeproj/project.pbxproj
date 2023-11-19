@@ -378,21 +378,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = insetIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer: dave1482@ymail.com (GF5F4ZXAA3)";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6.1.1;
+				CURRENT_PROJECT_VERSION = 7.0;
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				ENABLE_TESTABILITY = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = PowerApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 6.1.1;
+				MARKETING_VERSION = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dave1482.PowerAppTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dave1482.powerapp;
 				PRODUCT_NAME = PowerApp;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -400,6 +398,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "PowerApp/PowerApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 				WARNING_LDFLAGS = "";
 			};
 			name = Debug;
@@ -409,18 +408,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = insetIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6.1.1;
+				CURRENT_PROJECT_VERSION = 7.0;
 				DEVELOPMENT_TEAM = KNW7VNJUD5;
 				INFOPLIST_FILE = PowerApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 6.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dave1482.PowerAppTest;
+				MARKETING_VERSION = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dave1482.powerapp;
 				PRODUCT_NAME = PowerApp;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -428,6 +425,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "PowerApp/PowerApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 				WARNING_LDFLAGS = "";
 			};
 			name = Release;
